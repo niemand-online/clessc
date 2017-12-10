@@ -4,8 +4,8 @@
 #include "less/lessstylesheet/MixinCall.h"
 
 ProcessingContext::ProcessingContext() {
-  stack = NULL;
-  contextStylesheet = NULL;
+  stack = nullptr;
+  contextStylesheet = nullptr;
 }
 
 void ProcessingContext::setLessStylesheet(LessStylesheet &stylesheet) {
@@ -16,12 +16,12 @@ LessStylesheet *ProcessingContext::getLessStylesheet() {
 }
 
 const TokenList *ProcessingContext::getVariable(const std::string &key) const {
-  if (stack != NULL)
+  if (stack != nullptr)
     return stack->getVariable(key);
-  else if (contextStylesheet != NULL)
+  else if (contextStylesheet != nullptr)
     return contextStylesheet->getVariable(key);
   else
-    return NULL;
+    return nullptr;
 }
 
 void ProcessingContext::pushMixinCall(const Function &function,
@@ -31,7 +31,7 @@ void ProcessingContext::pushMixinCall(const Function &function,
 
 void ProcessingContext::popMixinCall() {
   MixinCall *tmp = stack;
-  if (stack != NULL) {
+  if (stack != nullptr) {
     stack = stack->parent;
 
     if (closures.empty() && variables.empty())
@@ -40,34 +40,34 @@ void ProcessingContext::popMixinCall() {
 }
 
 VariableMap *ProcessingContext::getStackArguments() {
-  if (stack != NULL)
+  if (stack != nullptr)
     return &stack->arguments;
   else
-    return NULL;
+    return nullptr;
 }
 
 bool ProcessingContext::isStackEmpty() const {
-  return stack == NULL;
+  return stack == nullptr;
 }
 bool ProcessingContext::isSavePoint() const {
-  return (stack != NULL && stack->savepoint);
+  return (stack != nullptr && stack->savepoint);
 }
 
 void ProcessingContext::getFunctions(std::list<const Function *> &functionList,
                                      const Mixin &mixin) const {
   getClosures(functionList, mixin);
 
-  if (stack != NULL)
+  if (stack != nullptr)
     stack->getFunctions(functionList, mixin);
-  else if (contextStylesheet != NULL)
+  else if (contextStylesheet != nullptr)
     contextStylesheet->getFunctions(functionList, mixin);
 }
 
 bool ProcessingContext::isInStack(const Function &function) const {
-  if (stack != NULL)
+  if (stack != nullptr)
     return stack->isInStack(function);
   else
-    return NULL;
+    return nullptr;
 }
 
 void ProcessingContext::addExtension(Extension &extension) {
@@ -78,7 +78,7 @@ std::list<Extension> &ProcessingContext::getExtensions() {
 }
 
 void ProcessingContext::addClosure(const LessRuleset &ruleset) {
-  if (stack != NULL) {
+  if (stack != nullptr) {
     Closure *c = new Closure(ruleset, *stack);
     closures.push_back(c);
   }

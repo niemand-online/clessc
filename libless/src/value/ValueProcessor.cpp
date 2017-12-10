@@ -38,26 +38,26 @@ void ValueProcessor::processValue(TokenList &value,
       v = processStatement(itmp, end, scope);
       i2 = itmp;
     } catch (ValueException *e) {
-      v = NULL;
+      v = nullptr;
     }
 
     // add spaces between values
-    if (v != NULL || i2 != end) {
+    if (v != nullptr || i2 != end) {
       if (newvalue.size() == 0 || !needsSpace(newvalue.back(), false) ||
-          (v == NULL && !needsSpace(*i2, true))) {
+          (v == nullptr && !needsSpace(*i2, true))) {
       } else {
         newvalue.push_back(Token::BUILTIN_SPACE);
       }
     }
 
-    if (v != NULL) {
+    if (v != nullptr) {
       newvalue.insert(
           newvalue.end(), v->getTokens()->begin(), v->getTokens()->end());
       delete v;
     } else if (i2 != end) {
       // variable containing a non-value.
       if ((*i2).type == Token::ATKEYWORD &&
-          (var = scope.getVariable(*i2)) != NULL) {
+          (var = scope.getVariable(*i2)) != nullptr) {
         variable = *var;
         processValue(variable, scope);
 
@@ -65,7 +65,7 @@ void ValueProcessor::processValue(TokenList &value,
         i2++;
 
         // deep variable
-      } else if ((var = processDeepVariable(i2, end, scope)) != NULL) {
+      } else if ((var = processDeepVariable(i2, end, scope)) != nullptr) {
         variable = *var;
         processValue(variable, scope);
 
@@ -165,7 +165,7 @@ bool ValueProcessor::validateValue(TokenList::const_iterator &i,
   reference = &(*i);
   v = processStatement(i, end, scope);
 
-  if (v == NULL) {
+  if (v == nullptr) {
     throw new ParseException(*reference,
                              "condition",
                              reference->line,
@@ -189,7 +189,7 @@ Value *ValueProcessor::processStatement(const TokenList &tokens,
   Value *ret = processStatement(i, end, scope);
 
   if (i != end)
-    return NULL;
+    return nullptr;
   return ret;
 }
 
@@ -201,10 +201,10 @@ Value *ValueProcessor::processStatement(TokenList::const_iterator &i,
   skipWhitespace(i, end);
   v = processConstant(i, end, scope);
 
-  if (v != NULL) {
+  if (v != nullptr) {
     skipWhitespace(i, end);
 
-    while ((op = processOperation(i, end, *v, scope, OP_NONE)) != NULL) {
+    while ((op = processOperation(i, end, *v, scope, OP_NONE)) != nullptr) {
       delete v;
       v = op;
 
@@ -213,7 +213,7 @@ Value *ValueProcessor::processStatement(TokenList::const_iterator &i,
 
     return v;
   } else
-    return NULL;
+    return nullptr;
 }
 
 Value *ValueProcessor::processOperation(TokenList::const_iterator &i,
@@ -228,20 +228,20 @@ Value *ValueProcessor::processOperation(TokenList::const_iterator &i,
   const Token *opToken;
 
   if (i == end)
-    return NULL;
+    return nullptr;
 
   opToken = &(*i);
   tmp = i;
 
   if ((op = processOperator(tmp, end)) == OP_NONE ||
       (lastop != OP_NONE && lastop >= op))
-    return NULL;
+    return nullptr;
 
   i = tmp;
   skipWhitespace(i, end);
 
   operand2 = processConstant(i, end, scope);
-  if (operand2 == NULL) {
+  if (operand2 == nullptr) {
     if (i == end)
       throw new ParseException("end of line",
                                "Constant or @-variable",
@@ -367,7 +367,7 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
   std::string str;
 
   if (i == end)
-    return NULL;
+    return nullptr;
 
   token = *i;
 
@@ -387,12 +387,12 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
       return new NumberValue(token);
 
     case Token::ATKEYWORD:
-      if ((var = scope.getVariable(token)) != NULL) {
+      if ((var = scope.getVariable(token)) != nullptr) {
         variable = *var;
 
         ret = processStatement(variable, scope);
 
-        if (ret != NULL) {
+        if (ret != nullptr) {
           i++;
           ret->setLocation(token);
 
@@ -402,7 +402,7 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
           return ret;
         }
       }
-      return NULL;
+      return nullptr;
 
     case Token::STRING:
       i++;
@@ -427,19 +427,19 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
           i++;
 
           ret = processFunction(token, i, end, scope);
-          if (ret == NULL) {
+          if (ret == nullptr) {
             i--;
             i--;
-            return NULL;
+            return nullptr;
           } else
             return ret;
 
         } else {
           i--;
-          return NULL;
+          return nullptr;
         }
 
-      } else if ((ret = processUnit(token)) != NULL) {
+      } else if ((ret = processUnit(token)) != nullptr) {
         return ret;
       } else if (token.compare("true") == 0) {
         return new BooleanValue(token, true);
@@ -454,10 +454,10 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
       break;
   }
 
-  if ((var = processDeepVariable(i, end, scope)) != NULL) {
+  if ((var = processDeepVariable(i, end, scope)) != nullptr) {
     variable = *var;
     ret = processStatement(variable, scope);
-    if (ret != NULL) {
+    if (ret != nullptr) {
       ret->setLocation(token);
     }
     return ret;
@@ -467,19 +467,19 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
     if (i != end && (*i).type == Token::PAREN_OPEN) {
       i++;
 
-      if ((ret = processFunction(token, i, end, scope)) != NULL)
+      if ((ret = processFunction(token, i, end, scope)) != nullptr)
         return ret;
 
       i--;
     }
     i--;
   }
-  if ((ret = processEscape(i, end, scope)) != NULL) {
+  if ((ret = processEscape(i, end, scope)) != nullptr) {
     return ret;
-  } else if ((ret = processNegative(i, end, scope)) != NULL) {
+  } else if ((ret = processNegative(i, end, scope)) != nullptr) {
     return ret;
   }
-  return NULL;
+  return nullptr;
 }
 
 Value *ValueProcessor::processSubstatement(TokenList::const_iterator &i,
@@ -489,14 +489,14 @@ Value *ValueProcessor::processSubstatement(TokenList::const_iterator &i,
   TokenList::const_iterator i2 = i;
 
   if (i == end || (*i).type != Token::PAREN_OPEN)
-    return NULL;
+    return nullptr;
 
   i2++;
 
   ret = processStatement(i2, end, scope);
 
-  if (ret == NULL)
-    return NULL;
+  if (ret == nullptr)
+    return nullptr;
 
   ret->setLocation(*i);
 
@@ -504,7 +504,7 @@ Value *ValueProcessor::processSubstatement(TokenList::const_iterator &i,
 
   if (i2 == end || (*i2).type != Token::PAREN_CLOSED) {
     delete ret;
-    return NULL;
+    return nullptr;
   }
 
   i2++;
@@ -523,14 +523,14 @@ const TokenList *ValueProcessor::processDeepVariable(
   std::string key = "@";
 
   if (i == end || (*i).type != Token::OTHER || (*i) != "@")
-    return NULL;
+    return nullptr;
 
   i++;
 
   if (i == end || (*i).type != Token::ATKEYWORD ||
-      (var = scope.getVariable((*i))) == NULL) {
+      (var = scope.getVariable((*i))) == nullptr) {
     i--;
-    return NULL;
+    return nullptr;
   }
 
   variable = *var;
@@ -538,7 +538,7 @@ const TokenList *ValueProcessor::processDeepVariable(
 
   if (variable.size() != 1 || variable.front().type != Token::STRING) {
     i--;
-    return NULL;
+    return nullptr;
   }
 
   i++;
@@ -550,7 +550,7 @@ const TokenList *ValueProcessor::processDeepVariable(
 }
 
 bool ValueProcessor::functionExists(const char *function) const {
-  return ((functionLibrary.getFunction(function)) != NULL);
+  return ((functionLibrary.getFunction(function)) != nullptr);
 }
 
 Value *ValueProcessor::processFunction(const Token &function,
@@ -564,7 +564,7 @@ Value *ValueProcessor::processFunction(const Token &function,
   vector<const Value *> arguments;
 
   const FuncInfo *fi;
-  Value *ret = NULL;
+  Value *ret = nullptr;
   vector<const Value *>::iterator it;
   string arg_str;
 
@@ -572,8 +572,8 @@ Value *ValueProcessor::processFunction(const Token &function,
 
   fi = functionLibrary.getFunction(function.c_str());
 
-  if (fi == NULL)
-    return NULL;
+  if (fi == nullptr)
+    return nullptr;
 
   try {
     if (processArguments(i2, end, scope, arguments) &&
@@ -584,14 +584,14 @@ Value *ValueProcessor::processFunction(const Token &function,
       // advance the iterator
       i = i2;
     } else
-      ret = NULL;
+      ret = nullptr;
 
     // If an exception is thrown, parsing or processing failed, and we
     // assume this isn't a function.
   } catch (ValueException *e) {
-    ret = NULL;
+    ret = nullptr;
   } catch (ParseException *e) {
-    ret = NULL;
+    ret = nullptr;
   }
 
   // delete arguments
@@ -613,7 +613,7 @@ bool ValueProcessor::processArguments(TokenList::const_iterator &i,
 
   if ((*i).type != Token::PAREN_CLOSED) {
     argument = processStatement(i, end, scope);
-    if (argument != NULL)
+    if (argument != nullptr)
       arguments.push_back(argument);
     else {
       arguments.push_back(new StringValue(*i, false));
@@ -626,7 +626,7 @@ bool ValueProcessor::processArguments(TokenList::const_iterator &i,
 
     argument = processStatement(i, end, scope);
 
-    if (argument != NULL) {
+    if (argument != nullptr) {
       arguments.push_back(argument);
     } else if ((*i).type != Token::PAREN_CLOSED) {
       arguments.push_back(new StringValue(*i, false));
@@ -650,7 +650,7 @@ Value *ValueProcessor::processEscape(TokenList::const_iterator &i,
   Token t;
 
   if (i == end || *i != "~")
-    return NULL;
+    return nullptr;
 
   i++;
 
@@ -658,7 +658,7 @@ Value *ValueProcessor::processEscape(TokenList::const_iterator &i,
 
   if ((*i).type != Token::STRING) {
     i--;
-    return NULL;
+    return nullptr;
   }
 
   t = *i;
@@ -679,7 +679,7 @@ UnitValue *ValueProcessor::processUnit(Token &t) const {
              t.compare("grad") == 0 || t.compare("turn") == 0) {
     return new UnitValue(t);
   } else
-    return NULL;
+    return nullptr;
 }
 
 bool ValueProcessor::needsSpace(const Token &t, bool before) const {
@@ -713,7 +713,7 @@ Value *ValueProcessor::processNegative(TokenList::const_iterator &i,
   Token t_zero("0", Token::NUMBER, 0, 0, "generated");
 
   if (i == end || (*i) != "-")
-    return NULL;
+    return nullptr;
 
   minus = *i;
   i++;
@@ -721,9 +721,9 @@ Value *ValueProcessor::processNegative(TokenList::const_iterator &i,
   skipWhitespace(i, end);
 
   constant = processConstant(i, end, scope);
-  if (constant == NULL) {
+  if (constant == nullptr) {
     i--;
-    return NULL;
+    return nullptr;
   }
 
   LogStream().notice(3) << "Negate: " << constant->getTokens()->toString();
@@ -757,7 +757,7 @@ void ValueProcessor::interpolate(std::string &str,
 
     var = scope.getVariable(key);
 
-    if (var != NULL) {
+    if (var != nullptr) {
       variable = *var;
 
       processValue(variable, scope);

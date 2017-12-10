@@ -9,7 +9,7 @@ bool LessTokenizer::readComment() {
 
   currentToken.append(lastRead);
   readChar();
-  while (in != NULL && !lastReadEq('\n')) {
+  while (in != nullptr && !lastReadEq('\n')) {
     currentToken.append(lastRead);
     readChar();
   }

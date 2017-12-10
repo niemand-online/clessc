@@ -47,7 +47,7 @@ void UnprocessedStatement::process(Stylesheet &s) {
 
     // process mixin
   } else if (mixin.parse(*getTokens()))
-    mixin.call(s, *getLessRuleset()->getContext(), NULL, getLessRuleset());
+    mixin.call(s, *getLessRuleset()->getContext(), nullptr, getLessRuleset());
 }
 
 void UnprocessedStatement::process(Ruleset &r) {
@@ -183,7 +183,7 @@ bool UnprocessedStatement::processDeclaration(Declaration &declaration) {
 
   if (declaration.getValue().empty() ||
       declaration.getValue().front().type != Token::COLON) {
-    return NULL;
+    return nullptr;
   }
 
   declaration.getValue().pop_front();

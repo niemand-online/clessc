@@ -21,8 +21,8 @@ private:
   size_t encodeField(int field, char* buffer);
 
   void writePreamble(const char* out_filename,
-                     const char* rootpath = NULL,
-                     const char* basepath = NULL);
+                     const char* rootpath = nullptr,
+                     const char* basepath = nullptr);
 
 public:
   static const char* base64;
@@ -30,8 +30,8 @@ public:
   SourceMapWriter(std::ostream& sourcemap,
                   std::list<const char*>& sources,
                   const char* out_filename,
-                  const char* rootpath = NULL,
-                  const char* basepath = NULL);
+                  const char* rootpath = nullptr,
+                  const char* basepath = nullptr);
   virtual ~SourceMapWriter();
 
   void writeMapping(unsigned int column, const Token& source);

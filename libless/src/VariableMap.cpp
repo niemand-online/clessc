@@ -5,8 +5,9 @@ const TokenList *VariableMap::getVariable(const std::string &key) const {
 
   if ((mit = this->find(key)) != this->end()) {
     return &mit->second;
-  } else
-    return NULL;
+  }
+
+  return nullptr;
 }
 
 void VariableMap::merge(const VariableMap &map) {

@@ -1,7 +1,7 @@
 #include "less/lessstylesheet/LessMediaQuery.h"
 
 LessMediaQuery::LessMediaQuery() {
-  parent = NULL;
+  parent = nullptr;
 }
 LessMediaQuery::~LessMediaQuery() {
 }
@@ -28,7 +28,7 @@ void LessMediaQuery::getFunctions(std::list<const Function *> &functionList,
 
 const TokenList *LessMediaQuery::getVariable(const std::string &key) const {
   const TokenList *t = LessStylesheet::getVariable(key);
-  if (t == NULL)
+  if (t == nullptr)
     t = getLessStylesheet()->getVariable(key);
   return t;
 }

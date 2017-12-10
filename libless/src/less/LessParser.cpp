@@ -67,7 +67,7 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
 bool LessParser::parseAtRuleOrVariable(LessStylesheet &stylesheet) {
   Token token;
   TokenList value, rule;
-  AtRule *atrule = NULL;
+  AtRule *atrule = nullptr;
 
   if (tokenizer->getTokenType() != Token::ATKEYWORD)
     return false;
@@ -194,7 +194,7 @@ bool LessParser::parseRuleset(LessStylesheet &stylesheet,
   LogStream().notice(2) << "Parse: Ruleset";
 
   // Create the ruleset and parse ruleset statements.
-  if (parent == NULL)
+  if (parent == nullptr)
     ruleset = stylesheet.createLessRuleset();
   else
     ruleset = parent->createNestedRule();
@@ -246,7 +246,7 @@ void LessParser::parseRulesetStatements(LessStylesheet &stylesheet,
         statement->property_i = 1;
       }
 
-    } else if ((statement = parseRulesetStatement(ruleset)) != NULL) {
+    } else if ((statement = parseRulesetStatement(ruleset)) != nullptr) {
       // a selector followed by a ruleset is a nested rule
       if (tokenizer->getTokenType() == Token::BRACKET_OPEN) {
         parseRuleset(stylesheet, *statement->getTokens(), &ruleset);
@@ -343,7 +343,7 @@ UnprocessedStatement *LessParser::parseRulesetStatement(LessRuleset &ruleset) {
   tokens.trim();
 
   if (tokens.empty())
-    return NULL;
+    return nullptr;
 
   statement = ruleset.createUnprocessedStatement();
 

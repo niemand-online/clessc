@@ -14,18 +14,18 @@ const TokenList* MixinCall::getVariable(const std::string& key) const {
   VariableMap::const_iterator mit;
   const TokenList* t;
 
-  if ((t = function->getVariable(key)) != NULL)
+  if ((t = function->getVariable(key)) != nullptr)
     return t;
 
-  if ((t = arguments.getVariable(key)) != NULL)
+  if ((t = arguments.getVariable(key)) != nullptr)
     return t;
 
-  if ((t = function->getInheritedVariable(key, *this)) != NULL)
+  if ((t = function->getInheritedVariable(key, *this)) != nullptr)
     return t;
 
-  if (parent != NULL)
+  if (parent != nullptr)
     return parent->getVariable(key);
-  return NULL;
+  return nullptr;
 }
 
 void MixinCall::getFunctions(std::list<const Function*>& functionList,
@@ -34,21 +34,21 @@ void MixinCall::getFunctions(std::list<const Function*>& functionList,
   if (!functionList.empty())
     return;
 
-  if (parent != NULL)
+  if (parent != nullptr)
     parent->getFunctions(functionList, mixin);
 }
 
 bool MixinCall::isInStack(const Function& function) const {
   return (this->function == &function) ||
-         (parent != NULL && parent->isInStack(function));
+         (parent != nullptr && parent->isInStack(function));
 }
 
 const VariableMap* MixinCall::getArguments(const Function& function) const {
   if (this->function == &function)
     return &arguments;
 
-  if (parent != NULL)
+  if (parent != nullptr)
     return parent->getArguments(function);
 
-  return NULL;
+  return nullptr;
 }

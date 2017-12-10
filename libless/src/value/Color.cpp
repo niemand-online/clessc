@@ -525,13 +525,13 @@ Value* Color::hue(const vector<const Value*>& arguments) {
 Value* Color::saturation(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
 
-  return new NumberValue(hsl[1] * 100, Token::PERCENTAGE, NULL);
+  return new NumberValue(hsl[1] * 100, Token::PERCENTAGE, nullptr);
 }
 
 Value* Color::lightness(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
 
-  return new NumberValue(hsl[2] * 100, Token::PERCENTAGE, NULL);
+  return new NumberValue(hsl[2] * 100, Token::PERCENTAGE, nullptr);
 }
 
 Value* Color::argb(const vector<const Value*>& arguments) {

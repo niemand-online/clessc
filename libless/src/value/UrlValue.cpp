@@ -131,7 +131,7 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
     return false;  //"Image is not a PNG file"
 
   /* initialize stuff */
-  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
   if (!png_ptr)
     throw new ValueException("png_create_read_struct failed",
@@ -176,9 +176,9 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
     img.background.setRGB(255, 255, 255);
   }
 
-  png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-  png_ptr = NULL;
-  info_ptr = NULL;
+  png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+  png_ptr = nullptr;
+  info_ptr = nullptr;
   fclose(fp);
 
   LogStream().notice(3) << "Read successful";
@@ -201,7 +201,7 @@ bool UrlValue::loadJpeg(UrlValue_Img& img) const {
   int row_stride;    /* physical row width in output buffer */
   std::string path = getRelativePath();
 
-  if ((infile = fopen(path.c_str(), "rb")) == NULL) {
+  if ((infile = fopen(path.c_str(), "rb")) == nullptr) {
     return false;
   }
 

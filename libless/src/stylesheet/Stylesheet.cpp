@@ -104,7 +104,7 @@ Ruleset* Stylesheet::getRuleset(const Selector& selector) {
     if ((*it)->getSelector().match(selector))
       return *it;
   }
-  return NULL;
+  return nullptr;
 }
 
 void Stylesheet::process(Stylesheet& s) {

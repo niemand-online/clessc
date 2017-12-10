@@ -67,7 +67,7 @@ const TokenList* Closure::getInheritedVariable(const std::string& key,
   const TokenList* t;
 
   t = ruleset->getInheritedVariable(key, *this->stack);
-  if (t == NULL)
+  if (t == nullptr)
     t = this->stack->getVariable(key);
   return t;
 }

@@ -6,7 +6,7 @@ const FuncInfo* FunctionLibrary::getFunction(const char* functionName) const {
   if (i != map.end())
     return i->second;
   else
-    return NULL;
+    return nullptr;
 }
 
 void FunctionLibrary::push(
@@ -60,9 +60,9 @@ bool FunctionLibrary::checkArguments(
 
 const char* FunctionLibrary::functionDefToString(const char* functionName,
                                                  const FuncInfo* fi) {
-  if (fi == NULL)
+  if (fi == nullptr)
     fi = getFunction(functionName);
-  if (fi == NULL)
+  if (fi == nullptr)
     return "";
 
   string str(functionName);

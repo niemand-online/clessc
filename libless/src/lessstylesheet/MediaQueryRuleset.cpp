@@ -34,7 +34,7 @@ void MediaQueryRuleset::process(Stylesheet& s,
   } else
     query->setSelector(selector);
 
-  if (prefix != NULL) {
+  if (prefix != nullptr) {
     target = query->createRuleset();
     target->setSelector(*prefix);
 

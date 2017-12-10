@@ -1,13 +1,13 @@
 #include "less/css/CssWriter.h"
 
 CssWriter::CssWriter() {
-  out = NULL;
+  out = nullptr;
   column = 0;
-  sourcemap = NULL;
+  sourcemap = nullptr;
 }
 
 CssWriter::CssWriter(std::ostream &out) : out(&out), column(0) {
-  sourcemap = NULL;
+  sourcemap = nullptr;
 }
 CssWriter::CssWriter(std::ostream &out, SourceMapWriter &sourcemap)
     : out(&out), column(0), sourcemap(&sourcemap) {
@@ -27,7 +27,7 @@ void CssWriter::writeStr(const char *str, size_t len) {
 void CssWriter::writeToken(const Token &token) {
   std::string url;
 
-  if (rootpath != NULL && token.type == Token::URL) {
+  if (rootpath != nullptr && token.type == Token::URL) {
     url = token.getUrlString();
     if (url.find(':') == std::string::npos) {
       writeStr("url(\"", 5);
@@ -55,7 +55,7 @@ void CssWriter::writeSelector(const TokenList &selector) {
   bool newselector = true;
 
   for (it = selector.begin(); it != selector.end(); it++) {
-    if (newselector && sourcemap != NULL) {
+    if (newselector && sourcemap != nullptr) {
       sourcemap->writeMapping(column, *it);
       newselector = false;
     }
@@ -75,13 +75,13 @@ void CssWriter::writeValue(const TokenList &value) {
     it++;
   }
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, *it);
   t = &(*it);
 
   for (; it != value.end(); it++) {
     if ((*it).source != t->source || (*it).line != t->line) {
-      if (sourcemap != NULL)
+      if (sourcemap != nullptr)
         sourcemap->writeMapping(column, (*it));
       t = &(*it);
     }
@@ -91,13 +91,13 @@ void CssWriter::writeValue(const TokenList &value) {
 }
 
 void CssWriter::writeAtRule(const Token &keyword, const TokenList &rule) {
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, keyword);
 
   writeToken(keyword);
   writeStr(" ", 1);
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, rule.front());
 
   writeTokenList(rule);
@@ -117,7 +117,7 @@ void CssWriter::writeRulesetEnd() {
 
 void CssWriter::writeDeclaration(const Token &property,
                                  const TokenList &value) {
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, property);
 
   writeToken(property);

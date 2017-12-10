@@ -35,7 +35,7 @@ NumberValue::NumberValue(double value,
         "percentage or dimension.",
         *this->getTokens());
   }
-  if (type == Token::DIMENSION && unit == NULL)
+  if (type == Token::DIMENSION && unit == nullptr)
     throw new ValueException("Dimension requires a unit.", *this->getTokens());
 
   tokens.push_back(Token("", type, 0, 0, "generated"));
@@ -357,7 +357,7 @@ Value* NumberValue::unit(const vector<const Value*>& arguments) {
 }
 Value* NumberValue::get_unit(const vector<const Value*>& arguments) {
   const NumberValue* val = (const NumberValue*)arguments[0];
-  Token t(val->getUnit(), Token::IDENTIFIER, 0, 0, NULL);
+  Token t(val->getUnit(), Token::IDENTIFIER, 0, 0, nullptr);
   t.setLocation(val->getTokens()->front());
   return new UnitValue(t);
 }
@@ -395,7 +395,7 @@ Value* NumberValue::floor(const vector<const Value*>& args) {
 }
 Value* NumberValue::percentage(const vector<const Value*>& args) {
   const NumberValue* val = (const NumberValue*)args[0];
-  return new NumberValue(val->getValue() * 100, Token::PERCENTAGE, NULL);
+  return new NumberValue(val->getValue() * 100, Token::PERCENTAGE, nullptr);
 }
 
 Value* NumberValue::round(const vector<const Value*>& args) {

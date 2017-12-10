@@ -94,7 +94,7 @@ protected:
 
   bool parseRuleset(LessStylesheet &stylesheet,
                     Selector &selector,
-                    LessRuleset *parent = NULL);
+                    LessRuleset *parent = nullptr);
 
   void parseRulesetStatements(LessStylesheet &stylesheet, LessRuleset &ruleset);
 

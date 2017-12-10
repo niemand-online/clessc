@@ -316,7 +316,7 @@ TokenList *LessSelector::getDefault(const std::string &keyword) {
     if ((*pit) == keyword)
       return &(*dit);
   }
-  return NULL;
+  return nullptr;
 }
 
 std::list<std::string> &LessSelector::getParameters() {
@@ -337,7 +337,7 @@ bool LessSelector::matchArguments(const Mixin &mixin) {
   size_t pos = 0;
 
   for (; p_it != parameters.end(); p_it++, d_it++) {
-    if (mixin.getArgument(*p_it) == NULL && mixin.getArgument(pos++) == NULL &&
+    if (mixin.getArgument(*p_it) == nullptr && mixin.getArgument(pos++) == nullptr &&
         (*d_it).empty()) {
       return false;
     }

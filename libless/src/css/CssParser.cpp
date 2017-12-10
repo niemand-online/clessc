@@ -58,18 +58,15 @@ bool CssParser::parseEmptyStatement() {
 
 bool CssParser::parseStatement(Stylesheet& stylesheet) {
   Ruleset* ruleset = parseRuleset(stylesheet);
-  if (ruleset != NULL)
+  if (ruleset != nullptr)
     return true;
 
   MediaQuery* query = parseMediaQuery(stylesheet);
-  if (query != NULL)
+  if (query != nullptr)
     return true;
 
   AtRule* atrule = parseAtRule(stylesheet);
-  if (atrule != NULL)
-    return true;
-
-  return false;
+  return atrule != nullptr;
 }
 
 MediaQuery* CssParser::parseMediaQuery(Stylesheet& stylesheet) {
@@ -77,7 +74,7 @@ MediaQuery* CssParser::parseMediaQuery(Stylesheet& stylesheet) {
 
   if (tokenizer->getTokenType() != Token::ATKEYWORD ||
       tokenizer->getToken() != "@media")
-    return NULL;
+    return nullptr;
 
   query = stylesheet.createMediaQuery();
 
@@ -111,7 +108,7 @@ AtRule* CssParser::parseAtRule(Stylesheet& stylesheet) {
   AtRule* atrule;
 
   if (tokenizer->getTokenType() != Token::ATKEYWORD)
-    return NULL;
+    return nullptr;
 
   atrule = stylesheet.createAtRule(tokenizer->getToken());
   tokenizer->readNextToken();
@@ -172,7 +169,7 @@ Ruleset* CssParser::parseRuleset(Stylesheet& stylesheet) {
 
   if (!parseSelector(selector)) {
     if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
-      return NULL;
+      return nullptr;
     }
   } else if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
     throw new ParseException(tokenizer->getToken(),
@@ -214,12 +211,12 @@ bool CssParser::parseSelector(Selector& selector) {
 }
 
 Declaration* CssParser::parseDeclaration(Ruleset& ruleset) {
-  Declaration* declaration = NULL;
+  Declaration* declaration = nullptr;
   TokenList property;
   Token keyword;
 
   if (!parseProperty(property))
-    return NULL;
+    return nullptr;
 
   skipWhitespace();
 

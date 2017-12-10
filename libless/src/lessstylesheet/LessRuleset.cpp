@@ -4,13 +4,13 @@
 #include "less/lessstylesheet/MediaQueryRuleset.h"
 
 LessRuleset::LessRuleset() : Ruleset() {
-  parent = NULL;
-  lessStylesheet = NULL;
-  selector = NULL;
+  parent = nullptr;
+  lessStylesheet = nullptr;
+  selector = nullptr;
 }
 LessRuleset::LessRuleset(const Selector& selector) : Ruleset() {
-  parent = NULL;
-  lessStylesheet = NULL;
+  parent = nullptr;
+  lessStylesheet = nullptr;
   setSelector(selector);
 }
 LessRuleset::~LessRuleset() {
@@ -19,7 +19,7 @@ LessRuleset::~LessRuleset() {
     nestedRules.pop_back();
   }
   unprocessedStatements.clear();
-  if (selector != NULL)
+  if (selector != nullptr)
     delete selector;
 }
 
@@ -97,14 +97,14 @@ const TokenList* LessRuleset::getInheritedVariable(
   const TokenList* t;
   const VariableMap* m;
 
-  if (parent != NULL) {
-    if ((t = parent->getVariable(key)) != NULL)
+  if (parent != nullptr) {
+    if ((t = parent->getVariable(key)) != nullptr)
       return t;
 
     if (parent->getLessSelector()->needsArguments()) {
       m = stack.getArguments(*parent);
-      if (m != NULL) {
-        if ((t = m->getVariable(key)) != NULL)
+      if (m != nullptr) {
+        if ((t = m->getVariable(key)) != nullptr)
           return t;
       }
     }
@@ -145,7 +145,7 @@ void LessRuleset::processExtensions(ProcessingContext& context,
 
   for (e_it = e.begin(); e_it != e.end(); e_it++) {
     extension = *e_it;
-    if (prefix != NULL)
+    if (prefix != nullptr)
       extension.getExtension().addPrefix(*prefix);
     context.addExtension(extension);
   }
@@ -189,7 +189,7 @@ bool LessRuleset::call(Mixin& mixin,
 }
 
 void LessRuleset::process(Stylesheet& s) {
-  process(s, NULL, *getLessStylesheet()->getContext());
+  process(s, nullptr, *getLessStylesheet()->getContext());
 }
 void LessRuleset::process(Stylesheet& s,
                           Selector* prefix,
@@ -203,7 +203,7 @@ void LessRuleset::process(Stylesheet& s,
   target = s.createRuleset();
   target->setSelector(getSelector());
 
-  if (prefix != NULL)
+  if (prefix != nullptr)
     target->getSelector().addPrefix(*prefix);
 
   LogStream().notice(2) << "Processing Less Ruleset: "
@@ -250,7 +250,7 @@ void LessRuleset::processStatements(Stylesheet& target,
   LogStream().notice(2) << "Inserting nested rules";
 
   // insert nested rules
-  insertNestedRules(target, NULL, context);
+  insertNestedRules(target, nullptr, context);
 }
 
 void LessRuleset::saveReturnValues(ProcessingContext& context) {
@@ -297,7 +297,7 @@ void LessRuleset::getFunctions(list<const Function*>& functionList,
 
 void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
                                     const Mixin& mixin) const {
-  getLocalFunctions(functionList, mixin, NULL);
+  getLocalFunctions(functionList, mixin, nullptr);
 }
 
 void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
@@ -320,9 +320,9 @@ void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
   if (!functionList.empty())
     return;
 
-  if (getParent() != NULL) {
+  if (getParent() != nullptr) {
     getParent()->getLocalFunctions(
-        functionList, mixin, selector->needsArguments() ? NULL : this);
+        functionList, mixin, selector->needsArguments() ? nullptr : this);
   } else
     getLessStylesheet()->getFunctions(functionList, mixin);
 }
@@ -383,13 +383,13 @@ bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
   for (pit = parameters.begin(); pit != parameters.end(); pit++) {
     variable = mixin.getArgument(*pit);
 
-    if (variable == NULL)
+    if (variable == nullptr)
       variable = mixin.getArgument(pos++);
 
-    if (variable == NULL)
+    if (variable == nullptr)
       variable = selector->getDefault(*pit);
 
-    if (variable == NULL || variable->empty())
+    if (variable == nullptr || variable->empty())
       return false;
 
     scope.insert(pair<std::string, TokenList>(*pit, *variable));

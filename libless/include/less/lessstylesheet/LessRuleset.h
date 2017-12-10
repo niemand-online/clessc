@@ -106,13 +106,13 @@ public:
   void saveReturnValues(ProcessingContext &context);
   /**
    * Look for a ruleset inside this ruleset and scope up to
-   * getParent(), or getLessStylesheet() if getParent() is NULL.
+   * getParent(), or getLessStylesheet() if getParent() is nullptr.
    */
   void getLocalFunctions(std::list<const Function *> &functionList,
                          const Mixin &mixin) const;
   void getLocalFunctions(std::list<const Function *> &functionList,
                          const Mixin &mixin,
-                         const LessRuleset *exclude = NULL) const;
+                         const LessRuleset *exclude = nullptr) const;
 
   bool matchConditions(ProcessingContext &context) const;
   bool putArguments(const Mixin &mixin, VariableMap &scope) const;

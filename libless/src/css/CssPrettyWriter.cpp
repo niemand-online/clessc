@@ -12,21 +12,21 @@ void CssPrettyWriter::newline() {
   out->write("\n", 1);
   column = 0;
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeNewline();
 }
 
 void CssPrettyWriter::writeSelector(const TokenList &selector) {
   TokenList::const_iterator it;
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, selector.front());
 
   for (it = selector.begin(); it != selector.end(); it++) {
     writeToken(*it);
 
     if ((*it) == ",") {
-      if (sourcemap != NULL)
+      if (sourcemap != nullptr)
         sourcemap->writeMapping(column, selector.front());
 
       newline();
@@ -66,7 +66,7 @@ void CssPrettyWriter::writeDeclaration(const Token &property,
                                        const TokenList &value) {
   indent();
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, property);
 
   writeToken(property);
