@@ -340,9 +340,7 @@ bool CssTokenizer::readString() {
       readChar();
     }
   }
-  throw new ParseException(
-      "end of input", "end of string", line, column, source);
-  return false;
+  throw new ParseException("end of input", "end of string", line, column, source);
 }
 
 bool CssTokenizer::readNewline() {
@@ -414,7 +412,6 @@ bool CssTokenizer::readUrl() {
     }
   }
   throw new ParseException(&lastRead, "end of url (')')", line, column, source);
-  return false;
 }
 
 bool CssTokenizer::readComment() {
@@ -437,9 +434,7 @@ bool CssTokenizer::readComment() {
     currentToken.append(lastRead);
     readChar();
   }
-  throw new ParseException(
-      &lastRead, "end of comment (*/)", line, column, source);
-  return false;
+  throw new ParseException(&lastRead, "end of comment (*/)", line, column, source);
 }
 
 bool CssTokenizer::readUnicodeRange() {
