@@ -50,7 +50,4 @@ public:
   virtual void write(CssWriter &writer);
 };
 
-#include "less/stylesheet/Declaration.h"
-#include "less/stylesheet/RulesetStatement.h"
-
 #endif  // __less_stylesheet_Ruleset_h__

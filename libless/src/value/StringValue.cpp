@@ -1,5 +1,6 @@
 #include "less/value/StringValue.h"
 #include <regex>
+#include "less/value/BooleanValue.h"
 
 using namespace std;
 

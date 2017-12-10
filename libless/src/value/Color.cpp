@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "less/LogStream.h"
+#include "less/value/BooleanValue.h"
 #include "less/value/Color.h"
 
 #define max(x, y) x > y ? x : y

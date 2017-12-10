@@ -60,6 +60,4 @@ public:
   static Type codeToType(const char code);
 };
 
-#include "less/value/BooleanValue.h"
-
 #endif  // __less_value_Value_h__

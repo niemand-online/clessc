@@ -56,10 +56,4 @@ public:
   virtual void write(CssWriter &writer);
 };
 
-#include "less/stylesheet/AtRule.h"
-#include "less/stylesheet/CssComment.h"
-#include "less/stylesheet/MediaQuery.h"
-#include "less/stylesheet/Ruleset.h"
-#include "less/stylesheet/StylesheetStatement.h"
-
 #endif  // __less_stylesheet_Stylesheet_h__

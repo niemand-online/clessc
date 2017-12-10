@@ -1,5 +1,6 @@
 #include "less/value/ValueProcessor.h"
 #include "less/LogStream.h"
+#include "less/value/BooleanValue.h"
 
 using namespace std;
 

@@ -5,6 +5,7 @@
 
 #include "less/TokenList.h"
 #include "less/css/CssTokenizer.h"
+#include "less/stylesheet/Declaration.h"
 #include "less/stylesheet/Stylesheet.h"
 
 /**
@@ -61,7 +62,8 @@ protected:
   /**
    * Parse a media query, starting with the @media keyword.
    *
-   * @return a MediaQuery object or nullptr if the current token is not '@media'.
+   * @return a MediaQuery object or nullptr if the current token is not
+   * '@media'.
    */
   MediaQuery *parseMediaQuery(Stylesheet &stylesheet);
 

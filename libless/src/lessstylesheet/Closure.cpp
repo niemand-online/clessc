@@ -1,6 +1,6 @@
 #include "less/lessstylesheet/Closure.h"
 #include "less/LogStream.h"
-#include "less/lessstylesheet/ProcessingContext.h"
+#include "less/lessstylesheet/LessRuleset.h"
 
 using namespace std;
 

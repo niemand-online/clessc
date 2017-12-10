@@ -3,6 +3,7 @@
 
 #include "less/stylesheet/Selector.h"
 #include "less/stylesheet/Stylesheet.h"
+#include "less/stylesheet/StylesheetStatement.h"
 
 class MediaQuery : public Stylesheet, public StylesheetStatement {
 private:

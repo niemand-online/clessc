@@ -1,5 +1,9 @@
 #include "less/stylesheet/Stylesheet.h"
 #include "less/LogStream.h"
+#include "less/stylesheet/AtRule.h"
+#include "less/stylesheet/MediaQuery.h"
+#include "less/stylesheet/Ruleset.h"
+#include "less/stylesheet/StylesheetStatement.h"
 
 using namespace std;
 

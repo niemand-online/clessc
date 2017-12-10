@@ -1,4 +1,5 @@
 #include "less/lessstylesheet/LessMediaQuery.h"
+#include "less/stylesheet/MediaQuery.h"
 
 using namespace std;
 
