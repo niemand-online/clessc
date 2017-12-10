@@ -1,6 +1,8 @@
 #include "less/value/ValueProcessor.h"
 #include "less/LogStream.h"
 
+using namespace std;
+
 ValueProcessor::ValueProcessor() {
   NumberValue::loadFunctions(functionLibrary);
   Color::loadFunctions(functionLibrary);
@@ -364,7 +366,7 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
   const TokenList *var;
   TokenList variable;
   bool hasQuotes;
-  std::string str;
+  string str;
 
   if (i == end)
     return nullptr;
@@ -520,7 +522,7 @@ const TokenList *ValueProcessor::processDeepVariable(
     const ValueScope &scope) const {
   const TokenList *var;
   TokenList variable;
-  std::string key = "@";
+  string key = "@";
 
   if (i == end || (*i).type != Token::OTHER || (*i) != "@")
     return nullptr;
@@ -739,8 +741,7 @@ Value *ValueProcessor::processNegative(TokenList::const_iterator &i,
   return ret;
 }
 
-void ValueProcessor::interpolate(std::string &str,
-                                 const ValueScope &scope) const {
+void ValueProcessor::interpolate(string &str, const ValueScope &scope) const {
   size_t start, end = 0;
   string key, value;
   const TokenList *var;

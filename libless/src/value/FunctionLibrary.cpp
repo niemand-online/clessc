@@ -1,7 +1,9 @@
 #include "less/value/FunctionLibrary.h"
 
+using namespace std;
+
 const FuncInfo* FunctionLibrary::getFunction(const char* functionName) const {
-  std::map<std::string, FuncInfo*>::const_iterator i = map.find(functionName);
+  std::map<string, FuncInfo*>::const_iterator i = map.find(functionName);
 
   if (i != map.end())
     return i->second;
@@ -93,7 +95,7 @@ const char* FunctionLibrary::functionDefToString(const char* functionName,
   str.append(")");
 
   retstr = new char[str.length() + 1];
-  std::strcpy(retstr, str.c_str());
+  strcpy(retstr, str.c_str());
 
   return retstr;
 }

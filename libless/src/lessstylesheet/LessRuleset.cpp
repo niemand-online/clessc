@@ -3,6 +3,8 @@
 #include "less/lessstylesheet/LessStylesheet.h"
 #include "less/lessstylesheet/MediaQueryRuleset.h"
 
+using namespace std;
+
 LessRuleset::LessRuleset() : Ruleset() {
   parent = nullptr;
   lessStylesheet = nullptr;
@@ -40,7 +42,7 @@ UnprocessedStatement* LessRuleset::createUnprocessedStatement() {
   return s;
 }
 
-const std::list<UnprocessedStatement*>& LessRuleset::getUnprocessedStatements()
+const list<UnprocessedStatement*>& LessRuleset::getUnprocessedStatements()
     const {
   return unprocessedStatements;
 }
@@ -77,11 +79,11 @@ void LessRuleset::deleteUnprocessedStatement(UnprocessedStatement& statement) {
   deleteStatement(statement);
 }
 
-const std::list<LessRuleset*>& LessRuleset::getNestedRules() const {
+const list<LessRuleset*>& LessRuleset::getNestedRules() const {
   return nestedRules;
 }
 
-void LessRuleset::putVariable(const std::string& key, const TokenList& value) {
+void LessRuleset::putVariable(const string& key, const TokenList& value) {
   variables[key] = value;
 }
 
@@ -89,11 +91,11 @@ VariableMap& LessRuleset::getVariables() {
   return variables;
 }
 
-const TokenList* LessRuleset::getVariable(const std::string& key) const {
+const TokenList* LessRuleset::getVariable(const string& key) const {
   return variables.getVariable(key);
 }
 const TokenList* LessRuleset::getInheritedVariable(
-    const std::string& key, const MixinCall& stack) const {
+    const string& key, const MixinCall& stack) const {
   const TokenList* t;
   const VariableMap* m;
 
@@ -139,8 +141,8 @@ ProcessingContext* LessRuleset::getContext() {
 
 void LessRuleset::processExtensions(ProcessingContext& context,
                                     Selector* prefix) {
-  std::list<Extension>& e = getLessSelector()->getExtensions();
-  std::list<Extension>::iterator e_it;
+  list<Extension>& e = getLessSelector()->getExtensions();
+  list<Extension>::iterator e_it;
   Extension extension;
 
   for (e_it = e.begin(); e_it != e.end(); e_it++) {
@@ -195,7 +197,7 @@ void LessRuleset::process(Stylesheet& s,
                           Selector* prefix,
                           ProcessingContext& context) {
   Ruleset* target;
-  std::list<Closure*> closureScope;
+  list<Closure*> closureScope;
 
   if (selector->needsArguments())
     return;
@@ -295,17 +297,17 @@ void LessRuleset::getFunctions(list<const Function*>& functionList,
   }
 }
 
-void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
+void LessRuleset::getLocalFunctions(list<const Function*>& functionList,
                                     const Mixin& mixin) const {
   getLocalFunctions(functionList, mixin, nullptr);
 }
 
-void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
+void LessRuleset::getLocalFunctions(list<const Function*>& functionList,
                                     const Mixin& mixin,
                                     const LessRuleset* exclude) const {
-  const std::list<LessRuleset*>& nestedRules = getNestedRules();
-  std::list<LessRuleset*>::const_iterator r_it;
-  std::list<Closure*>::const_iterator c_it;
+  const list<LessRuleset*>& nestedRules = getNestedRules();
+  list<LessRuleset*>::const_iterator r_it;
+  list<Closure*>::const_iterator c_it;
 
   for (r_it = nestedRules.begin(); r_it != nestedRules.end(); r_it++) {
     if ((*r_it) != exclude) {
@@ -330,8 +332,8 @@ void LessRuleset::getLocalFunctions(std::list<const Function*>& functionList,
 void LessRuleset::insertNestedRules(Stylesheet& s,
                                     Selector* prefix,
                                     ProcessingContext& context) const {
-  const std::list<LessRuleset*>& nestedRules = getNestedRules();
-  std::list<LessRuleset*>::const_iterator r_it;
+  const list<LessRuleset*>& nestedRules = getNestedRules();
+  list<LessRuleset*>::const_iterator r_it;
 
   for (r_it = nestedRules.begin(); r_it != nestedRules.end(); r_it++) {
     (*r_it)->process(s, prefix, context);
@@ -339,8 +341,8 @@ void LessRuleset::insertNestedRules(Stylesheet& s,
 }
 
 void LessRuleset::addClosures(ProcessingContext& context) const {
-  const std::list<LessRuleset*>& nestedRules = getNestedRules();
-  std::list<LessRuleset*>::const_iterator r_it;
+  const list<LessRuleset*>& nestedRules = getNestedRules();
+  list<LessRuleset*>::const_iterator r_it;
 
   for (r_it = nestedRules.begin(); r_it != nestedRules.end(); r_it++) {
     if ((*r_it)->selector->needsArguments()) {
@@ -350,8 +352,8 @@ void LessRuleset::addClosures(ProcessingContext& context) const {
 }
 
 bool LessRuleset::matchConditions(ProcessingContext& context) const {
-  std::list<TokenList>& conditions = selector->getConditions();
-  std::list<TokenList>::iterator cit;
+  list<TokenList>& conditions = selector->getConditions();
+  list<TokenList>::iterator cit;
   TokenList condition;
 
   if (conditions.empty())
@@ -372,8 +374,8 @@ bool LessRuleset::matchConditions(ProcessingContext& context) const {
 }
 
 bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
-  std::list<std::string>& parameters = selector->getParameters();
-  std::list<std::string>::iterator pit;
+  list<string>& parameters = selector->getParameters();
+  list<string>::iterator pit;
   TokenList argsCombined;
   TokenList restVar;
   const TokenList* variable;
@@ -392,7 +394,7 @@ bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
     if (variable == nullptr || variable->empty())
       return false;
 
-    scope.insert(pair<std::string, TokenList>(*pit, *variable));
+    scope.insert(pair<string, TokenList>(*pit, *variable));
 
     argsCombined.insert(argsCombined.end(), variable->begin(), variable->end());
     argsCombined.push_back(Token::BUILTIN_SPACE);
@@ -411,9 +413,9 @@ bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
 
     restVar.trim();
     scope.insert(
-        pair<std::string, TokenList>(selector->getRestIdentifier(), restVar));
+        pair<string, TokenList>(selector->getRestIdentifier(), restVar));
   }
 
-  scope.insert(pair<std::string, TokenList>("@arguments", argsCombined));
+  scope.insert(pair<string, TokenList>("@arguments", argsCombined));
   return true;
 }

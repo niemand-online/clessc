@@ -7,9 +7,11 @@
 #define max(x, y) x > y ? x : y
 #define min(x, y) x < y ? x : y
 
+using namespace std;
+
 template <class T>
-inline std::string to_string(const T& t) {
-  std::stringstream ss;
+inline string to_string(const T& t) {
+  stringstream ss;
   ss << t;
   return ss.str();
 }
@@ -506,8 +508,7 @@ Value* Color::spin(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double degrees = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(
-      std::floor(hsl[0] + degrees), hsl[1] * 100, hsl[2] * 100);
+  return Color::fromHSL(floor(hsl[0] + degrees), hsl[1] * 100, hsl[2] * 100);
 }
 
 Value* Color::hsl(const vector<const Value*>& arguments) {

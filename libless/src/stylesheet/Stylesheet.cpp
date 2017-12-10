@@ -1,6 +1,8 @@
 #include "less/stylesheet/Stylesheet.h"
 #include "less/LogStream.h"
 
+using namespace std;
+
 Stylesheet::~Stylesheet() {
   rulesets.clear();
   atrules.clear();
@@ -87,18 +89,18 @@ void Stylesheet::deleteMediaQuery(MediaQuery& query) {
   deleteStatement(query);
 }
 
-std::list<AtRule*>& Stylesheet::getAtRules() {
+list<AtRule*>& Stylesheet::getAtRules() {
   return atrules;
 }
-std::list<Ruleset*>& Stylesheet::getRulesets() {
+list<Ruleset*>& Stylesheet::getRulesets() {
   return rulesets;
 }
-std::list<StylesheetStatement*>& Stylesheet::getStatements() {
+list<StylesheetStatement*>& Stylesheet::getStatements() {
   return statements;
 }
 
 Ruleset* Stylesheet::getRuleset(const Selector& selector) {
-  std::list<Ruleset*>::iterator it;
+  list<Ruleset*>::iterator it;
 
   for (it = rulesets.begin(); it != rulesets.end(); it++) {
     if ((*it)->getSelector().match(selector))
@@ -108,8 +110,8 @@ Ruleset* Stylesheet::getRuleset(const Selector& selector) {
 }
 
 void Stylesheet::process(Stylesheet& s) {
-  std::list<StylesheetStatement*> statements = getStatements();
-  std::list<StylesheetStatement*>::iterator i;
+  list<StylesheetStatement*> statements = getStatements();
+  list<StylesheetStatement*>::iterator i;
 
   LogStream().notice(1) << "Processing stylesheet";
 
@@ -122,8 +124,8 @@ void Stylesheet::process(Stylesheet& s) {
 }
 
 void Stylesheet::write(CssWriter& writer) {
-  std::list<StylesheetStatement*> statements = getStatements();
-  std::list<StylesheetStatement*>::iterator i;
+  list<StylesheetStatement*> statements = getStatements();
+  list<StylesheetStatement*>::iterator i;
 
   for (i = statements.begin(); i != statements.end(); i++) {
     (*i)->write(writer);

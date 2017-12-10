@@ -3,6 +3,8 @@
 
 #include <libgen.h>
 
+using namespace std;
+
 /**
  * Only allows LessStylesheets
  */
@@ -428,10 +430,10 @@ bool LessParser::importFile(Token uri,
                             unsigned int directive) {
   size_t pathend;
   size_t extension_pos;
-  std::list<const char *>::iterator i;
-  std::string relative_filename;
+  list<const char *>::iterator i;
+  string relative_filename;
   char *relative_filename_cpy;
-  std::string extension;
+  string extension;
 
   if (uri.type == Token::URL) {
     uri = uri.getUrlString();
@@ -447,11 +449,11 @@ bool LessParser::importFile(Token uri,
     return false;
 
   pathend = uri.rfind('?');
-  if (pathend == std::string::npos)
+  if (pathend == string::npos)
     pathend = uri.size();
 
   extension_pos = uri.rfind('.', pathend);
-  if (extension_pos == std::string::npos) {
+  if (extension_pos == string::npos) {
     uri.insert(pathend, ".less");
     pathend += 5;
     extension = "less";
@@ -487,7 +489,7 @@ bool LessParser::importFile(Token uri,
   LogStream().notice(1) << "Opening: " << relative_filename;
 
   relative_filename_cpy = new char[relative_filename.length() + 1];
-  std::strcpy(relative_filename_cpy, relative_filename.c_str());
+  strcpy(relative_filename_cpy, relative_filename.c_str());
 
   sources.push_back(relative_filename_cpy);
   LessTokenizer tokenizer(in, relative_filename_cpy);
@@ -502,18 +504,18 @@ bool LessParser::importFile(Token uri,
   return true;
 }
 
-bool LessParser::findFile(Token &uri, std::string &filename) {
+bool LessParser::findFile(Token &uri, string &filename) {
   ifstream *in;
   size_t pos;
-  std::string source;
-  std::list<const char *>::iterator i;
+  string source;
+  list<const char *>::iterator i;
 
   source = uri.source;
   pos = source.find_last_of("/\\");
 
   // if the current stylesheet is outside of the current working
   //  directory then add the directory to the filename.
-  if (pos != std::string::npos) {
+  if (pos != string::npos) {
     filename.append(source.substr(0, pos + 1));
   }
   filename.append(uri);

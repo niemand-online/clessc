@@ -74,7 +74,7 @@ private:
   bool processArguments(TokenList::const_iterator &it,
                         TokenList::const_iterator &end,
                         const ValueScope &scope,
-                        vector<const Value *> &arguments) const;
+                        std::vector<const Value *> &arguments) const;
 
   Value *processEscape(TokenList::const_iterator &it,
                        TokenList::const_iterator &end,
@@ -113,7 +113,7 @@ public:
 
   bool functionExists(const char *function) const;
 
-  void interpolate(string &str, const ValueScope &scope) const;
+  void interpolate(std::string &str, const ValueScope &scope) const;
   void interpolate(TokenList &tokens, const ValueScope &scope) const;
 };
 

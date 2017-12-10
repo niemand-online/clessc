@@ -10,6 +10,8 @@
 #include <setjmp.h>
 #include <stdio.h>
 
+using namespace std;
+
 struct urlvalue_jpeg_error_mgr {
   struct jpeg_error_mgr pub; /* "public" fields */
 
@@ -36,7 +38,7 @@ urlvalue_jpeg_error_exit(j_common_ptr cinfo) {
 UrlValue_Img::UrlValue_Img() {
 }
 
-UrlValue::UrlValue(Token& token, std::string& path) : Value() {
+UrlValue::UrlValue(Token& token, string& path) : Value() {
   tokens.push_back(token);
   this->path = path;
   type = Value::URL;
@@ -45,18 +47,18 @@ UrlValue::UrlValue(Token& token, std::string& path) : Value() {
 UrlValue::~UrlValue() {
 }
 
-std::string UrlValue::getPath() const {
+string UrlValue::getPath() const {
   return path;
 }
 
-std::string UrlValue::getRelativePath() const {
-  std::string source = tokens.front().source;
+string UrlValue::getRelativePath() const {
+  string source = tokens.front().source;
   size_t pos = source.find_last_of("/\\");
-  std::string relative_path;
+  string relative_path;
 
   // if the source stylesheet is not in the current working directory
   //  then add its directory to the path.
-  if (pos != std::string::npos) {
+  if (pos != string::npos) {
     relative_path.append(source.substr(0, pos + 1));
     relative_path.append(this->path);
   } else
@@ -117,7 +119,7 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
   png_byte color_type;
   int channels;
 
-  std::string path = getRelativePath();
+  string path = getRelativePath();
 
   LogStream().notice(3) << "PNG path: " << path;
 
@@ -131,7 +133,8 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
     return false;  //"Image is not a PNG file"
 
   /* initialize stuff */
-  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+  png_ptr =
+      png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
   if (!png_ptr)
     throw ValueException("png_create_read_struct failed", *this->getTokens());
@@ -197,7 +200,7 @@ bool UrlValue::loadJpeg(UrlValue_Img& img) const {
   FILE* infile;
   JSAMPARRAY buffer; /* Output row buffer */
   int row_stride;    /* physical row width in output buffer */
-  std::string path = getRelativePath();
+  string path = getRelativePath();
 
   if ((infile = fopen(path.c_str(), "rb")) == nullptr) {
     return false;
@@ -344,7 +347,7 @@ void UrlValue::loadFunctions(FunctionLibrary& lib) {
 Value* UrlValue::imgheight(const vector<const Value*>& arguments) {
   const UrlValue* u;
   NumberValue* val;
-  std::string px = "px";
+  string px = "px";
 
   u = static_cast<const UrlValue*>(arguments[0]);
 
@@ -356,7 +359,7 @@ Value* UrlValue::imgheight(const vector<const Value*>& arguments) {
 Value* UrlValue::imgwidth(const vector<const Value*>& arguments) {
   const UrlValue* u;
   NumberValue* val;
-  std::string px = "px";
+  string px = "px";
 
   u = static_cast<const UrlValue*>(arguments[0]);
   val = new NumberValue(u->getImageWidth(), Token::DIMENSION, &px);

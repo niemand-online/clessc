@@ -4,6 +4,8 @@
 #include "less/lessstylesheet/LessStylesheet.h"
 #include "less/lessstylesheet/Mixin.h"
 
+using namespace std;
+
 UnprocessedStatement::UnprocessedStatement() {
   property_i = 0;
 }
@@ -14,14 +16,14 @@ Selector *UnprocessedStatement::getTokens() {
 
 void UnprocessedStatement::getProperty(TokenList &tokens) {
   TokenList::iterator i = this->tokens.begin();
-  std::advance(i, property_i);
+  advance(i, property_i);
 
   tokens.insert(tokens.begin(), this->tokens.begin(), i);
 }
 
 void UnprocessedStatement::getValue(TokenList &tokens) {
   TokenList::iterator i = this->tokens.begin();
-  std::advance(i, property_i);
+  advance(i, property_i);
 
   tokens.insert(tokens.begin(), i, this->tokens.end());
 }
@@ -111,7 +113,7 @@ bool UnprocessedStatement::isDeclaration() {
   if ((*i).type == Token::HASH || (*i) == ".")
     return false;
 
-  std::advance(i, property_i);
+  advance(i, property_i);
   while (i != getTokens()->end() && (*i).type == Token::WHITESPACE) {
     i++;
   }
@@ -139,7 +141,7 @@ bool UnprocessedStatement::getExtension(TokenList &extension) {
   i = getTokens()->begin();
 
   // &:extends(
-  std::advance(i, 4);
+  advance(i, 4);
 
   for (; i != getTokens()->end() && parentheses > 0; i++) {
     switch ((*i).type) {

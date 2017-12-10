@@ -45,9 +45,9 @@ public:
 
   static void loadFunctions(FunctionLibrary &lib);
 
-  static Value *imgheight(const vector<const Value *> &arguments);
-  static Value *imgwidth(const vector<const Value *> &arguments);
-  static Value *imgbackground(const vector<const Value *> &arguments);
+  static Value *imgheight(const std::vector<const Value *> &arguments);
+  static Value *imgwidth(const std::vector<const Value *> &arguments);
+  static Value *imgbackground(const std::vector<const Value *> &arguments);
 };
 
 #endif  // __less_value_UrlValue_h__

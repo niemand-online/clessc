@@ -1,5 +1,7 @@
 #include "less/css/ParseException.h"
 
+using namespace std;
+
 ParseException::ParseException(string found,
                                string& expected,
                                unsigned int line,

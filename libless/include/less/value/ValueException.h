@@ -4,17 +4,16 @@
 #include <string>
 #include "less/TokenList.h"
 
-using namespace std;
 /**
  *
  */
-class ValueException : public exception {
+class ValueException : public std::exception {
 public:
-  string err;
+  std::string err;
   const char* _source;
   unsigned int line, column;
 
-  ValueException(string message, const TokenList& source) {
+  ValueException(std::string message, const TokenList& source) {
     err = message;
     this->_source = source.front().source;
     line = source.front().line;

@@ -2,6 +2,8 @@
 #include "less/LogStream.h"
 #include "less/lessstylesheet/LessMediaQuery.h"
 
+using namespace std;
+
 LessStylesheet::LessStylesheet() {
 }
 
@@ -55,9 +57,9 @@ void LessStylesheet::deleteMixin(Mixin& mixin) {
   deleteStatement(mixin);
 }
 
-void LessStylesheet::getFunctions(std::list<const Function*>& rulesetList,
+void LessStylesheet::getFunctions(list<const Function*>& rulesetList,
                                   const Mixin& mixin) const {
-  std::list<LessRuleset*>::const_iterator i;
+  list<LessRuleset*>::const_iterator i;
 
   for (i = lessrulesets.begin(); i != lessrulesets.end(); i++) {
     (*i)->getFunctions(rulesetList, mixin, mixin.name.begin());
@@ -71,20 +73,19 @@ ProcessingContext* LessStylesheet::getContext() {
   return context;
 }
 
-void LessStylesheet::putVariable(const std::string& key,
-                                 const TokenList& value) {
+void LessStylesheet::putVariable(const string& key, const TokenList& value) {
   variables[key] = value;
 }
-const TokenList* LessStylesheet::getVariable(const std::string& key) const {
+const TokenList* LessStylesheet::getVariable(const string& key) const {
   return variables.getVariable(key);
 }
 
 void LessStylesheet::process(Stylesheet& s, ProcessingContext& context) {
-  std::list<Extension>* extensions;
+  list<Extension>* extensions;
 
-  std::list<Ruleset*>::iterator r_it;
-  std::list<Extension>::iterator e_it;
-  std::list<Closure*> closureScope;
+  list<Ruleset*>::iterator r_it;
+  list<Extension>::iterator e_it;
+  list<Closure*> closureScope;
 
   this->context = &context;
 

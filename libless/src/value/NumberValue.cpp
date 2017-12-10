@@ -1,5 +1,7 @@
 #include "less/value/NumberValue.h"
 
+using namespace std;
+
 NumberValue::NumberValue(const Token& token) {
   tokens.push_back(token);
 
@@ -25,9 +27,7 @@ NumberValue::NumberValue(double value) {
   type = NUMBER;
   setValue(value);
 }
-NumberValue::NumberValue(double value,
-                         Token::Type type,
-                         const std::string* unit) {
+NumberValue::NumberValue(double value, Token::Type type, const string* unit) {
   if (type != Token::NUMBER && type != Token::PERCENTAGE &&
       type != Token::DIMENSION) {
     throw ValueException(
@@ -79,7 +79,7 @@ void NumberValue::verifyUnits(const NumberValue& n) {
   }
 }
 
-double NumberValue::convert(const std::string& unit) const {
+double NumberValue::convert(const string& unit) const {
   UnitValue::UnitGroup group = UnitValue::getUnitGroup(unit);
   double value = getValue();
 
@@ -451,7 +451,7 @@ Value* NumberValue::sin(const vector<const Value*>& args) {
 
   NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
-  std::string unit;
+  string unit;
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
@@ -487,7 +487,7 @@ Value* NumberValue::cos(const vector<const Value*>& args) {
   }
   NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
-  std::string unit;
+  string unit;
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
@@ -523,7 +523,7 @@ Value* NumberValue::tan(const vector<const Value*>& args) {
   }
   NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
-  std::string unit;
+  string unit;
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
@@ -573,7 +573,7 @@ Value* NumberValue::mod(const vector<const Value*>& args) {
   NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
   double val2 = ((NumberValue*)args[1])->getValue();
 
-  n->setValue(std::fmod(n->getValue(), val2));
+  n->setValue(fmod(n->getValue(), val2));
   return n;
 }
 Value* NumberValue::convert(const vector<const Value*>& args) {
@@ -586,7 +586,7 @@ Value* NumberValue::convert(const vector<const Value*>& args) {
   }
 
   NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
-  std::string unit;
+  string unit;
 
   if (args[1]->type == Value::STRING)
     unit = ((const StringValue*)args[1])->getString();

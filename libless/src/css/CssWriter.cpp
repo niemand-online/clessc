@@ -1,15 +1,17 @@
 #include "less/css/CssWriter.h"
 
+using namespace std;
+
 CssWriter::CssWriter() {
   out = nullptr;
   column = 0;
   sourcemap = nullptr;
 }
 
-CssWriter::CssWriter(std::ostream &out) : out(&out), column(0) {
+CssWriter::CssWriter(ostream &out) : out(&out), column(0) {
   sourcemap = nullptr;
 }
-CssWriter::CssWriter(std::ostream &out, SourceMapWriter &sourcemap)
+CssWriter::CssWriter(ostream &out, SourceMapWriter &sourcemap)
     : out(&out), column(0), sourcemap(&sourcemap) {
 }
 
@@ -25,13 +27,13 @@ void CssWriter::writeStr(const char *str, size_t len) {
   column += len;
 }
 void CssWriter::writeToken(const Token &token) {
-  std::string url;
+  string url;
 
   if (rootpath != nullptr && token.type == Token::URL) {
     url = token.getUrlString();
-    if (url.find(':') == std::string::npos) {
+    if (url.find(':') == string::npos) {
       writeStr("url(\"", 5);
-      writeStr(rootpath, std::strlen(rootpath));
+      writeStr(rootpath, strlen(rootpath));
 
       writeStr(url.c_str(), url.size());
       writeStr("\")", 2);
@@ -144,6 +146,5 @@ void CssWriter::writeMediaQueryEnd() {
 }
 
 void CssWriter::writeSourceMapUrl(const char *sourcemap_url) {
-  *out << std::endl
-       << "/*# sourceMappingURL=" << sourcemap_url << " */" << std::endl;
+  *out << endl << "/*# sourceMappingURL=" << sourcemap_url << " */" << endl;
 }

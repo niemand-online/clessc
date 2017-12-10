@@ -25,7 +25,7 @@ public:
   virtual void getFunctions(std::list<const Function *> &functionList,
                             const Mixin &mixin,
                             TokenList::const_iterator selector_offset) const;
-  virtual void getLocalFunctions(list<const Function *> &functionList,
+  virtual void getLocalFunctions(std::list<const Function *> &functionList,
                                  const Mixin &mixin) const;
 
   virtual LessSelector *getLessSelector() const;

@@ -2,6 +2,8 @@
 #include "less/lessstylesheet/Function.h"
 #include "less/lessstylesheet/Mixin.h"
 
+using namespace std;
+
 MixinCall::MixinCall(MixinCall* parent,
                      const Function& function,
                      bool savepoint) {
@@ -10,7 +12,7 @@ MixinCall::MixinCall(MixinCall* parent,
   this->savepoint = savepoint;
 }
 
-const TokenList* MixinCall::getVariable(const std::string& key) const {
+const TokenList* MixinCall::getVariable(const string& key) const {
   VariableMap::const_iterator mit;
   const TokenList* t;
 
@@ -28,7 +30,7 @@ const TokenList* MixinCall::getVariable(const std::string& key) const {
   return nullptr;
 }
 
-void MixinCall::getFunctions(std::list<const Function*>& functionList,
+void MixinCall::getFunctions(list<const Function*>& functionList,
                              const Mixin& mixin) const {
   function->getLocalFunctions(functionList, mixin);
   if (!functionList.empty())

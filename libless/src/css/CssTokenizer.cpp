@@ -1,6 +1,8 @@
 #include "less/css/CssTokenizer.h"
 #include "less/LogStream.h"
 
+using namespace std;
+
 CssTokenizer::CssTokenizer(istream& in, const char* source)
     : in(&in), line(0), source(source) {
   currentToken.source = source;

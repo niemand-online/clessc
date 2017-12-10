@@ -7,8 +7,6 @@
 #include "less/css/IOException.h"
 #include "less/css/ParseException.h"
 
-using namespace std;
-
 /**
  * Converts the input stream to CSS tokens according to the syntax spec at
  * http://www.w3.org/TR/CSS2/syndata.html.
@@ -84,7 +82,7 @@ using namespace std;
  */
 class CssTokenizer {
 public:
-  CssTokenizer(istream& in, const char* source);
+  CssTokenizer(std::istream& in, const char* source);
 
   ~CssTokenizer();
 
@@ -96,7 +94,7 @@ public:
   const char* getSource();
 
 protected:
-  istream* in;
+  std::istream* in;
 
   Token currentToken;
   char lastRead;

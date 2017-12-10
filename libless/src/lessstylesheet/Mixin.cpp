@@ -3,6 +3,8 @@
 #include "less/lessstylesheet/LessRuleset.h"
 #include "less/lessstylesheet/LessStylesheet.h"
 
+using namespace std;
+
 Mixin::Mixin() {
 }
 

@@ -1,10 +1,12 @@
 #include "less/css/SourceMapWriter.h"
 
+using namespace std;
+
 const char* SourceMapWriter::base64 =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-SourceMapWriter::SourceMapWriter(std::ostream& sourcemap,
-                                 std::list<const char*>& sources,
+SourceMapWriter::SourceMapWriter(ostream& sourcemap,
+                                 list<const char*>& sources,
                                  const char* out_filename,
                                  const char* rootpath,
                                  const char* basepath)
@@ -22,7 +24,7 @@ SourceMapWriter::~SourceMapWriter() {
 void SourceMapWriter::writePreamble(const char* out_filename,
                                     const char* rootpath,
                                     const char* basepath) {
-  std::list<const char*>::iterator it;
+  list<const char*>::iterator it;
   const char* source;
   size_t bp_l = 0;
 
@@ -65,7 +67,7 @@ void SourceMapWriter::writePreamble(const char* out_filename,
 }
 
 void SourceMapWriter::close() {
-  sourcemap_h << "\"}" << std::endl;
+  sourcemap_h << "\"}" << endl;
 }
 
 void SourceMapWriter::writeMapping(unsigned int column, const Token& source) {
@@ -82,7 +84,7 @@ void SourceMapWriter::writeNewline() {
 }
 
 size_t SourceMapWriter::sourceFileIndex(const char* file) {
-  std::list<const char*>::iterator i;
+  list<const char*>::iterator i;
   size_t pos = 0;
 
   for (i = sources.begin(); i != sources.end(); i++, pos++) {

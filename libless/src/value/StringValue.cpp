@@ -1,6 +1,8 @@
 #include "less/value/StringValue.h"
 #include <regex>
 
+using namespace std;
+
 StringValue::StringValue(const Token& token, bool quotes) {
   type = Value::STRING;
 
@@ -9,7 +11,7 @@ StringValue::StringValue(const Token& token, bool quotes) {
   setString(token);
 }
 
-StringValue::StringValue(const std::string& str, bool quotes) {
+StringValue::StringValue(const string& str, bool quotes) {
   Token token(str, Token::STRING, 0, 0, "generated");
 
   type = Value::STRING;
@@ -49,8 +51,8 @@ StringValue::~StringValue() {
 }
 
 void StringValue::updateTokens() {
-  std::string::iterator i;
-  std::string newstr;
+  string::iterator i;
+  string newstr;
 
   if (quotes) {
     // add quotes
@@ -66,11 +68,11 @@ void StringValue::updateTokens() {
     tokens.front() = strvalue;
 }
 
-std::string StringValue::getString() const {
+string StringValue::getString() const {
   return strvalue;
 }
-void StringValue::setString(const std::string& newValue) {
-  std::string s = newValue;
+void StringValue::setString(const string& newValue) {
+  string s = newValue;
   this->strvalue = s;
   updateTokens();
 }
@@ -107,7 +109,7 @@ Value* StringValue::substract(const Value& v) const {
   throw ValueException("Can't substract from strings.", *this->getTokens());
 }
 Value* StringValue::multiply(const Value& v) const {
-  std::string newstr;
+  string newstr;
   double i;
   const NumberValue* n;
 
@@ -156,14 +158,13 @@ string StringValue::escape(string rawstr, string extraUnreserved) {
   string unreservedChars(
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~");
 
-  std::ostringstream newstr;
+  ostringstream newstr;
   unsigned int i;
 
   for (i = 0; i < rawstr.size(); i++) {
     if (unreservedChars.find(rawstr[i]) == string::npos &&
         extraUnreserved.find(rawstr[i]) == string::npos) {
-      newstr << '%' << std::setfill('0') << std::setw(2) << std::hex
-             << (int)rawstr[i];
+      newstr << '%' << setfill('0') << setw(2) << hex << (int)rawstr[i];
     } else
       newstr << rawstr[i];
   }
@@ -196,14 +197,14 @@ Value* StringValue::e(const vector<const Value*>& arguments) {
 }
 
 Value* StringValue::format(const vector<const Value*>& arguments) {
-  std::string escapeChars("adsADS");
+  string escapeChars("adsADS");
 
   StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
 
-  std::string oldstr = s->getString();
-  std::ostringstream newstr;
+  string oldstr = s->getString();
+  ostringstream newstr;
   unsigned int i, argc = 1;
-  std::string argStr;
+  string argStr;
 
   for (i = 0; i < oldstr.size(); i++) {
     if (oldstr[i] == '%') {
@@ -243,30 +244,28 @@ Value* StringValue::format(const vector<const Value*>& arguments) {
 }
 
 Value* StringValue::replace(const vector<const Value*>& arguments) {
-  std::string out;
-  std::regex regex;
-  std::regex_constants::syntax_option_type regex_flags =
-      std::regex_constants::ECMAScript;
-  std::regex_constants::match_flag_type match_flags =
-      std::regex_constants::match_default |
-      std::regex_constants::format_first_only;
+  string out;
+  regex regex;
+  regex_constants::syntax_option_type regex_flags = regex_constants::ECMAScript;
+  regex_constants::match_flag_type match_flags =
+      regex_constants::match_default | regex_constants::format_first_only;
 
   const StringValue* in = (const StringValue*)arguments[0];
   const StringValue* pattern = (const StringValue*)arguments[1];
   const StringValue* replacement = (const StringValue*)arguments[2];
-  std::string options;
+  string options;
 
   if (arguments.size() > 3) {
     options = ((const StringValue*)arguments[3])->getString();
 
-    if (options.find('i') != std::string::npos)
-      regex_flags |= std::regex::icase;
-    if (options.find('g') != std::string::npos)
-      match_flags &= ~std::regex_constants::format_first_only;
+    if (options.find('i') != string::npos)
+      regex_flags |= regex::icase;
+    if (options.find('g') != string::npos)
+      match_flags &= ~regex_constants::format_first_only;
   }
 
   regex = std::regex(pattern->getString(), regex_flags);
-  out = std::regex_replace(
+  out = regex_replace(
       in->getString(), regex, replacement->getString(), match_flags);
   return new StringValue(out, in->getQuotes());
 }

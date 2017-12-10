@@ -1,5 +1,7 @@
 #include "less/Token.h"
 
+using namespace std;
+
 char Token::BUILTIN_SOURCE[8] = "builtin";
 
 const Token Token::BUILTIN_SPACE(" ", Token::WHITESPACE, 0, 0, BUILTIN_SOURCE);
@@ -16,7 +18,7 @@ Token::Token(unsigned int line, unsigned int column, const char *source)
     : line(line), column(column), source(source), type(OTHER) {
 }
 
-Token::Token(const std::string &s,
+Token::Token(const string &s,
              Type t,
              unsigned int line,
              unsigned int column,
@@ -33,7 +35,7 @@ void Token::setLocation(const Token &ref) {
 }
 
 void Token::clear() {
-  std::string::clear();
+  string::clear();
   type = OTHER;
 }
 
@@ -45,9 +47,9 @@ void Token::removeQuotes() {
   removeQuotes(*this);
 }
 
-void Token::removeQuotes(std::string &str) const {
+void Token::removeQuotes(string &str) const {
   char quote;
-  std::string::iterator i;
+  string::iterator i;
 
   if (str.size() == 0 || !(str[0] == '"' || str[0] == '\''))
     return;
@@ -62,8 +64,8 @@ void Token::removeQuotes(std::string &str) const {
   }
 }
 
-std::string Token::getUrlString() const {
-  std::string ret;
+string Token::getUrlString() const {
+  string ret;
   if (type == URL) {
     ret = substr(4, length() - 5);
     removeQuotes(ret);

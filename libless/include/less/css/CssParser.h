@@ -7,8 +7,6 @@
 #include "less/css/CssTokenizer.h"
 #include "less/stylesheet/Stylesheet.h"
 
-using namespace std;
-
 /**
  * Parses CSS code according to the syntax spec at
  * http://www.w3.org/TR/CSS2/syndata.html.

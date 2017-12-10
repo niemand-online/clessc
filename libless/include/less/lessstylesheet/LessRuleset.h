@@ -29,10 +29,10 @@ class Closure;
 class LessRuleset : public Ruleset, Function {
 protected:
   VariableMap variables;
-  list<LessRuleset *> nestedRules;
+  std::list<LessRuleset *> nestedRules;
   std::list<Closure *> closures;
 
-  list<UnprocessedStatement *> unprocessedStatements;
+  std::list<UnprocessedStatement *> unprocessedStatements;
 
   LessRuleset *parent;
   LessStylesheet *lessStylesheet;
@@ -62,8 +62,8 @@ public:
   void deleteNestedRule(LessRuleset &ruleset);
   void deleteUnprocessedStatement(UnprocessedStatement &statement);
 
-  const list<UnprocessedStatement *> &getUnprocessedStatements() const;
-  const list<LessRuleset *> &getNestedRules() const;
+  const std::list<UnprocessedStatement *> &getUnprocessedStatements() const;
+  const std::list<LessRuleset *> &getNestedRules() const;
 
   void putVariable(const std::string &key, const TokenList &value);
   VariableMap &getVariables();
@@ -72,7 +72,7 @@ public:
   const TokenList *getInheritedVariable(const std::string &key,
                                         const MixinCall &stack) const;
 
-  const list<Closure *> &getClosures() const;
+  const std::list<Closure *> &getClosures() const;
 
   void setParent(LessRuleset *r);
   LessRuleset *getParent() const;
@@ -99,7 +99,7 @@ public:
                        Selector *prefix,
                        ProcessingContext &context);
 
-  virtual void getFunctions(list<const Function *> &functionList,
+  virtual void getFunctions(std::list<const Function *> &functionList,
                             const Mixin &mixin,
                             TokenList::const_iterator selector_offset) const;
 

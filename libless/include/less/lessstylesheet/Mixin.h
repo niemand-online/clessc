@@ -22,8 +22,8 @@ class ProcessingContext;
 
 class Mixin : public StylesheetStatement {
 private:
-  vector<TokenList> arguments;
-  map<std::string, TokenList> namedArguments;
+  std::vector<TokenList> arguments;
+  std::map<std::string, TokenList> namedArguments;
 
   LessStylesheet *lessStylesheet;
   void parseArguments(TokenList::const_iterator i, const Selector &s);
@@ -35,10 +35,10 @@ public:
   Mixin(const Selector &name);
   virtual ~Mixin();
 
-  const TokenList *getArgument(const size_t i) const;
-  size_t getArgumentCount() const;
+  const TokenList *getArgument(const std::size_t i) const;
+  std::size_t getArgumentCount() const;
 
-  const TokenList *getArgument(const string &name) const;
+  const TokenList *getArgument(const std::string &name) const;
 
   bool call(Stylesheet &s,
             ProcessingContext &context,

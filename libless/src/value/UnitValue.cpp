@@ -1,5 +1,7 @@
 #include "less/value/UnitValue.h"
 
+using namespace std;
+
 UnitValue::UnitValue(Token &token) {
   tokens.push_back(token);
   type = UNIT;
@@ -80,7 +82,7 @@ UnitValue::UnitGroup UnitValue::getUnitGroup(const string &unit) {
   return NO_GROUP;
 }
 
-double UnitValue::lengthToPx(const double length, const std::string &unit) {
+double UnitValue::lengthToPx(const double length, const string &unit) {
   if (unit.compare("m") == 0)
     return length * (96 / .0254);
 
@@ -104,7 +106,7 @@ double UnitValue::lengthToPx(const double length, const std::string &unit) {
 
   return -1;
 }
-double UnitValue::pxToLength(const double px, const std::string &unit) {
+double UnitValue::pxToLength(const double px, const string &unit) {
   if (unit.compare("m") == 0)
     return px / (96 / .254);
 
@@ -128,21 +130,21 @@ double UnitValue::pxToLength(const double px, const std::string &unit) {
 
   return -1;
 }
-double UnitValue::timeToMs(const double time, const std::string &unit) {
+double UnitValue::timeToMs(const double time, const string &unit) {
   if (unit.compare("s") == 0)
     return time * 1000;
   if (unit.compare("ms") == 0)
     return time;
   return -1;
 }
-double UnitValue::msToTime(const double ms, const std::string &unit) {
+double UnitValue::msToTime(const double ms, const string &unit) {
   if (unit.compare("s") == 0)
     return ms / 1000;
   if (unit.compare("ms") == 0)
     return ms;
   return -1;
 }
-double UnitValue::angleToRad(const double angle, const std::string &unit) {
+double UnitValue::angleToRad(const double angle, const string &unit) {
   const double pi = 3.141592653589793;
 
   if (unit.compare("rad") == 0)
@@ -159,7 +161,7 @@ double UnitValue::angleToRad(const double angle, const std::string &unit) {
 
   return -1;
 }
-double UnitValue::radToAngle(const double rad, const std::string &unit) {
+double UnitValue::radToAngle(const double rad, const string &unit) {
   const double pi = 3.141592653589793;
 
   if (unit.compare("rad") == 0)

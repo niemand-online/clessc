@@ -3,13 +3,11 @@
 
 #include <exception>
 
-using namespace std;
-
-class IOException : public exception {
+class IOException : public std::exception {
 public:
   const char* err;
 
-  IOException(string& err) {
+  IOException(std::string& err) {
     this->err = err.c_str();
   }
 
