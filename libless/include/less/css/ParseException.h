@@ -35,6 +35,12 @@ public:
   ParseException(Token& found, const char* expected);
   ParseException(TokenList& found, const char* expected);
 
+  ParseException(const ParseException&) = default;
+  ParseException(ParseException&&) = default;
+
+  ParseException& operator=(const ParseException&) = default;
+  ParseException& operator=(ParseException&&) = default;
+
   ~ParseException() throw(){};
 
   void setLocation(unsigned int line, unsigned int column);

@@ -17,6 +17,12 @@ public:
     this->err = err;
   }
 
+  IOException(const IOException&) = default;
+  IOException(IOException&&) = default;
+
+  IOException& operator=(const IOException&) = default;
+  IOException& operator=(IOException&&) = default;
+
   virtual const char* what() const throw() {
     return err;
   }

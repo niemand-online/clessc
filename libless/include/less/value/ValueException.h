@@ -22,6 +22,12 @@ public:
   }
   virtual ~ValueException() throw(){};
 
+  ValueException(const ValueException&) = default;
+  ValueException(ValueException&&) = default;
+
+  ValueException& operator=(const ValueException&) = default;
+  ValueException& operator=(ValueException&&) = default;
+
   virtual const char* what() const throw() {
     return err.c_str();
   }
