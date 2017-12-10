@@ -103,30 +103,18 @@ bool parseInput(LessStylesheet& stylesheet,
   try {
     parser.parseStylesheet(stylesheet);
   } catch (ParseException* e) {
-#ifdef WITH_LIBGLOG
-    LOG(ERROR) << e->getSource() << ": Line " << e->getLineNumber()
-               << ", Column " << e->getColumn()
-               << " Parse Error: " << e->what();
-#else
-    cerr << e->getSource() << ": Line " << e->getLineNumber() << ", Column "
-         << e->getColumn() << " Parse Error: " << e->what();
-#endif
-
+    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
+                        << ", Column " << e->getColumn()
+                        << " Parse Error: " << e->what();
     return false;
   } catch (exception* e) {
-#ifdef WITH_LIBGLOG
-    LOG(ERROR) << " Error: " << e->what();
-#else
-    cerr << " Error: " << e->what();
-#endif
+    LogStream().error() << " Error: " << e->what();
     return false;
   }
-#ifdef WITH_LIBGLOG
-  VLOG(1) << "Source files: ";
+  auto verbose1Stream = LogStream().notice(1) << "Source files: ";
   for (i = sources.begin(); i != sources.end(); i++) {
-    VLOG(1) << (*i);
+    verbose1Stream << (*i);
   }
-#endif
   return true;
 }
 bool processStylesheet(LessStylesheet& stylesheet, Stylesheet& css) {
@@ -136,33 +124,18 @@ bool processStylesheet(LessStylesheet& stylesheet, Stylesheet& css) {
     stylesheet.process(css, context);
 
   } catch (ParseException* e) {
-#ifdef WITH_LIBGLOG
-    LOG(ERROR) << e->getSource() << ": Line " << e->getLineNumber()
-               << ", Column " << e->getColumn()
-               << " Parse Error: " << e->what();
-#else
-    cerr << e->getSource() << ": Line " << e->getLineNumber() << ", Column "
-         << e->getColumn() << " Parse Error: " << e->what();
-#endif
-
+    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
+                        << ", Column " << e->getColumn()
+                        << " Parse Error: " << e->what();
     return false;
 
   } catch (ValueException* e) {
-#ifdef WITH_LIBGLOG
-    LOG(ERROR) << e->getSource() << ": Line " << e->getLineNumber()
-               << ", Column " << e->getColumn() << " Error: " << e->what();
-#else
-    cerr << e->getSource() << ": Line " << e->getLineNumber() << ", Column "
-         << e->getColumn() << " Error: " << e->what();
-#endif
-
+    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
+                        << ", Column " << e->getColumn()
+                        << " Error: " << e->what();
     return false;
   } catch (exception* e) {
-#ifdef WITH_LIBGLOG
-    LOG(ERROR) << "Error: " << e->what();
-#else
-    cerr << "Error: " << e->what();
-#endif
+    LogStream().error() << "Error: " << e->what();
     return false;
   }
   return true;
@@ -204,14 +177,12 @@ int main(int argc, char* argv[]) {
 #ifdef WITH_LIBGLOG
   FLAGS_logtostderr = 1;
   google::InitGoogleLogging(argv[0]);
-  VLOG(1) << "Start.";
 #endif
+  LogStream().notice(1) << "Start";
 
   try {
     int c, option_index;
-#ifdef WITH_LIBGLOG
-    VLOG(3) << "argc: " << argc;
-#endif
+    LogStream().notice(3) << "argc: " << argc;
 
     while ((c = getopt_long(
                 argc, argv, ":o:hfv:m::I:", long_options, &option_index)) !=
@@ -263,9 +234,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (argc - optind >= 1) {
-#ifdef WITH_LIBGLOG
-      VLOG(1) << argv[optind];
-#endif
+      LogStream().notice(1) << argv[optind];
 
       source = new char[std::strlen(argv[optind]) + 1];
       std::strcpy(source, argv[optind]);
@@ -276,9 +245,9 @@ int main(int argc, char* argv[]) {
 
     } else if (sourcemap_file == "-") {
       throw new IOException(
-          "source-map option requires that \
-a file name is specified for either the source map or the less \
-source.");
+          "source-map option requires that "
+          "a file name is specified for either the source map or the less "
+          "source.");
     } else {
       source = new char[2];
       std::strcpy(source, "-");
