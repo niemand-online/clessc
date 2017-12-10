@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED 11)
-
 set(less_SOURCES
         src/css/CssParser.cpp
         src/css/CssPrettyWriter.cpp
