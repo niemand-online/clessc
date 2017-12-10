@@ -37,7 +37,7 @@ void ValueProcessor::processValue(TokenList &value,
       itmp = i2;
       v = processStatement(itmp, end, scope);
       i2 = itmp;
-    } catch (ValueException *e) {
+    } catch (const ValueException &e) {
       v = nullptr;
     }
 
@@ -166,11 +166,11 @@ bool ValueProcessor::validateValue(TokenList::const_iterator &i,
   v = processStatement(i, end, scope);
 
   if (v == nullptr) {
-    throw new ParseException(*reference,
-                             "condition",
-                             reference->line,
-                             reference->column,
-                             reference->source);
+    throw ParseException(*reference,
+                         "condition",
+                         reference->line,
+                         reference->column,
+                         reference->source);
   }
 
   v2 = v->equals(trueVal);
@@ -243,13 +243,13 @@ Value *ValueProcessor::processOperation(TokenList::const_iterator &i,
   operand2 = processConstant(i, end, scope);
   if (operand2 == nullptr) {
     if (i == end)
-      throw new ParseException("end of line",
-                               "Constant or @-variable",
-                               opToken->line,
-                               opToken->column,
-                               opToken->source);
+      throw ParseException("end of line",
+                           "Constant or @-variable",
+                           opToken->line,
+                           opToken->column,
+                           opToken->source);
     else
-      throw new ParseException(
+      throw ParseException(
           *i, "Constant or @-variable", (*i).line, (*i).column, (*i).source);
   }
 
@@ -588,9 +588,9 @@ Value *ValueProcessor::processFunction(const Token &function,
 
     // If an exception is thrown, parsing or processing failed, and we
     // assume this isn't a function.
-  } catch (ValueException *e) {
+  } catch (const ValueException &e) {
     ret = nullptr;
-  } catch (ParseException *e) {
+  } catch (const ParseException &e) {
     ret = nullptr;
   }
 
@@ -635,10 +635,10 @@ bool ValueProcessor::processArguments(TokenList::const_iterator &i,
   }
 
   if (i == end)
-    throw new ParseException("end of value", ")", 0, 0, "");
+    throw ParseException("end of value", ")", 0, 0, "");
 
   if ((*i).type != Token::PAREN_CLOSED)
-    throw new ParseException(*i, ")", (*i).line, (*i).column, (*i).source);
+    throw ParseException(*i, ")", (*i).line, (*i).column, (*i).source);
 
   i++;
   return true;

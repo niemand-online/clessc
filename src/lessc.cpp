@@ -241,10 +241,10 @@ int main(int argc, char* argv[]) {
 
       in = new ifstream(source);
       if (in->fail() || in->bad())
-        throw new IOException("Error opening file");
+        throw IOException("Error opening file");
 
     } else if (sourcemap_file == "-") {
-      throw new IOException(
+      throw IOException(
           "source-map option requires that "
           "a file name is specified for either the source map or the less "
           "source.");

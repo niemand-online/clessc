@@ -54,9 +54,8 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
       return true;
     } else {
       ls->deleteMixin(*mixin);
-      throw new ParseException(
-          tokenizer->getToken(),
-          "a declaration block ('{...}') following selector");
+      throw ParseException(tokenizer->getToken(),
+                           "a declaration block ('{...}') following selector");
     }
 
   } else {
@@ -109,8 +108,8 @@ bool LessParser::parseAtRuleValue(TokenList &rule) {
 
   if (!parseBlock(rule)) {
     if (tokenizer->getTokenType() != Token::DELIMITER) {
-      throw new ParseException(tokenizer->getToken(),
-                               "delimiter (';') at end of @-rule");
+      throw ParseException(tokenizer->getToken(),
+                           "delimiter (';') at end of @-rule");
     }
     tokenizer->readNextToken();
     skipWhitespace();
@@ -126,11 +125,11 @@ bool LessParser::parseVariable(TokenList &value) {
   CssParser::skipWhitespace();
 
   if (parseValue(value) == false || value.size() == 0) {
-    throw new ParseException(tokenizer->getToken(), "value for variable");
+    throw ParseException(tokenizer->getToken(), "value for variable");
   }
   if (tokenizer->getTokenType() != Token::DELIMITER) {
-    throw new ParseException(tokenizer->getToken(),
-                             "delimiter (';') at end of @-rule");
+    throw ParseException(tokenizer->getToken(),
+                         "delimiter (';') at end of @-rule");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -160,14 +159,13 @@ bool LessParser::parseSelectorVariable(Selector &selector) {
       back->append(tokenizer->getToken());
 
       if (tokenizer->readNextToken() != Token::IDENTIFIER)
-        throw new ParseException(tokenizer->getToken(),
-                                 "Variable inside selector (e.g.: \
-@{identifier})");
+        throw ParseException(tokenizer->getToken(),
+                             "Variable inside selector (e.g.: @{identifier})");
       back->append(tokenizer->getToken());
 
       if (tokenizer->readNextToken() != Token::BRACKET_CLOSED)
-        throw new ParseException(tokenizer->getToken(),
-                                 "Closing bracket after variable.");
+        throw ParseException(tokenizer->getToken(),
+                             "Closing bracket after variable.");
 
       back->append(tokenizer->getToken());
       tokenizer->readNextToken();
@@ -204,8 +202,8 @@ bool LessParser::parseRuleset(LessStylesheet &stylesheet,
   parseRulesetStatements(stylesheet, *ruleset);
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of declaration block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of declaration block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -282,7 +280,7 @@ void LessParser::parseMediaQueryRuleset(Token &mediatoken,
   query->setSelector(selector);
 
   if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
-    throw new ParseException(tokenizer->getToken(), "{");
+    throw ParseException(tokenizer->getToken(), "{");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -290,8 +288,8 @@ void LessParser::parseMediaQueryRuleset(Token &mediatoken,
   parseRulesetStatements(stylesheet, *query);
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of media query block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of media query block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -304,20 +302,18 @@ bool LessParser::parsePropertyVariable(Selector &selector) {
     return false;
 
   if (tokenizer->readNextToken() != Token::BRACKET_OPEN)
-    throw new ParseException(tokenizer->getToken(),
-                             "Opening bracket following @");
+    throw ParseException(tokenizer->getToken(), "Opening bracket following @");
   variable.append(tokenizer->getToken());
 
   if (tokenizer->readNextToken() != Token::IDENTIFIER)
-    throw new ParseException(tokenizer->getToken(),
-                             "Variable inside selector (e.g.: \
-@{identifier})");
+    throw ParseException(tokenizer->getToken(),
+                         "Variable inside selector (e.g.: @{identifier})");
 
   variable.append(tokenizer->getToken());
 
   if (tokenizer->readNextToken() != Token::BRACKET_CLOSED)
-    throw new ParseException(tokenizer->getToken(),
-                             "Closing bracket after variable.");
+    throw ParseException(tokenizer->getToken(),
+                         "Closing bracket after variable.");
 
   variable.append(tokenizer->getToken());
   tokenizer->readNextToken();
@@ -386,7 +382,7 @@ bool LessParser::parseImportStatement(TokenList &statement,
     }
 
     if (statement.size() > 0 && statement.front().type != Token::PAREN_CLOSED) {
-      throw new ParseException(statement, ")");
+      throw ParseException(statement, ")");
     } else {
       statement.pop_front();
       statement.ltrim();
@@ -398,14 +394,15 @@ bool LessParser::parseImportStatement(TokenList &statement,
     return importFile(statement.front(), stylesheet, directive);
 
   } else
-    throw new ParseException(statement,
-                             "A string with the file path, "
-                             "or an import directive.");
+    throw ParseException(statement,
+
+                         "A string with the file path, "
+                         "or an import directive.");
 }
 
 unsigned int LessParser::parseImportDirective(Token &t) {
   if (t.type != Token::IDENTIFIER)
-    throw new ParseException(t, "an import directive.");
+    throw ParseException(t, "an import directive.");
   if (t == "reference")
     return IMPORT_REFERENCE;
   else if (t == "inline")
@@ -421,9 +418,9 @@ unsigned int LessParser::parseImportDirective(Token &t) {
   else if (t == "optional")
     return IMPORT_OPTIONAL;
   else
-    throw new ParseException(t,
-                             "valid import directive: reference, "
-                             "inline, less, css, once, multiple or optional");
+    throw ParseException(t,
+                         "valid import directive: reference, inline, less, "
+                         "css, once, multiple or optional");
 }
 
 bool LessParser::importFile(Token uri,
@@ -472,7 +469,7 @@ bool LessParser::importFile(Token uri,
     if (directive & IMPORT_OPTIONAL)
       return true;
     else {
-      throw new ParseException(
+      throw ParseException(
           uri, "existing file", uri.line, uri.column, uri.source);
     }
   }
@@ -568,7 +565,7 @@ void LessParser::parseLessMediaQuery(Token &mediatoken,
   LogStream().notice(2) << "Media query: " << query->getSelector()->toString();
 
   if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
-    throw new ParseException(tokenizer->getToken(), "{");
+    throw ParseException(tokenizer->getToken(), "{");
   }
   tokenizer->readNextToken();
 
@@ -578,8 +575,8 @@ void LessParser::parseLessMediaQuery(Token &mediatoken,
   }
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of media query block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of media query block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();

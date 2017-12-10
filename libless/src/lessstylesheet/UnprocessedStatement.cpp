@@ -92,11 +92,11 @@ void UnprocessedStatement::process(Ruleset &r) {
                                                 &r,
                                                 getLessRuleset())) {
     } else {
-      throw new ParseException(getTokens()->toString(),
-                               "variable, mixin or declaration.",
-                               getTokens()->front().line,
-                               getTokens()->front().column,
-                               getTokens()->front().source);
+      throw ParseException(getTokens()->toString(),
+                           "variable, mixin or declaration.",
+                           getTokens()->front().line,
+                           getTokens()->front().column,
+                           getTokens()->front().source);
     }
   }
 
@@ -157,11 +157,11 @@ bool UnprocessedStatement::getExtension(TokenList &extension) {
   }
 
   if (parentheses > 0) {
-    throw new ParseException("end of statement",
-                             ")",
-                             getTokens()->front().line,
-                             getTokens()->front().column,
-                             getTokens()->front().source);
+    throw ParseException("end of statement",
+                         ")",
+                         getTokens()->front().line,
+                         getTokens()->front().column,
+                         getTokens()->front().source);
   }
   return true;
 }

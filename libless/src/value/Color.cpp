@@ -105,7 +105,7 @@ Color::Color(Token& token) : Value() {
   else if (token.size() == 7)
     len = 2;
   else {
-    throw new ValueException(
+    throw ValueException(
         "A color value requires either three "
         "or six hexadecimal characters.",
         *this->getTokens());
@@ -231,7 +231,7 @@ Value* Color::add(const Value& v) const {
       return ret;
 
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only add colors with other \
 colors, numbers or strings.",
           *this->getTokens());
@@ -260,7 +260,7 @@ Value* Color::substract(const Value& v) const {
                        max(color[RGB_GREEN] - n->getValue(), 0),
                        max(color[RGB_BLUE] - n->getValue(), 0));
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only substract a color or \
 a number from a color.",
           *this->getTokens());
@@ -287,7 +287,7 @@ Value* Color::multiply(const Value& v) const {
                        min(color[RGB_BLUE] * n->getValue(), 255));
 
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only multiply a color by a \
 color or a number.",
           *this->getTokens());
@@ -311,7 +311,7 @@ Value* Color::divide(const Value& v) const {
                        color[RGB_GREEN] / n->getValue(),
                        color[RGB_BLUE] / n->getValue());
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only divide a color by a \
 color or a number.",
           *this->getTokens());
@@ -328,8 +328,8 @@ BooleanValue* Color::equals(const Value& v) const {
                               color[RGB_GREEN] == c->getGreen() &&
                               color[RGB_BLUE] == c->getBlue());
     default:
-      throw new ValueException("You can only compare a color with a *color*.",
-                               *this->getTokens());
+      throw ValueException("You can only compare a color with a *color*.",
+                           *this->getTokens());
   }
 }
 
@@ -343,8 +343,8 @@ BooleanValue* Color::lessThan(const Value& v) const {
                               color[RGB_GREEN] < c->getGreen() ||
                               color[RGB_BLUE] < c->getBlue());
     default:
-      throw new ValueException("You can only compare a color with a *color*.",
-                               *this->getTokens());
+      throw ValueException("You can only compare a color with a *color*.",
+                           *this->getTokens());
   }
 }
 
@@ -451,7 +451,7 @@ Value* Color::rgba(const vector<const Value*>& arguments) {
         (unsigned int)((const NumberValue*)arguments[2])->getValue(),
         ((const NumberValue*)arguments[3])->getValue() * .01);
   } else {
-    throw new ValueException(
+    throw ValueException(
         "Argument 3 needs to be a number "
         "or percentage.",
         *arguments[3]->getTokens());

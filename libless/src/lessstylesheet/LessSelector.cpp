@@ -121,7 +121,7 @@ bool LessSelector::parseArguments(TokenList &selector) {
   selector.ltrim();
 
   if (selector.front().type != Token::PAREN_CLOSED) {
-    throw new ParseException(
+    throw ParseException(
         selector.toString(), "matching parentheses.", 0, 0, "");
   }
   selector.pop_front();
@@ -277,7 +277,7 @@ bool LessSelector::parseDefaultValue(TokenList &arguments,
   value.trim();
 
   if (value.empty()) {
-    throw new ParseException("", "default value following ':'", 0, 0, "");
+    throw ParseException("", "default value following ':'", 0, 0, "");
   }
   return true;
 }
