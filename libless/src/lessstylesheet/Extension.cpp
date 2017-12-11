@@ -23,7 +23,7 @@ void Extension::setExtension(Selector &selector) {
 }
 
 void Extension::updateSelector(Selector &s) const {
-  if (target.back() == "all") {
+  if ("all" == target.back()) {
     replaceInSelector(s);
   } else if (s.match(target)) {
     LogStream().notice(2) << "Extending " << s.toString() << " with "

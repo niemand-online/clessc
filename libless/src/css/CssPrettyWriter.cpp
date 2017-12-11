@@ -25,7 +25,7 @@ void CssPrettyWriter::writeSelector(const TokenList &selector) {
   for (it = selector.begin(); it != selector.end(); it++) {
     writeToken(*it);
 
-    if ((*it) == ",") {
+    if ("," == (*it)) {
       if (sourcemap != nullptr)
         sourcemap->writeMapping(column, selector.front());
 

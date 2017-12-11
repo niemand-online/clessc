@@ -75,7 +75,7 @@ MediaQuery* CssParser::parseMediaQuery(Stylesheet& stylesheet) {
   MediaQuery* query;
 
   if (tokenizer->getTokenType() != Token::ATKEYWORD ||
-      tokenizer->getToken() != "@media")
+      "@media" != tokenizer->getToken())
     return nullptr;
 
   query = stylesheet.createMediaQuery();
@@ -241,7 +241,7 @@ Declaration* CssParser::parseDeclaration(Ruleset& ruleset) {
 }
 
 bool CssParser::parseProperty(TokenList& tokens) {
-  if (tokenizer->getToken() == "*") {
+  if ("*" == tokenizer->getToken()) {
     // suppor for an IE Hack
     tokens.push_back(tokenizer->getToken());
     tokenizer->readNextToken();
