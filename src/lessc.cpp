@@ -111,7 +111,7 @@ bool parseInput(LessStylesheet& stylesheet,
     LogStream().error() << " Error: " << e->what();
     return false;
   }
-  auto verbose1Stream = LogStream().notice(1) << "Source files: ";
+  auto& verbose1Stream = LogStream().notice(1) << "Source files: ";
   for (i = sources.begin(); i != sources.end(); i++) {
     verbose1Stream << (*i);
   }
