@@ -76,7 +76,7 @@ void parsePathList(const char* path, std::list<const char*>& paths) {
   const char* end = path;
   size_t len;
 
-  while ((end = std::strchr(start, ':')) != NULL) {
+  while ((end = std::strchr(start, ':')) != nullptr) {
     len = (end - start);
     // skip empty paths
     if (len > 0)
@@ -145,34 +145,34 @@ int main(int argc, char* argv[]) {
   istream* in = &cin;
   ostream* out = &cout;
   bool formatoutput = false;
-  char* source = NULL;
+  char* source = nullptr;
   string output = "-";
   LessStylesheet stylesheet;
   std::list<const char*> sources;
   Stylesheet css;
   CssWriter* writer;
 
-  std::string sourcemap_file = "";
-  ostream* sourcemap_s = NULL;
-  SourceMapWriter* sourcemap = NULL;
-  const char* sourcemap_rootpath = NULL;
-  const char* sourcemap_basepath = NULL;
-  const char* rootpath = NULL;
+  std::string sourcemap_file;
+  ostream* sourcemap_s = nullptr;
+  SourceMapWriter* sourcemap = nullptr;
+  const char* sourcemap_rootpath = nullptr;
+  const char* sourcemap_basepath = nullptr;
+  const char* rootpath = nullptr;
 
   std::list<const char*> includePaths;
 
   static struct option long_options[] = {
-      {"version", no_argument, 0, 1},
-      {"help", no_argument, 0, 'h'},
-      {"output", required_argument, 0, 'o'},
-      {"format", no_argument, 0, 'f'},
-      {"verbose", required_argument, 0, 'v'},
-      {"source-map", optional_argument, 0, 'm'},
-      {"source-map-rootpath", required_argument, 0, 2},
-      {"source-map-basepath", required_argument, 0, 3},
-      {"include-path", required_argument, 0, 'I'},
-      {"rootpath", required_argument, 0, 4},
-      {0, 0, 0, 0}};
+      {"version", no_argument, nullptr, 1},
+      {"help", no_argument, nullptr, 'h'},
+      {"output", required_argument, nullptr, 'o'},
+      {"format", no_argument, nullptr, 'f'},
+      {"verbose", required_argument, nullptr, 'v'},
+      {"source-map", optional_argument, nullptr, 'm'},
+      {"source-map-rootpath", required_argument, nullptr, 2},
+      {"source-map-basepath", required_argument, nullptr, 3},
+      {"include-path", required_argument, nullptr, 'I'},
+      {"rootpath", required_argument, nullptr, 4},
+      {nullptr, 0, nullptr, 0}};
 
 #ifdef WITH_LIBGLOG
   FLAGS_logtostderr = 1;
@@ -282,19 +282,19 @@ int main(int argc, char* argv[]) {
       }
       css.write(*writer);
 
-      if (sourcemap != NULL) {
-        if (sourcemap_basepath != NULL &&
+      if (sourcemap != nullptr) {
+        if (sourcemap_basepath != nullptr &&
             sourcemap_file.compare(
                 0, std::strlen(sourcemap_basepath), sourcemap_basepath) == 0) {
           sourcemap_file.erase(0, std::strlen(sourcemap_basepath));
         }
-        if (sourcemap_rootpath != NULL)
+        if (sourcemap_rootpath != nullptr)
           sourcemap_file.insert(0, sourcemap_rootpath);
 
         writer->writeSourceMapUrl(sourcemap_file.c_str());
         sourcemap->close();
         delete sourcemap;
-        if (sourcemap_s != NULL)
+        if (sourcemap_s != nullptr)
           delete sourcemap_s;
       }
 
