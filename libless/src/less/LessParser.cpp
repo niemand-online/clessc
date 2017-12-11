@@ -92,7 +92,7 @@ bool LessParser::parseAtRuleOrVariable(LessStylesheet &stylesheet) {
     parseAtRuleValue(rule);
 
     // parse import
-    if (token == "@import" && rule.size() > 0) {
+    if (token == "@import" && !rule.empty()) {
       if (parseImportStatement(rule, stylesheet))
         return true;
     }
@@ -126,7 +126,7 @@ bool LessParser::parseVariable(TokenList &value) {
   tokenizer->readNextToken();
   CssParser::skipWhitespace();
 
-  if (!parseValue(value) || value.size() == 0) {
+  if (!parseValue(value) || value.empty()) {
     throw ParseException(tokenizer->getToken(), "value for variable");
   }
   if (tokenizer->getTokenType() != Token::DELIMITER) {
@@ -374,7 +374,7 @@ bool LessParser::parseImportStatement(TokenList &statement,
     statement.pop_front();
     statement.ltrim();
 
-    while (statement.size() > 0 && statement.front() == ",") {
+    while (!statement.empty() && statement.front() == ",") {
       statement.pop_front();
       statement.ltrim();
 
@@ -383,7 +383,7 @@ bool LessParser::parseImportStatement(TokenList &statement,
       statement.ltrim();
     }
 
-    if (statement.size() > 0 && statement.front().type != Token::PAREN_CLOSED) {
+    if (!statement.empty() && statement.front().type != Token::PAREN_CLOSED) {
       throw ParseException(statement, ")");
     } else {
       statement.pop_front();
@@ -391,8 +391,8 @@ bool LessParser::parseImportStatement(TokenList &statement,
     }
   }
 
-  if (statement.size() > 0 && (statement.front().type == Token::URL ||
-                               statement.front().type == Token::STRING)) {
+  if (!statement.empty() && (statement.front().type == Token::URL ||
+                             statement.front().type == Token::STRING)) {
     return importFile(statement.front(), stylesheet, directive);
 
   } else

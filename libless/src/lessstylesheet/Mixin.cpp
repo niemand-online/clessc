@@ -177,7 +177,7 @@ void Mixin::parseArguments(TokenList::const_iterator i,
     if (*i == delimiter)
       i++;
 
-    if (argName == "")
+    if (argName.empty())
       this->arguments.push_back(argument);
     else {
       this->namedArguments.insert(pair<string, TokenList>(argName, argument));

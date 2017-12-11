@@ -268,7 +268,7 @@ double NumberValue::getValue() const {
       break;
     }
   }
-  if (number == "")
+  if (number.empty())
     number = tokens.front();
   stm.str(number);
   stm >> ret;

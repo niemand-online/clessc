@@ -261,7 +261,7 @@ int main(int argc, char* argv[]) {
     sources.push_back(source);
 
     if (parseInput(stylesheet, *in, source, sources, includePaths)) {
-      if (sourcemap_file != "") {
+      if (!sourcemap_file.empty()) {
         LogStream().notice(1) << "sourcemap: " << sourcemap_file;
         sourcemap_s = new ofstream(sourcemap_file.c_str());
         sourcemap = new SourceMapWriter(*sourcemap_s,

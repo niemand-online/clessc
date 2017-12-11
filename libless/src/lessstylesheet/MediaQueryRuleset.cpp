@@ -25,7 +25,7 @@ void MediaQueryRuleset::process(Stylesheet& s,
   selector = getSelector();
   context.processValue(selector);
 
-  if (query->getSelector().size() > 0) {
+  if (!query->getSelector().empty()) {
     selector.pop_front();
 
     query->getSelector().push_back(Token::BUILTIN_SPACE);

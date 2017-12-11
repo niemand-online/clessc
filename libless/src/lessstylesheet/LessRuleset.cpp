@@ -404,7 +404,7 @@ bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
 
   LogStream().notice(3) << "@arguments: " << argsCombined.toString();
 
-  if (selector->unlimitedArguments() && selector->getRestIdentifier() != "") {
+  if (selector->unlimitedArguments() && !selector->getRestIdentifier().empty()) {
     while (pos < mixin.getArgumentCount()) {
       variable = mixin.getArgument(pos++);
       restVar.insert(restVar.end(), variable->begin(), variable->end());

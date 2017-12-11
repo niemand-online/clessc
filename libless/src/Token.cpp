@@ -51,7 +51,7 @@ void Token::removeQuotes(string &str) const {
   char quote;
   string::iterator i;
 
-  if (str.size() == 0 || !(str[0] == '"' || str[0] == '\''))
+  if (str.empty() || !(str[0] == '"' || str[0] == '\''))
     return;
 
   quote = str[0];

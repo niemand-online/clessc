@@ -46,7 +46,7 @@ void ValueProcessor::processValue(TokenList &value,
 
     // add spaces between values
     if (v != nullptr || i2 != end) {
-      if (newvalue.size() == 0 || !needsSpace(newvalue.back(), false) ||
+      if (newvalue.empty() || !needsSpace(newvalue.back(), false) ||
           (v == nullptr && !needsSpace(*i2, true))) {
       } else {
         newvalue.push_back(Token::BUILTIN_SPACE);
