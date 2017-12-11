@@ -48,9 +48,6 @@ LessSelector::LessSelector(const Selector &original) {
   LogStream().notice(2) << "Parsed selector: " << toString();
 }
 
-LessSelector::~LessSelector() {
-}
-
 bool LessSelector::parseExtension(Selector &selector, Selector &extension) {
   int parentheses = 1;
   TokenList::iterator i;

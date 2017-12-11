@@ -1,8 +1,5 @@
 #include "less/less/LessTokenizer.h"
 
-LessTokenizer::~LessTokenizer() {
-}
-
 bool LessTokenizer::readComment() {
   if (!lastReadEq('/'))
     return CssTokenizer::readComment();

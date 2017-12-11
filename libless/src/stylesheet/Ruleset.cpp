@@ -4,8 +4,6 @@
 
 using namespace std;
 
-Ruleset::Ruleset() {
-}
 Ruleset::Ruleset(const Selector& selector) {
   this->selector = selector;
 }

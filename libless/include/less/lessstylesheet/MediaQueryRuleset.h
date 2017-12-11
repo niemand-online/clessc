@@ -16,8 +16,8 @@ private:
   static const Token BUILTIN_AND;
 
 public:
-  MediaQueryRuleset();
-  ~MediaQueryRuleset() override;
+  MediaQueryRuleset() = default;
+  ~MediaQueryRuleset() override = default;
 
   void process(Stylesheet &s,
                Selector *prefix,

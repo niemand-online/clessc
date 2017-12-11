@@ -20,7 +20,7 @@ public:
   NumberValue(double value);
   NumberValue(double value, Token::Type type, const std::string *unit);
   NumberValue(const NumberValue &n);
-  ~NumberValue() override;
+  ~NumberValue() override = default;
 
   Value *add(const Value &v) const override;
   Value *substract(const Value &v) const override;

@@ -59,8 +59,7 @@ public:
              bool isreference)
       : CssParser(tokenizer), sources(source_files), reference(isreference) {
   }
-  ~LessParser() override {
-  }
+  ~LessParser() override = default;
 
   virtual void parseStylesheet(LessStylesheet &stylesheet);
 

@@ -13,7 +13,7 @@ public:
   enum UnitGroup { NO_GROUP, LENGTH, TIME, ANGLE };
 
   UnitValue(Token &token);
-  ~UnitValue() override;
+  ~UnitValue() override = default;
 
   const char *getUnit() const;
 

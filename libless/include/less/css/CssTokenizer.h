@@ -84,7 +84,7 @@ class CssTokenizer {
 public:
   CssTokenizer(std::istream& in, const char* source);
 
-  ~CssTokenizer();
+  ~CssTokenizer() = default;
 
   Token::Type readNextToken();
 

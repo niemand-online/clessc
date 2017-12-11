@@ -4,12 +4,6 @@
 
 using namespace std;
 
-LessStylesheet::LessStylesheet() {
-}
-
-LessStylesheet::~LessStylesheet() {
-}
-
 LessRuleset* LessStylesheet::createLessRuleset() {
   auto* r = new LessRuleset();
 

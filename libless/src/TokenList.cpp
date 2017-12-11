@@ -2,9 +2,6 @@
 
 using namespace std;
 
-TokenList::~TokenList() {
-}
-
 void TokenList::ltrim() {
   while (!empty() && front().type == Token::WHITESPACE) {
     pop_front();

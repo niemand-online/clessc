@@ -32,7 +32,7 @@ public:
                   const char* out_filename,
                   const char* rootpath = nullptr,
                   const char* basepath = nullptr);
-  virtual ~SourceMapWriter();
+  virtual ~SourceMapWriter() = default;
 
   void writeMapping(unsigned int column, const Token& source);
   void writeNewline();

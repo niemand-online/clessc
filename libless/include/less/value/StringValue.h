@@ -21,7 +21,7 @@ public:
   StringValue(const StringValue &s);
   StringValue(const Value &val, bool quotes);
 
-  ~StringValue() override;
+  ~StringValue() override = default;
 
   std::string getString() const;
   void setString(const std::string &stringValue);

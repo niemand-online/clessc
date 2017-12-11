@@ -10,8 +10,6 @@ ValueProcessor::ValueProcessor() {
   StringValue::loadFunctions(functionLibrary);
   UrlValue::loadFunctions(functionLibrary);
 }
-ValueProcessor::~ValueProcessor() {
-}
 
 void ValueProcessor::processValue(TokenList &value,
                                   const ValueScope &scope) const {

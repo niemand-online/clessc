@@ -11,9 +11,6 @@ CssTokenizer::CssTokenizer(istream& in, const char* source)
   column = 0;
 }
 
-CssTokenizer::~CssTokenizer() {
-}
-
 const char* CssTokenizer::getSource() {
   return source;
 }

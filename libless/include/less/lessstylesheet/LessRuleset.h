@@ -48,9 +48,9 @@ protected:
   void addClosures(ProcessingContext &context) const;
 
 public:
-  LessRuleset();
-  LessRuleset(const Selector &selector);
-  ~LessRuleset() override;
+  LessRuleset() = default;
+  LessRuleset(const Selector &selector) = default;
+  ~LessRuleset() override = default;
 
   void setSelector(const Selector &selector) override;
   LessSelector *getLessSelector() const override;

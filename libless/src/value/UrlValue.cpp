@@ -36,16 +36,10 @@ urlvalue_jpeg_error_exit(j_common_ptr cinfo) {
 
 #endif
 
-UrlValue_Img::UrlValue_Img() {
-}
-
 UrlValue::UrlValue(Token& token, string& path) : Value() {
   tokens.push_back(token);
   this->path = path;
   type = Value::URL;
-}
-
-UrlValue::~UrlValue() {
 }
 
 string UrlValue::getPath() const {

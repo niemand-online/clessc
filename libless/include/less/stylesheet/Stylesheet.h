@@ -30,8 +30,7 @@ protected:
   void deleteStatement(StylesheetStatement &statement);
 
 public:
-  Stylesheet() {
-  }
+  Stylesheet() = default;
   virtual ~Stylesheet();
 
   Ruleset *createRuleset();

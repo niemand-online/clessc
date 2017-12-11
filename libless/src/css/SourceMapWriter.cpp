@@ -18,9 +18,6 @@ SourceMapWriter::SourceMapWriter(ostream& sourcemap,
   writePreamble(out_filename, rootpath, basepath);
 }
 
-SourceMapWriter::~SourceMapWriter() {
-}
-
 void SourceMapWriter::writePreamble(const char* out_filename,
                                     const char* rootpath,
                                     const char* basepath) {

@@ -15,9 +15,6 @@ CssWriter::CssWriter(ostream &out, SourceMapWriter &sourcemap)
     : out(&out), column(0), sourcemap(&sourcemap) {
 }
 
-CssWriter::~CssWriter() {
-}
-
 unsigned int CssWriter::getColumn() {
   return column;
 }

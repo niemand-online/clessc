@@ -39,7 +39,7 @@ public:
    */
   static Color* fromHSL(double hue, double saturation, double lightness);
 
-  ~Color() override;
+  ~Color() override = default;
 
   Value* add(const Value& v) const override;
   Value* substract(const Value& v) const override;

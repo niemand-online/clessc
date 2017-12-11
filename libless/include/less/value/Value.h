@@ -25,9 +25,9 @@ public:
     BOOLEAN,
     URL
   } type;
-  Value();
+  Value() = default;
   Value(const Token& token);
-  virtual ~Value();
+  virtual ~Value() = default;
 
   void setLocation(const Token& ref);
 

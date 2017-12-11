@@ -5,14 +5,8 @@
 
 using namespace std;
 
-Mixin::Mixin() {
-}
-
 Mixin::Mixin(const Selector &name) {
   this->name = name;
-}
-
-Mixin::~Mixin() {
 }
 
 const TokenList *Mixin::getArgument(const size_t i) const {

@@ -94,7 +94,7 @@ private:
 
 public:
   ValueProcessor();
-  virtual ~ValueProcessor();
+  virtual ~ValueProcessor() = default;
 
   /**
    * Determine if a value contains anything that can be processed.

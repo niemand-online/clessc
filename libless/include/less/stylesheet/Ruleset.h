@@ -25,7 +25,7 @@ protected:
   virtual void deleteStatement(RulesetStatement &statement);
 
 public:
-  Ruleset();
+  Ruleset() = default;
   Ruleset(const Selector &selector);
   ~Ruleset() override;
   virtual void setSelector(const Selector &selector);

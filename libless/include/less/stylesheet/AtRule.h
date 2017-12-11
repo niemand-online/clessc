@@ -16,7 +16,7 @@ private:
 
 public:
   AtRule(const Token &keyword);
-  ~AtRule() override;
+  ~AtRule() override = default;
   void setKeyword(const Token &keyword);
   void setRule(const TokenList &rule);
 

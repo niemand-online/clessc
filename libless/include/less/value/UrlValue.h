@@ -10,8 +10,6 @@ public:
   unsigned int width;
   unsigned int height;
   Color background;
-
-  UrlValue_Img();
 };
 
 class UrlValue : public Value {
@@ -25,7 +23,7 @@ private:
 public:
   UrlValue(Token &token, std::string &path);
 
-  ~UrlValue() override;
+  ~UrlValue() override = default;
 
   std::string getPath() const;
 

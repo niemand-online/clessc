@@ -10,7 +10,7 @@ protected:
   Ruleset* ruleset;
 
 public:
-  virtual ~RulesetStatement(){};
+  virtual ~RulesetStatement() = default;
 
   virtual void setRuleset(Ruleset* r);
   Ruleset* getRuleset();

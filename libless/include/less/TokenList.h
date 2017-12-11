@@ -6,7 +6,7 @@
 
 class TokenList : public std::list<Token> {
 public:
-  virtual ~TokenList();
+  virtual ~TokenList() = default;
 
   /**
    * Trim whitespace tokens from the front of the selector.

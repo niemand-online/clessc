@@ -39,7 +39,7 @@ public:
   ParseException& operator=(const ParseException&) = default;
   ParseException& operator=(ParseException&&) = default;
 
-  ~ParseException() throw() override{};
+  ~ParseException() throw() override = default;
 
   void setLocation(unsigned int line, unsigned int column);
   unsigned int getLineNumber();

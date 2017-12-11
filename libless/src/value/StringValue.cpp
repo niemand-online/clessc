@@ -48,9 +48,6 @@ StringValue::StringValue(const Value& val, bool quotes) {
   setString(token);
 }
 
-StringValue::~StringValue() {
-}
-
 void StringValue::updateTokens() {
   string::iterator i;
   string newstr;

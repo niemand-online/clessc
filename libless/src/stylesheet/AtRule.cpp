@@ -5,9 +5,6 @@ AtRule::AtRule(const Token &keyword) {
   this->keyword = keyword;
 }
 
-AtRule::~AtRule() {
-}
-
 void AtRule::setKeyword(const Token &keyword) {
   this->keyword = keyword;
 }

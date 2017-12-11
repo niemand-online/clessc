@@ -15,7 +15,7 @@ private:
 public:
   BooleanValue(bool value);
   BooleanValue(const Token &t, bool value);
-  ~BooleanValue() override;
+  ~BooleanValue() override = default;
 
   bool getValue() const;
   void setValue(bool value);

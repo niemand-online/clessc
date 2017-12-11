@@ -8,9 +8,6 @@ UnitValue::UnitValue(Token &token) {
   type = UNIT;
 }
 
-UnitValue::~UnitValue() {
-}
-
 const char *UnitValue::getUnit() const {
   return tokens.front().c_str();
 }

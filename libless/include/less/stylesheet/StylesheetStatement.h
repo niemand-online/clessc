@@ -11,7 +11,7 @@ protected:
 
 public:
   StylesheetStatement() : reference(false){};
-  virtual ~StylesheetStatement(){};
+  virtual ~StylesheetStatement() = default;
   virtual void setStylesheet(Stylesheet* s);
   Stylesheet* getStylesheet();
 

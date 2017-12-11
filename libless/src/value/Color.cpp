@@ -204,9 +204,6 @@ Color::Color(const Color& color) {
   updateTokens();
 }
 
-Color::~Color() {
-}
-
 Value* Color::add(const Value& v) const {
   const Color* c;
   const NumberValue* n;

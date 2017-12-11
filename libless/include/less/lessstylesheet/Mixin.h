@@ -31,9 +31,9 @@ private:
 public:
   Selector name;
 
-  Mixin();
+  Mixin() = default;
   Mixin(const Selector &name);
-  ~Mixin() override;
+  ~Mixin() override = default;
 
   const TokenList *getArgument(const std::size_t i) const;
   std::size_t getArgumentCount() const;

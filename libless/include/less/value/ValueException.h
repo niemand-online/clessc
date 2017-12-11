@@ -19,7 +19,7 @@ public:
     line = source.front().line;
     column = source.front().column;
   }
-  ~ValueException() throw() override{};
+  ~ValueException() throw() override = default;
 
   ValueException(const ValueException&) = default;
   ValueException(ValueException&&) = default;

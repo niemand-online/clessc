@@ -6,8 +6,6 @@ using namespace std;
 LessMediaQuery::LessMediaQuery() {
   parent = nullptr;
 }
-LessMediaQuery::~LessMediaQuery() {
-}
 
 Selector *LessMediaQuery::getSelector() {
   return &selector;

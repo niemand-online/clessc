@@ -69,9 +69,6 @@ NumberValue::NumberValue(const NumberValue& n) {
   this->type = n.type;
 }
 
-NumberValue::~NumberValue() {
-}
-
 void NumberValue::verifyUnits(const NumberValue& n) {
   if (type == Value::DIMENSION && n.type == Value::DIMENSION &&
       getUnit().compare(n.getUnit()) != 0) {

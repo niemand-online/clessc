@@ -21,7 +21,7 @@ private:
 
 public:
   LessMediaQuery();
-  ~LessMediaQuery() override;
+  ~LessMediaQuery() override = default;
 
   Selector *getSelector();
   void setSelector(const Selector &s);

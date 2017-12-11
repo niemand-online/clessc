@@ -12,9 +12,6 @@ BooleanValue::BooleanValue(const Token &t, bool value) {
   type = Value::BOOLEAN;
 }
 
-BooleanValue::~BooleanValue() {
-}
-
 bool BooleanValue::getValue() const {
   return value;
 }

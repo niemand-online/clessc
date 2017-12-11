@@ -28,8 +28,7 @@ public:
   size_t property_i;
 
   UnprocessedStatement();
-  ~UnprocessedStatement() override {
-  }
+  ~UnprocessedStatement() override = default;
 
   Selector *getTokens();
 

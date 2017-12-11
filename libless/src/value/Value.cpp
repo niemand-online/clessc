@@ -1,12 +1,6 @@
 #include "less/value/Value.h"
 #include "less/value/BooleanValue.h"
 
-Value::Value() {
-}
-
-Value::~Value() {
-}
-
 void Value::setLocation(const Token& ref) {
   tokens.front().setLocation(ref);
 }

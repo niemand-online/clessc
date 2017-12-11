@@ -6,11 +6,6 @@
 const Token MediaQueryRuleset::BUILTIN_AND(
     "and", Token::IDENTIFIER, 0, 0, Token::BUILTIN_SOURCE);
 
-MediaQueryRuleset::MediaQueryRuleset() : LessRuleset() {
-}
-MediaQueryRuleset::~MediaQueryRuleset() {
-}
-
 void MediaQueryRuleset::process(Stylesheet& s,
                                 Selector* prefix,
                                 ProcessingContext& context) {

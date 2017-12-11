@@ -15,7 +15,7 @@ private:
 public:
   Extension();
   Extension(bool all);
-  virtual ~Extension();
+  virtual ~Extension() = default;
 
   Selector& getTarget();
   Selector& getExtension();

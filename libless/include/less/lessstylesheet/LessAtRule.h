@@ -13,8 +13,8 @@ private:
   LessStylesheet *lessStylesheet;
 
 public:
-  LessAtRule(const Token &keyword);
-  ~LessAtRule() override;
+  LessAtRule(const Token &keyword) = default;
+  ~LessAtRule() override = default;
 
   void setLessStylesheet(LessStylesheet &stylesheet);
   LessStylesheet *getLessStylesheet();

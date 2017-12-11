@@ -8,8 +8,6 @@ Extension::Extension() {
 Extension::Extension(bool all) {
   all = true;
 }
-Extension::~Extension() {
-}
 
 Selector &Extension::getTarget() {
   return target;

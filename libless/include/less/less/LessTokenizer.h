@@ -13,7 +13,7 @@ class LessTokenizer : public CssTokenizer {
 public:
   LessTokenizer(std::istream& in, const char* source)
       : CssTokenizer(in, source){};
-  virtual ~LessTokenizer();
+  virtual ~LessTokenizer() = default;
 
 protected:
   bool readComment() override;
