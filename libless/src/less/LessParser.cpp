@@ -28,7 +28,7 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
   Selector selector;
   Mixin *mixin;
   CssComment *comment;
-  LessStylesheet *ls = (LessStylesheet *)&stylesheet;
+  auto *ls = (LessStylesheet *)&stylesheet;
 
   if (tokenizer->getTokenType() == Token::COMMENT) {
     comment = ls->createComment();

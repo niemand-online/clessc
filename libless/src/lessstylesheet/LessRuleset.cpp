@@ -34,7 +34,7 @@ LessSelector* LessRuleset::getLessSelector() const {
 }
 
 UnprocessedStatement* LessRuleset::createUnprocessedStatement() {
-  UnprocessedStatement* s = new UnprocessedStatement();
+  auto* s = new UnprocessedStatement();
 
   Ruleset::addStatement(*s);
   s->setLessRuleset(*this);
@@ -48,7 +48,7 @@ const list<UnprocessedStatement*>& LessRuleset::getUnprocessedStatements()
 }
 
 LessRuleset* LessRuleset::createNestedRule() {
-  LessRuleset* r = new LessRuleset();
+  auto* r = new LessRuleset();
 
   LogStream().notice(2) << "Creating nested rule";
 
@@ -59,7 +59,7 @@ LessRuleset* LessRuleset::createNestedRule() {
 }
 
 MediaQueryRuleset* LessRuleset::createMediaQuery() {
-  MediaQueryRuleset* r = new MediaQueryRuleset();
+  auto* r = new MediaQueryRuleset();
 
   LogStream().notice(2) << "Creating nested media query";
 
@@ -404,7 +404,8 @@ bool LessRuleset::putArguments(const Mixin& mixin, VariableMap& scope) const {
 
   LogStream().notice(3) << "@arguments: " << argsCombined.toString();
 
-  if (selector->unlimitedArguments() && !selector->getRestIdentifier().empty()) {
+  if (selector->unlimitedArguments() &&
+      !selector->getRestIdentifier().empty()) {
     while (pos < mixin.getArgumentCount()) {
       variable = mixin.getArgument(pos++);
       restVar.insert(restVar.end(), variable->begin(), variable->end());

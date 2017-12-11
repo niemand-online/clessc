@@ -24,7 +24,7 @@ typedef struct urlvalue_jpeg_error_mgr* urlvalue_jpeg_error_ptr;
 METHODDEF(void)
 urlvalue_jpeg_error_exit(j_common_ptr cinfo) {
   /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
-  urlvalue_jpeg_error_ptr myerr = (urlvalue_jpeg_error_ptr)cinfo->err;
+  auto myerr = (urlvalue_jpeg_error_ptr)cinfo->err;
 
   /* Always display the message. */
   /* We could postpone this until after returning, if we chose. */
@@ -368,6 +368,6 @@ Value* UrlValue::imgwidth(const vector<const Value*>& arguments) {
 }
 
 Value* UrlValue::imgbackground(const vector<const Value*>& arguments) {
-  const UrlValue* u = static_cast<const UrlValue*>(arguments[0]);
+  const auto* u = static_cast<const UrlValue*>(arguments[0]);
   return new Color(u->getImageBackground());
 }

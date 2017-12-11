@@ -11,7 +11,7 @@ LessStylesheet::~LessStylesheet() {
 }
 
 LessRuleset* LessStylesheet::createLessRuleset() {
-  LessRuleset* r = new LessRuleset();
+  auto* r = new LessRuleset();
 
   LogStream().notice(3) << "Creating LessRuleset";
 
@@ -22,7 +22,7 @@ LessRuleset* LessStylesheet::createLessRuleset() {
 }
 
 Mixin* LessStylesheet::createMixin() {
-  Mixin* m = new Mixin();
+  auto* m = new Mixin();
 
   LogStream().notice(3) << "Creating mixin";
 
@@ -32,14 +32,14 @@ Mixin* LessStylesheet::createMixin() {
 }
 
 LessAtRule* LessStylesheet::createLessAtRule(const Token& keyword) {
-  LessAtRule* atrule = new LessAtRule(keyword);
+  auto* atrule = new LessAtRule(keyword);
   addAtRule(*atrule);
   atrule->setLessStylesheet(*this);
   return atrule;
 }
 
 LessMediaQuery* LessStylesheet::createLessMediaQuery() {
-  LessMediaQuery* q = new LessMediaQuery();
+  auto* q = new LessMediaQuery();
 
   LogStream().notice(3) << "Adding Media Query";
 

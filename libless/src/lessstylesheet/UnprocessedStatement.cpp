@@ -15,14 +15,14 @@ Selector *UnprocessedStatement::getTokens() {
 }
 
 void UnprocessedStatement::getProperty(TokenList &tokens) {
-  TokenList::iterator i = this->tokens.begin();
+  auto i = this->tokens.begin();
   advance(i, property_i);
 
   tokens.insert(tokens.begin(), this->tokens.begin(), i);
 }
 
 void UnprocessedStatement::getValue(TokenList &tokens) {
-  TokenList::iterator i = this->tokens.begin();
+  auto i = this->tokens.begin();
   advance(i, property_i);
 
   tokens.insert(tokens.begin(), i, this->tokens.end());
@@ -106,7 +106,7 @@ void UnprocessedStatement::process(Ruleset &r) {
 }
 
 bool UnprocessedStatement::isDeclaration() {
-  TokenList::iterator i = getTokens()->begin();
+  auto i = getTokens()->begin();
   if (property_i == 0)
     return false;
 
@@ -122,7 +122,7 @@ bool UnprocessedStatement::isDeclaration() {
 }
 
 bool UnprocessedStatement::isExtends() {
-  TokenList::iterator i = getTokens()->begin();
+  auto i = getTokens()->begin();
 
   return ((*i) == "&" && (*++i).type == Token::COLON &&
           (*++i).type == Token::IDENTIFIER && (*i) == "extend" &&

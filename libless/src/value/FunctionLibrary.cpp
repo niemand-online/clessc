@@ -3,7 +3,7 @@
 using namespace std;
 
 const FuncInfo* FunctionLibrary::getFunction(const char* functionName) const {
-  std::map<string, FuncInfo*>::const_iterator i = map.find(functionName);
+  auto i = map.find(functionName);
 
   if (i != map.end())
     return i->second;
@@ -15,7 +15,7 @@ void FunctionLibrary::push(
     string name,
     const char* parameterTypes,
     Value* (*func)(const vector<const Value*>& arguments)) {
-  FuncInfo* fi = new FuncInfo();
+  auto* fi = new FuncInfo();
   fi->parameterTypes = parameterTypes;
   fi->func = func;
   map[name] = fi;
@@ -24,7 +24,7 @@ void FunctionLibrary::push(
 bool FunctionLibrary::checkArguments(
     const FuncInfo* fi, const vector<const Value*>& arguments) const {
   const char* types = fi->parameterTypes;
-  vector<const Value*>::const_iterator it = arguments.begin();
+  auto it = arguments.begin();
   unsigned int i, len = strlen(types);
 
   for (i = 0; i < len; i++) {

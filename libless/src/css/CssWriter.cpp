@@ -45,7 +45,7 @@ void CssWriter::writeToken(const Token &token) {
   }
 }
 void CssWriter::writeTokenList(const TokenList &tokens) {
-  TokenList::const_iterator i = tokens.begin();
+  auto i = tokens.begin();
 
   for (; i != tokens.end(); i++) {
     writeToken(*i);
@@ -70,7 +70,7 @@ void CssWriter::writeSelector(const TokenList &selector) {
 }
 
 void CssWriter::writeValue(const TokenList &value) {
-  TokenList::const_iterator it = value.begin();
+  auto it = value.begin();
   const Token *t;
 
   while (it != value.end() && (*it).type == Token::WHITESPACE) {

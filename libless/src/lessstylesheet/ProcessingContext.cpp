@@ -78,7 +78,7 @@ list<Extension> &ProcessingContext::getExtensions() {
 
 void ProcessingContext::addClosure(const LessRuleset &ruleset) {
   if (stack != nullptr) {
-    Closure *c = new Closure(ruleset, *stack);
+    auto *c = new Closure(ruleset, *stack);
     closures.push_back(c);
   }
 }

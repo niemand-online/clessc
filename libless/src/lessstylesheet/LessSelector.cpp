@@ -135,7 +135,7 @@ bool LessSelector::parseArguments(TokenList &selector) {
 
 bool LessSelector::validateArguments(const TokenList &arguments,
                                      const string &delimiter) {
-  TokenList::const_iterator i = arguments.begin();
+  auto i = arguments.begin();
 
   if ((*i).type != Token::PAREN_OPEN)
     return false;
@@ -311,8 +311,8 @@ bool LessSelector::parseConditions(TokenList &selector) {
 }
 
 TokenList *LessSelector::getDefault(const string &keyword) {
-  list<string>::iterator pit = parameters.begin();
-  list<TokenList>::iterator dit = defaults.begin();
+  auto pit = parameters.begin();
+  auto dit = defaults.begin();
 
   for (; pit != parameters.end(); pit++, dit++) {
     if ((*pit) == keyword)
@@ -334,8 +334,8 @@ list<Extension> &LessSelector::getExtensions() {
 }
 
 bool LessSelector::matchArguments(const Mixin &mixin) {
-  list<string>::iterator p_it = parameters.begin();
-  list<TokenList>::iterator d_it = defaults.begin();
+  auto p_it = parameters.begin();
+  auto d_it = defaults.begin();
   size_t pos = 0;
 
   for (; p_it != parameters.end(); p_it++, d_it++) {

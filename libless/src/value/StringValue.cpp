@@ -100,7 +100,7 @@ void StringValue::append(const Value& v) {
 }
 
 Value* StringValue::add(const Value& v) const {
-  StringValue* sv = new StringValue(*this);
+  auto* sv = new StringValue(*this);
   sv->append(v);
   return sv;
 }
@@ -186,13 +186,13 @@ Value* StringValue::escape(const vector<const Value*>& arguments) {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~,/"
       "?@&+'!$");
 
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
   s->setString(StringValue::escape(s->getString(), ",/?@&+'!$"));
   return s;
 }
 
 Value* StringValue::e(const vector<const Value*>& arguments) {
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
   s->setQuotes(false);
   return s;
 }
@@ -200,7 +200,7 @@ Value* StringValue::e(const vector<const Value*>& arguments) {
 Value* StringValue::format(const vector<const Value*>& arguments) {
   string escapeChars("adsADS");
 
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
 
   string oldstr = s->getString();
   ostringstream newstr;
@@ -251,9 +251,9 @@ Value* StringValue::replace(const vector<const Value*>& arguments) {
   regex_constants::match_flag_type match_flags =
       regex_constants::match_default | regex_constants::format_first_only;
 
-  const StringValue* in = (const StringValue*)arguments[0];
-  const StringValue* pattern = (const StringValue*)arguments[1];
-  const StringValue* replacement = (const StringValue*)arguments[2];
+  const auto* in = (const StringValue*)arguments[0];
+  const auto* pattern = (const StringValue*)arguments[1];
+  const auto* replacement = (const StringValue*)arguments[2];
   string options;
 
   if (arguments.size() > 3) {

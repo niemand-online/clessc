@@ -488,19 +488,19 @@ Value* Color::desaturate(const vector<const Value*>& arguments) {
 }
 
 Value* Color::fadein(const vector<const Value*>& arguments) {
-  const Color* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = static_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  Color* ret = new Color(
+  auto* ret = new Color(
       c->getRed(), c->getGreen(), c->getBlue(), c->getAlpha() + value * .01);
   return ret;
 }
 
 Value* Color::fadeout(const vector<const Value*>& arguments) {
-  const Color* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = static_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  Color* ret = new Color(
+  auto* ret = new Color(
       c->getRed(), c->getGreen(), c->getBlue(), c->getAlpha() - value * .01);
   return ret;
 }
@@ -537,7 +537,7 @@ Value* Color::lightness(const vector<const Value*>& arguments) {
 }
 
 Value* Color::argb(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
   ostringstream stm;
   unsigned int color[4];
   string sColor[4];
@@ -571,22 +571,22 @@ Value* Color::argb(const vector<const Value*>& arguments) {
 }
 
 Value* Color::red(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getRed());
 }
 Value* Color::blue(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getBlue());
 }
 Value* Color::green(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getGreen());
 }
 Value* Color::_alpha(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getAlpha());
 }

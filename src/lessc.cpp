@@ -64,7 +64,7 @@ void version() {
  */
 char* createPath(const char* path, size_t len) {
   size_t newlen = len + (path[len - 1] != '/' ? 1 : 0);
-  char* p = new char[newlen + 1];
+  auto* p = new char[newlen + 1];
   std::strncpy(p, path, len);
   p[newlen - 1] = '/';
   p[newlen] = '\0';

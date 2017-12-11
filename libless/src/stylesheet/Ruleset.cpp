@@ -22,20 +22,20 @@ void Ruleset::addStatement(RulesetStatement& statement) {
   statement.setRuleset(this);
 }
 Declaration* Ruleset::createDeclaration() {
-  Declaration* d = new Declaration();
+  auto* d = new Declaration();
   declarations.push_back(d);
   addStatement(*d);
   return d;
 }
 Declaration* Ruleset::createDeclaration(const Token& property) {
-  Declaration* d = new Declaration(property);
+  auto* d = new Declaration(property);
   declarations.push_back(d);
   addStatement(*d);
   return d;
 }
 
 CssComment* Ruleset::createComment() {
-  CssComment* c = new CssComment();
+  auto* c = new CssComment();
   addStatement(*c);
   return c;
 }
@@ -51,7 +51,7 @@ void Ruleset::deleteDeclaration(Declaration& declaration) {
 }
 
 void Ruleset::addDeclarations(list<Declaration>& declarations) {
-  list<Declaration>::iterator i = declarations.begin();
+  auto i = declarations.begin();
   for (; i != declarations.end(); i++) {
     this->declarations.push_back(&(*i));
     addStatement(*i);

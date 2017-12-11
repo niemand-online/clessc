@@ -134,8 +134,8 @@ bool ValueProcessor::needsProcessing(const TokenList &value) const {
 
 bool ValueProcessor::validateCondition(const TokenList &value,
                                        const ValueScope &scope) {
-  TokenList::const_iterator i = value.begin();
-  TokenList::const_iterator end = value.end();
+  auto i = value.begin();
+  auto end = value.end();
 
   bool ret = validateValue(i, end, scope);
 
@@ -187,8 +187,8 @@ bool ValueProcessor::validateValue(TokenList::const_iterator &i,
 
 Value *ValueProcessor::processStatement(const TokenList &tokens,
                                         const ValueScope &scope) const {
-  TokenList::const_iterator i = tokens.begin();
-  TokenList::const_iterator end = tokens.end();
+  auto i = tokens.begin();
+  auto end = tokens.end();
   Value *ret = processStatement(i, end, scope);
 
   if (i != end)
@@ -489,7 +489,7 @@ Value *ValueProcessor::processSubstatement(TokenList::const_iterator &i,
                                            TokenList::const_iterator &end,
                                            const ValueScope &scope) const {
   Value *ret;
-  TokenList::const_iterator i2 = i;
+  auto i2 = i;
 
   if (i == end || (*i).type != Token::PAREN_OPEN)
     return nullptr;
@@ -562,7 +562,7 @@ Value *ValueProcessor::processFunction(const Token &function,
                                        const ValueScope &scope) const {
   // Use a temporary iterator so we don't disturb <code>i</code> if
   // processing fails
-  TokenList::const_iterator i2 = i;
+  auto i2 = i;
 
   vector<const Value *> arguments;
 

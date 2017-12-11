@@ -32,7 +32,7 @@ void Stylesheet::addAtRule(AtRule& rule) {
 }
 
 Ruleset* Stylesheet::createRuleset() {
-  Ruleset* r = new Ruleset();
+  auto* r = new Ruleset();
 
   LogStream().notice(3) << "Creating ruleset";
 
@@ -42,7 +42,7 @@ Ruleset* Stylesheet::createRuleset() {
 }
 
 Ruleset* Stylesheet::createRuleset(const Selector& selector) {
-  Ruleset* r = new Ruleset(selector);
+  auto* r = new Ruleset(selector);
 
   LogStream().notice(3) << "Creating ruleset: " << selector.toString();
 
@@ -52,7 +52,7 @@ Ruleset* Stylesheet::createRuleset(const Selector& selector) {
 }
 
 AtRule* Stylesheet::createAtRule(const Token& keyword) {
-  AtRule* r = new AtRule(keyword);
+  auto* r = new AtRule(keyword);
 
   LogStream().notice(3) << "Creating @rule";
 
@@ -62,13 +62,13 @@ AtRule* Stylesheet::createAtRule(const Token& keyword) {
 }
 
 CssComment* Stylesheet::createComment() {
-  CssComment* c = new CssComment();
+  auto* c = new CssComment();
   addStatement(*c);
   return c;
 }
 
 MediaQuery* Stylesheet::createMediaQuery() {
-  MediaQuery* q = new MediaQuery();
+  auto* q = new MediaQuery();
 
   LogStream().notice(3) << "Creating media query";
 

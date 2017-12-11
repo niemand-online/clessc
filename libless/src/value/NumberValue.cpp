@@ -357,7 +357,7 @@ Value* NumberValue::unit(const vector<const Value*>& arguments) {
         *arguments[0]->getTokens());
 }
 Value* NumberValue::get_unit(const vector<const Value*>& arguments) {
-  const NumberValue* val = (const NumberValue*)arguments[0];
+  const auto* val = (const NumberValue*)arguments[0];
   Token t(val->getUnit(), Token::IDENTIFIER, 0, 0, nullptr);
   t.setLocation(val->getTokens()->front());
   return new UnitValue(t);
@@ -395,7 +395,7 @@ Value* NumberValue::floor(const vector<const Value*>& args) {
   return n;
 }
 Value* NumberValue::percentage(const vector<const Value*>& args) {
-  const NumberValue* val = (const NumberValue*)args[0];
+  const auto* val = (const NumberValue*)args[0];
   return new NumberValue(val->getValue() * 100, Token::PERCENTAGE, nullptr);
 }
 
@@ -406,7 +406,7 @@ Value* NumberValue::round(const vector<const Value*>& args) {
         "values",
         *args[0]->getTokens());
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
   double decimalplaces = 0;
 
@@ -426,7 +426,7 @@ Value* NumberValue::sqrt(const vector<const Value*>& args) {
         "values",
         *args[0]->getTokens());
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   n->setValue(std::sqrt(n->getValue()));
   return n;
 }
@@ -437,7 +437,7 @@ Value* NumberValue::abs(const vector<const Value*>& args) {
         "values",
         *args[0]->getTokens());
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   n->setValue(fabs(n->getValue()));
   return n;
 }
@@ -450,7 +450,7 @@ Value* NumberValue::sin(const vector<const Value*>& args) {
         *args[0]->getTokens());
   }
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
   string unit;
 
@@ -472,7 +472,7 @@ Value* NumberValue::sin(const vector<const Value*>& args) {
   return n;
 }
 Value* NumberValue::asin(const vector<const Value*>& args) {
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
 
   n->setValue(std::asin(n->getValue()));
   n->setUnit("rad");
@@ -486,7 +486,7 @@ Value* NumberValue::cos(const vector<const Value*>& args) {
         "or dimensions",
         *args[0]->getTokens());
   }
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
   string unit;
 
@@ -508,7 +508,7 @@ Value* NumberValue::cos(const vector<const Value*>& args) {
   return n;
 }
 Value* NumberValue::acos(const vector<const Value*>& args) {
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
 
   n->setValue(std::acos(n->getValue()));
   n->setUnit("rad");
@@ -522,7 +522,7 @@ Value* NumberValue::tan(const vector<const Value*>& args) {
         "or dimensions",
         *args[0]->getTokens());
   }
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double val = n->getValue();
   string unit;
 
@@ -544,7 +544,7 @@ Value* NumberValue::tan(const vector<const Value*>& args) {
   return n;
 }
 Value* NumberValue::atan(const vector<const Value*>& args) {
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
 
   n->setValue(std::atan(n->getValue()));
   n->setUnit("rad");
@@ -560,7 +560,7 @@ Value* NumberValue::pow(const vector<const Value*>& args) {
     throw ValueException("pow() only works on numeric values",
                          *args[0]->getTokens());
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double exp = ((const NumberValue*)args[1])->getValue();
 
   n->setValue(std::pow(n->getValue(), exp));
@@ -571,7 +571,7 @@ Value* NumberValue::mod(const vector<const Value*>& args) {
     throw ValueException("mod() only works on numeric values",
                          *args[0]->getTokens());
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   double val2 = ((NumberValue*)args[1])->getValue();
 
   n->setValue(fmod(n->getValue(), val2));
@@ -586,7 +586,7 @@ Value* NumberValue::convert(const vector<const Value*>& args) {
                          *args[1]->getTokens());
   }
 
-  NumberValue* n = new NumberValue(*(const NumberValue*)args[0]);
+  auto* n = new NumberValue(*(const NumberValue*)args[0]);
   string unit;
 
   if (args[1]->type == Value::STRING)

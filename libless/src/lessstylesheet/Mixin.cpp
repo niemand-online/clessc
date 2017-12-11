@@ -36,7 +36,7 @@ const TokenList *Mixin::getArgument(const string &name) const {
 }
 
 bool Mixin::parse(const Selector &selector) {
-  TokenList::const_iterator i = selector.begin();
+  auto i = selector.begin();
 
   for (; i != selector.end() && (*i).type != Token::PAREN_OPEN; i++) {
     this->name.push_back(*i);
