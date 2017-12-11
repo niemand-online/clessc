@@ -1,6 +1,9 @@
+#include <iostream>
 #include <list>
 #include <gtest/gtest.h>
 #include <less/less/LessParser.h>
+
+using namespace std;
 
 class LessParserTest : public ::testing::Test {
 public:
