@@ -13,17 +13,17 @@ public:
   enum UnitGroup { NO_GROUP, LENGTH, TIME, ANGLE };
 
   UnitValue(Token &token);
-  virtual ~UnitValue();
+  ~UnitValue() override;
 
   const char *getUnit() const;
 
-  virtual Value *add(const Value &v) const;
-  virtual Value *substract(const Value &v) const;
-  virtual Value *multiply(const Value &v) const;
-  virtual Value *divide(const Value &v) const;
+  Value *add(const Value &v) const override;
+  Value *substract(const Value &v) const override;
+  Value *multiply(const Value &v) const override;
+  Value *divide(const Value &v) const override;
 
-  virtual BooleanValue *lessThan(const Value &v) const;
-  virtual BooleanValue *equals(const Value &v) const;
+  BooleanValue *lessThan(const Value &v) const override;
+  BooleanValue *equals(const Value &v) const override;
 
   static UnitGroup getUnitGroup(const std::string &unit);
   static double lengthToPx(const double length, const std::string &unit);

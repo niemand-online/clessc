@@ -16,7 +16,7 @@ public:
   virtual ~LessTokenizer();
 
 protected:
-  bool readComment();
+  bool readComment() override;
 };
 
 #endif  // __less_less_LessTokenizer_h__

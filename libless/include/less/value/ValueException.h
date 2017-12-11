@@ -19,7 +19,7 @@ public:
     line = source.front().line;
     column = source.front().column;
   }
-  virtual ~ValueException() throw(){};
+  ~ValueException() throw() override{};
 
   ValueException(const ValueException&) = default;
   ValueException(ValueException&&) = default;
@@ -27,7 +27,7 @@ public:
   ValueException& operator=(const ValueException&) = default;
   ValueException& operator=(ValueException&&) = default;
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     return err.c_str();
   }
 

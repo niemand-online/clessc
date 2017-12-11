@@ -28,7 +28,7 @@ private:
 
 public:
   LessStylesheet();
-  virtual ~LessStylesheet();
+  ~LessStylesheet() override;
 
   LessRuleset *createLessRuleset();
   Mixin *createMixin();

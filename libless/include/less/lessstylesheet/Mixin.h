@@ -33,7 +33,7 @@ public:
 
   Mixin();
   Mixin(const Selector &name);
-  virtual ~Mixin();
+  ~Mixin() override;
 
   const TokenList *getArgument(const std::size_t i) const;
   std::size_t getArgumentCount() const;
@@ -49,8 +49,8 @@ public:
   virtual void setLessStylesheet(LessStylesheet &stylesheet);
   LessStylesheet *getLessStylesheet();
 
-  virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer){};
+  void process(Stylesheet &s) override;
+  void write(CssWriter &writer) override{};
 };
 
 #endif  // __less_lessstylesheet_Mixin_h__

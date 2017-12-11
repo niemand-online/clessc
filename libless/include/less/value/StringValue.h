@@ -21,7 +21,7 @@ public:
   StringValue(const StringValue &s);
   StringValue(const Value &val, bool quotes);
 
-  virtual ~StringValue();
+  ~StringValue() override;
 
   std::string getString() const;
   void setString(const std::string &stringValue);
@@ -31,13 +31,13 @@ public:
 
   void append(const Value &v);
 
-  virtual Value *add(const Value &v) const;
-  virtual Value *substract(const Value &v) const;
-  virtual Value *multiply(const Value &v) const;
-  virtual Value *divide(const Value &v) const;
+  Value *add(const Value &v) const override;
+  Value *substract(const Value &v) const override;
+  Value *multiply(const Value &v) const override;
+  Value *divide(const Value &v) const override;
 
-  virtual BooleanValue *equals(const Value &v) const;
-  virtual BooleanValue *lessThan(const Value &v) const;
+  BooleanValue *equals(const Value &v) const override;
+  BooleanValue *lessThan(const Value &v) const override;
 
   static std::string escape(std::string rawstr,
                             std::string extraUnreserved = "");

@@ -34,7 +34,7 @@ private:
 
 public:
   LessSelector(const Selector &original);
-  virtual ~LessSelector();
+  ~LessSelector() override;
 
   std::list<Extension> &getExtensions();
   std::list<std::string> &getParameters();

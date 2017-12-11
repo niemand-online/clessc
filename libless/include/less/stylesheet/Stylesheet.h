@@ -53,7 +53,7 @@ public:
   virtual Ruleset *getRuleset(const Selector &selector);
 
   virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer);
+  void write(CssWriter &writer) override;
 };
 
 #endif  // __less_stylesheet_Stylesheet_h__

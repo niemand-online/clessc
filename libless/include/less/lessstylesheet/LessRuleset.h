@@ -50,10 +50,10 @@ protected:
 public:
   LessRuleset();
   LessRuleset(const Selector &selector);
-  virtual ~LessRuleset();
+  ~LessRuleset() override;
 
-  virtual void setSelector(const Selector &selector);
-  virtual LessSelector *getLessSelector() const;
+  void setSelector(const Selector &selector) override;
+  LessSelector *getLessSelector() const override;
 
   UnprocessedStatement *createUnprocessedStatement();
   LessRuleset *createNestedRule();
@@ -68,9 +68,9 @@ public:
   void putVariable(const std::string &key, const TokenList &value);
   VariableMap &getVariables();
 
-  const TokenList *getVariable(const std::string &key) const;
+  const TokenList *getVariable(const std::string &key) const override;
   const TokenList *getInheritedVariable(const std::string &key,
-                                        const MixinCall &stack) const;
+                                        const MixinCall &stack) const override;
 
   const std::list<Closure *> &getClosures() const;
 
@@ -84,24 +84,24 @@ public:
 
   void processExtensions(ProcessingContext &context, Selector *prefix);
 
-  virtual bool call(Mixin &mixin,
-                    Ruleset &target,
-                    ProcessingContext &context) const;
-  virtual bool call(Mixin &mixin,
-                    Stylesheet &s,
-                    ProcessingContext &context) const;
+  bool call(Mixin &mixin,
+            Ruleset &target,
+            ProcessingContext &context) const override;
+  bool call(Mixin &mixin,
+            Stylesheet &s,
+            ProcessingContext &context) const override;
 
   virtual void processStatements(Ruleset &target,
                                  ProcessingContext &context) const;
   void processStatements(Stylesheet &target, ProcessingContext &context) const;
-  virtual void process(Stylesheet &s);
+  void process(Stylesheet &s) override;
   virtual void process(Stylesheet &s,
                        Selector *prefix,
                        ProcessingContext &context);
 
-  virtual void getFunctions(std::list<const Function *> &functionList,
-                            const Mixin &mixin,
-                            TokenList::const_iterator selector_offset) const;
+  void getFunctions(std::list<const Function *> &functionList,
+                    const Mixin &mixin,
+                    TokenList::const_iterator selector_offset) const override;
 
   void saveReturnValues(ProcessingContext &context);
   /**
@@ -109,7 +109,7 @@ public:
    * getParent(), or getLessStylesheet() if getParent() is nullptr.
    */
   void getLocalFunctions(std::list<const Function *> &functionList,
-                         const Mixin &mixin) const;
+                         const Mixin &mixin) const override;
   void getLocalFunctions(std::list<const Function *> &functionList,
                          const Mixin &mixin,
                          const LessRuleset *exclude = nullptr) const;

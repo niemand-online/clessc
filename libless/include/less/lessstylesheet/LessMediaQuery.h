@@ -21,7 +21,7 @@ private:
 
 public:
   LessMediaQuery();
-  virtual ~LessMediaQuery();
+  ~LessMediaQuery() override;
 
   Selector *getSelector();
   void setSelector(const Selector &s);
@@ -29,13 +29,13 @@ public:
   virtual void setLessStylesheet(LessStylesheet &parent);
   LessStylesheet *getLessStylesheet() const;
 
-  virtual void getFunctions(std::list<const Function *> &functionList,
-                            const Mixin &mixin) const;
-  virtual const TokenList *getVariable(const std::string &key) const;
+  void getFunctions(std::list<const Function *> &functionList,
+                    const Mixin &mixin) const override;
+  const TokenList *getVariable(const std::string &key) const override;
 
-  virtual ProcessingContext *getContext();
-  virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer);
+  ProcessingContext *getContext() override;
+  void process(Stylesheet &s) override;
+  void write(CssWriter &writer) override;
 };
 
 #endif  // __less_lessstylesheet_LessMediaQuery_h__

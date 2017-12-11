@@ -18,10 +18,10 @@ public:
   void setComment(const Token &comment);
   Token &getComment();
 
-  virtual void process(Ruleset &r);
-  virtual void process(Stylesheet &s);
+  void process(Ruleset &r) override;
+  void process(Stylesheet &s) override;
 
-  virtual void write(CssWriter &writer);
+  void write(CssWriter &writer) override;
 };
 
 #endif  // __less_stylesheet_CssComment_h__

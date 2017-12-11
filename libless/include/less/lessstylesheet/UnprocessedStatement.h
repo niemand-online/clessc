@@ -28,7 +28,7 @@ public:
   size_t property_i;
 
   UnprocessedStatement();
-  ~UnprocessedStatement() {
+  ~UnprocessedStatement() override {
   }
 
   Selector *getTokens();
@@ -44,8 +44,8 @@ public:
 
   void process(Stylesheet &s);
 
-  virtual void process(Ruleset &r);
-  virtual void write(CssWriter &css){};
+  void process(Ruleset &r) override;
+  void write(CssWriter &css) override{};
 };
 
 #endif  // __less_lessstylesheet_UnprocessedStatement_h__

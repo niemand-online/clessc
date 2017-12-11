@@ -39,7 +39,7 @@ public:
   ParseException& operator=(const ParseException&) = default;
   ParseException& operator=(ParseException&&) = default;
 
-  ~ParseException() throw(){};
+  ~ParseException() throw() override{};
 
   void setLocation(unsigned int line, unsigned int column);
   unsigned int getLineNumber();
@@ -51,7 +51,7 @@ public:
   void setSource(std::string source);
 
   std::string getSource();
-  virtual const char* what() const throw();
+  const char* what() const throw() override;
 
 protected:
   std::string translate(std::string found);

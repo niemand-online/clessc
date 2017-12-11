@@ -16,15 +16,15 @@ private:
 public:
   Declaration();
   Declaration(const Token &property);
-  virtual ~Declaration();
+  ~Declaration() override;
   void setProperty(const Token &property);
   void setValue(const TokenList &value);
 
   Token &getProperty();
   TokenList &getValue();
 
-  virtual void process(Ruleset &r);
-  virtual void write(CssWriter &writer);
+  void process(Ruleset &r) override;
+  void write(CssWriter &writer) override;
 };
 
 #endif  // __less_stylesheet_Declaration_h__

@@ -17,11 +17,11 @@ private:
 
 public:
   MediaQueryRuleset();
-  virtual ~MediaQueryRuleset();
+  ~MediaQueryRuleset() override;
 
-  virtual void process(Stylesheet &s,
-                       Selector *prefix,
-                       ProcessingContext &context);
+  void process(Stylesheet &s,
+               Selector *prefix,
+               ProcessingContext &context) override;
 };
 
 #endif  // __less_lessstylesheet_MediaQueryRuleset_h__

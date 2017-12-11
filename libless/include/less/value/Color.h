@@ -39,15 +39,15 @@ public:
    */
   static Color* fromHSL(double hue, double saturation, double lightness);
 
-  virtual ~Color();
+  ~Color() override;
 
-  virtual Value* add(const Value& v) const;
-  virtual Value* substract(const Value& v) const;
-  virtual Value* multiply(const Value& v) const;
-  virtual Value* divide(const Value& v) const;
+  Value* add(const Value& v) const override;
+  Value* substract(const Value& v) const override;
+  Value* multiply(const Value& v) const override;
+  Value* divide(const Value& v) const override;
 
-  virtual BooleanValue* equals(const Value& v) const;
-  virtual BooleanValue* lessThan(const Value& v) const;
+  BooleanValue* equals(const Value& v) const override;
+  BooleanValue* lessThan(const Value& v) const override;
 
   /**
    * Converts the internal RGB value to HSL. The source of the

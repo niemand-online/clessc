@@ -14,12 +14,12 @@ private:
 
 public:
   LessAtRule(const Token &keyword);
-  virtual ~LessAtRule();
+  ~LessAtRule() override;
 
   void setLessStylesheet(LessStylesheet &stylesheet);
   LessStylesheet *getLessStylesheet();
 
-  virtual void process(Stylesheet &s);
+  void process(Stylesheet &s) override;
 };
 
 #endif  // __less_lessstylesheet_LessAtRule_h__

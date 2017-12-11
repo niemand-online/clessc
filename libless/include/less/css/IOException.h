@@ -21,7 +21,7 @@ public:
   IOException& operator=(const IOException&) = default;
   IOException& operator=(IOException&&) = default;
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     return err;
   }
 };

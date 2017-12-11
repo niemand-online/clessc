@@ -59,7 +59,7 @@ public:
              bool isreference)
       : CssParser(tokenizer), sources(source_files), reference(isreference) {
   }
-  virtual ~LessParser() {
+  ~LessParser() override {
   }
 
   virtual void parseStylesheet(LessStylesheet &stylesheet);
@@ -71,14 +71,14 @@ protected:
   /**
    * Skip comments only if they are LESS comments, not CSS comments.
    */
-  virtual void skipWhitespace();
+  void skipWhitespace() override;
 
   /**
    * If an AtRule->getRule() starts with a COLON, add the variable to
    * variables and don't add it to the Stylesheet.
    *
    */
-  bool parseStatement(Stylesheet &stylesheet);
+  bool parseStatement(Stylesheet &stylesheet) override;
 
   /**
    * If the first token for the rule is a COLON, parse a
@@ -89,7 +89,7 @@ protected:
   bool parseAtRuleValue(TokenList &rule);
 
   bool parseVariable(TokenList &value);
-  bool parseSelector(Selector &selector);
+  bool parseSelector(Selector &selector) override;
   bool parseSelectorVariable(Selector &selector);
 
   bool parseRuleset(LessStylesheet &stylesheet,
