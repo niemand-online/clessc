@@ -117,10 +117,8 @@ bool UnprocessedStatement::isDeclaration() {
   while (i != getTokens()->end() && (*i).type == Token::WHITESPACE) {
     i++;
   }
-  if (i == getTokens()->end() || (*i).type != Token::COLON) {
-    return false;
-  }
-  return true;
+
+  return !(i == getTokens()->end() || (*i).type != Token::COLON);
 }
 
 bool UnprocessedStatement::isExtends() {
@@ -177,7 +175,7 @@ bool UnprocessedStatement::processDeclaration(Declaration &declaration) {
   getValue(declaration.getValue());
 
   // fix: If there's a Token (not empty) and if this token is a space
-  if (declaration.getValue().empty() == false &&
+  if (!declaration.getValue().empty() &&
       declaration.getValue().front().type == Token::WHITESPACE) {
     // Then we dismiss it to process the next token which should be a colon
     declaration.getValue().pop_front();

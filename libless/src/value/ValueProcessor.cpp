@@ -141,7 +141,7 @@ bool ValueProcessor::validateCondition(const TokenList &value,
 
   skipWhitespace(i, end);
 
-  while (ret == true && i != value.end() && *i == "and") {
+  while (ret && i != value.end() && *i == "and") {
     i++;
 
     skipWhitespace(i, end);
@@ -696,9 +696,8 @@ bool ValueProcessor::needsSpace(const Token &t, bool before) const {
     return false;
   if (before && t.type == Token::PAREN_CLOSED)
     return false;
-  if (before && t == ",")
-    return false;
-  return true;
+
+  return !(before && t == ",");
 }
 
 void ValueProcessor::skipWhitespace(TokenList::const_iterator &i,

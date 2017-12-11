@@ -120,7 +120,7 @@ void Stylesheet::process(Stylesheet& s) {
   LogStream().notice(1) << "Processing stylesheet";
 
   for (i = statements.begin(); i != statements.end(); i++) {
-    if ((*i)->isReference() == false)
+    if (!(*i)->isReference())
       (*i)->process(s);
   }
 

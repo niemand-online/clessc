@@ -66,10 +66,7 @@ void ProcessingContext::getFunctions(list<const Function *> &functionList,
 }
 
 bool ProcessingContext::isInStack(const Function &function) const {
-  if (stack != nullptr)
-    return stack->isInStack(function);
-  else
-    return nullptr;
+  return stack != nullptr && stack->isInStack(function);
 }
 
 void ProcessingContext::addExtension(Extension &extension) {

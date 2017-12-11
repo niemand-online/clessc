@@ -126,7 +126,7 @@ bool LessParser::parseVariable(TokenList &value) {
   tokenizer->readNextToken();
   CssParser::skipWhitespace();
 
-  if (parseValue(value) == false || value.size() == 0) {
+  if (!parseValue(value) || value.size() == 0) {
     throw ParseException(tokenizer->getToken(), "value for variable");
   }
   if (tokenizer->getTokenType() != Token::DELIMITER) {

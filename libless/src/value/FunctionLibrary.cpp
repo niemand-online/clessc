@@ -55,9 +55,7 @@ bool FunctionLibrary::checkArguments(
     }
   }
 
-  if (it != arguments.end())
-    return false;
-  return true;
+  return it == arguments.end();
 }
 
 const char* FunctionLibrary::functionDefToString(const char* functionName,
