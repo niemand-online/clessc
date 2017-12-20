@@ -71,7 +71,7 @@ NumberValue::NumberValue(const NumberValue& n) {
 
 void NumberValue::verifyUnits(const NumberValue& n) {
   if (type == Value::DIMENSION && n.type == Value::DIMENSION &&
-      getUnit().compare(n.getUnit()) != 0) {
+      getUnit() != n.getUnit()) {
     setValue(convert(n.getUnit()));
     setUnit(n.getUnit());
   }
@@ -453,8 +453,7 @@ Value* NumberValue::sin(const vector<const Value*>& args) {
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
-    if (unit.compare("rad") != 0 && unit.compare("deg") != 0 &&
-        unit.compare("grad") != 0 && unit.compare("turn") != 0) {
+    if (unit != "rad" && unit != "deg" && unit != "grad" && unit != "turn") {
       throw ValueException(
           "sin() requires rad, deg, "
           "grad or turn units.",
@@ -489,8 +488,7 @@ Value* NumberValue::cos(const vector<const Value*>& args) {
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
-    if (unit.compare("rad") != 0 && unit.compare("deg") != 0 &&
-        unit.compare("grad") != 0 && unit.compare("turn") != 0) {
+    if (unit != "rad" && unit != "deg" && unit != "grad" && unit != "turn") {
       throw ValueException(
           "cos() requires rad, deg, "
           "grad or turn units.",
@@ -525,8 +523,7 @@ Value* NumberValue::tan(const vector<const Value*>& args) {
 
   if (n->type == Value::DIMENSION) {
     unit = n->getUnit();
-    if (unit.compare("rad") != 0 && unit.compare("deg") != 0 &&
-        unit.compare("grad") != 0 && unit.compare("turn") != 0) {
+    if (unit != "rad" && unit != "deg" && unit != "grad" && unit != "turn") {
       throw ValueException(
           "ta() requires rad, deg, "
           "grad or turn units.",

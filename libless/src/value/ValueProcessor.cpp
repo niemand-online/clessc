@@ -442,7 +442,7 @@ Value *ValueProcessor::processConstant(TokenList::const_iterator &i,
 
       } else if ((ret = processUnit(token)) != nullptr) {
         return ret;
-      } else if (token.compare("true") == 0) {
+      } else if (token == "true") {
         return new BooleanValue(token, true);
       } else {
         return new StringValue(token, false);
@@ -675,9 +675,8 @@ UnitValue *ValueProcessor::processUnit(Token &t) const {
   size_t pos;
   if (t.size() == 2 && (pos = units.find(t)) != string::npos && pos % 2 == 0) {
     return new UnitValue(t);
-  } else if (t.compare("m") == 0 || t.compare("s") == 0 ||
-             t.compare("rad") == 0 || t.compare("deg") == 0 ||
-             t.compare("grad") == 0 || t.compare("turn") == 0) {
+  } else if (t == "m" || t == "s" || t == "rad" || t == "deg" || t == "grad" ||
+             t == "turn") {
     return new UnitValue(t);
   } else
     return nullptr;

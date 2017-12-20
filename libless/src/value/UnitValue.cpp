@@ -64,97 +64,94 @@ BooleanValue *UnitValue::equals(const Value &v) const {
 }
 
 UnitValue::UnitGroup UnitValue::getUnitGroup(const string &unit) {
-  if (unit.compare("m") == 0 || unit.compare("cm") == 0 ||
-      unit.compare("mm") == 0 || unit.compare("in") == 0 ||
-      unit.compare("pt") == 0 || unit.compare("pc") == 0 ||
-      unit.compare("px") == 0) {
+  if (unit == "m" || unit == "cm" || unit == "mm" || unit == "in" ||
+      unit == "pt" || unit == "pc" || unit == "px") {
     return LENGTH;
   }
-  if (unit.compare("s") == 0 || unit.compare("ms") == 0) {
+  if (unit == "s" || unit == "ms") {
     return TIME;
   }
-  if (unit.compare("rad") == 0 || unit.compare("deg") == 0 ||
-      unit.compare("grad") == 0 || unit.compare("turn") == 0) {
+  if (unit == "rad" || unit == "deg" || unit == "grad" || unit == "turn") {
     return ANGLE;
   }
   return NO_GROUP;
 }
 
 double UnitValue::lengthToPx(const double length, const string &unit) {
-  if (unit.compare("m") == 0)
+  if (unit == "m")
     return length * (96 / .0254);
 
-  if (unit.compare("cm") == 0)
+  if (unit == "cm")
     return length * (96 / 2.54);
 
-  if (unit.compare("mm") == 0)
+  if (unit == "mm")
     return length * (96 / 25.4);
 
-  if (unit.compare("in") == 0)
+  if (unit == "in")
     return length * 96;
 
-  if (unit.compare("pt") == 0)
+  if (unit == "pt")
     return length * (4 / 3);
 
-  if (unit.compare("pc") == 0)
+  if (unit == "pc")
     return length * 16;
 
-  if (unit.compare("px") == 0)
+  if (unit == "px")
     return length;
 
   return -1;
 }
 double UnitValue::pxToLength(const double px, const string &unit) {
-  if (unit.compare("m") == 0)
+  if (unit == "m")
     return px / (96 / .254);
 
-  if (unit.compare("cm") == 0)
+  if (unit == "cm")
     return px / (96 / 2.54);
 
-  if (unit.compare("mm") == 0)
+  if (unit == "mm")
     return px / (96 / 25.4);
 
-  if (unit.compare("in") == 0)
+  if (unit == "in")
     return px / 96;
 
-  if (unit.compare("pt") == 0)
+  if (unit == "pt")
     return px / (4 / 3);
 
-  if (unit.compare("pc") == 0)
+  if (unit == "pc")
     return px / 16;
 
-  if (unit.compare("px") == 0)
+  if (unit == "px")
     return px;
 
   return -1;
 }
 double UnitValue::timeToMs(const double time, const string &unit) {
-  if (unit.compare("s") == 0)
+  if (unit == "s")
     return time * 1000;
-  if (unit.compare("ms") == 0)
+  if (unit == "ms")
     return time;
   return -1;
 }
 double UnitValue::msToTime(const double ms, const string &unit) {
-  if (unit.compare("s") == 0)
+  if (unit == "s")
     return ms / 1000;
-  if (unit.compare("ms") == 0)
+  if (unit == "ms")
     return ms;
   return -1;
 }
 double UnitValue::angleToRad(const double angle, const string &unit) {
   const double pi = 3.141592653589793;
 
-  if (unit.compare("rad") == 0)
+  if (unit == "rad")
     return angle;
 
-  if (unit.compare("deg") == 0)
+  if (unit == "deg")
     return angle / 180 * pi;
 
-  if (unit.compare("grad") == 0)
+  if (unit == "grad")
     return angle / 200 * pi;
 
-  if (unit.compare("turn") == 0)
+  if (unit == "turn")
     return angle * 2 * pi;
 
   return -1;
@@ -162,16 +159,16 @@ double UnitValue::angleToRad(const double angle, const string &unit) {
 double UnitValue::radToAngle(const double rad, const string &unit) {
   const double pi = 3.141592653589793;
 
-  if (unit.compare("rad") == 0)
+  if (unit == "rad")
     return rad;
 
-  if (unit.compare("deg") == 0)
+  if (unit == "deg")
     return rad / pi * 180;
 
-  if (unit.compare("grad") == 0)
+  if (unit == "grad")
     return rad / pi * 200;
 
-  if (unit.compare("turn") == 0)
+  if (unit == "turn")
     return rad / (2 * pi);
 
   return -1;
