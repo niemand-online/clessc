@@ -5,9 +5,6 @@
 #include "less/value/BooleanValue.h"
 #include "less/value/Color.h"
 
-#define max(x, y) x > y ? x : y
-#define min(x, y) x < y ? x : y
-
 using namespace std;
 
 template <class T>
@@ -20,13 +17,13 @@ inline string to_string(const T& t) {
 double Color::maxArray(double* array, const size_t len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
-    ret = max(ret, array[i]);
+    ret = std::max(ret, array[i]);
   return ret;
 }
 double Color::minArray(double* array, const size_t len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
-    ret = min(ret, array[i]);
+    ret = std::min(ret, array[i]);
   return ret;
 }
 
@@ -213,16 +210,24 @@ Value* Color::add(const Value& v) const {
   switch (v.type) {
     case COLOR:
       c = dynamic_cast<const Color*>(&v);
-      return new Color(min(color[RGB_RED] + c->getRed(), 255),
-                       min(color[RGB_GREEN] + c->getGreen(), 255),
-                       min(color[RGB_BLUE] + c->getBlue(), 255));
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] + c->getRed()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] + c->getGreen()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] + c->getBlue()), 255));
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
       n = dynamic_cast<const NumberValue*>(&v);
-      return new Color(min(color[RGB_RED] + n->getValue(), 255),
-                       min(color[RGB_GREEN] + n->getValue(), 255),
-                       min(color[RGB_BLUE] + n->getValue(), 255));
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] + n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] + n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] + n->getValue()), 255));
 
     case STRING:
       s = dynamic_cast<const StringValue*>(&v);
@@ -256,9 +261,13 @@ Value* Color::substract(const Value& v) const {
     case DIMENSION:
       n = dynamic_cast<const NumberValue*>(&v);
 
-      return new Color(max(color[RGB_RED] - n->getValue(), 0),
-                       max(color[RGB_GREEN] - n->getValue(), 0),
-                       max(color[RGB_BLUE] - n->getValue(), 0));
+      return new Color(
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] - n->getValue()), 0),
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] - n->getValue()), 0),
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] - n->getValue()), 0));
     default:
       throw ValueException(
           "You can only substract a color or \
@@ -275,16 +284,24 @@ Value* Color::multiply(const Value& v) const {
     case COLOR:
       c = dynamic_cast<const Color*>(&v);
 
-      return new Color(min(color[RGB_RED] * c->getRed(), 255),
-                       min(color[RGB_GREEN] * c->getGreen(), 255),
-                       min(color[RGB_BLUE] * c->getBlue(), 255));
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] * c->getRed()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] * c->getGreen()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] * c->getBlue()), 255));
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
       n = dynamic_cast<const NumberValue*>(&v);
-      return new Color(min(color[RGB_RED] * n->getValue(), 255),
-                       min(color[RGB_GREEN] * n->getValue(), 255),
-                       min(color[RGB_BLUE] * n->getValue(), 255));
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] * n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] * n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] * n->getValue()), 255));
 
     default:
       throw ValueException(
@@ -355,7 +372,7 @@ void Color::setRGB(unsigned int red, unsigned int green, unsigned int blue) {
   updateTokens();
 }
 void Color::setAlpha(double alpha) {
-  this->alpha = min(max(alpha, 0.0), 1.0);
+  this->alpha = std::min(std::max(alpha, 0.0), 1.0);
   updateTokens();
 }
 double Color::getAlpha() const {
@@ -462,26 +479,28 @@ Value* Color::lighten(const vector<const Value*>& arguments) {
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   return Color::fromHSL(
-      hsl[0], hsl[1] * 100, min(hsl[2] * 100 + value, 100.00));
+      hsl[0], hsl[1] * 100, std::min(hsl[2] * 100 + value, 100.00));
 }
 Value* Color::darken(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(hsl[0], hsl[1] * 100, max(hsl[2] * 100 - value, 0.00));
+  return Color::fromHSL(
+      hsl[0], hsl[1] * 100, std::max(hsl[2] * 100 - value, 0.00));
 }
 Value* Color::saturate(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   return Color::fromHSL(
-      hsl[0], min(hsl[1] * 100 + value, 100.00), hsl[2] * 100);
+      hsl[0], std::min(hsl[1] * 100 + value, 100.00), hsl[2] * 100);
 }
 Value* Color::desaturate(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(hsl[0], max(hsl[1] * 100 - value, 0.00), hsl[2] * 100);
+  return Color::fromHSL(
+      hsl[0], std::max(hsl[1] * 100 - value, 0.00), hsl[2] * 100);
 }
 
 Value* Color::fadein(const vector<const Value*>& arguments) {
