@@ -455,7 +455,6 @@ bool LessParser::importFile(Token uri,
   extension_pos = uri.rfind('.', pathend);
   if (extension_pos == string::npos) {
     uri.insert(pathend, ".less");
-    pathend += 5;
     extension = "less";
   } else
     extension = uri.substr(extension_pos + 1, pathend);

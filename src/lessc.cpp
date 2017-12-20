@@ -73,7 +73,7 @@ char* createPath(const char* path, size_t len) {
 
 void parsePathList(const char* path, std::list<const char*>& paths) {
   const char* start = path;
-  const char* end = path;
+  const char* end;
   size_t len;
 
   while ((end = std::strchr(start, ':')) != nullptr) {
@@ -294,8 +294,7 @@ int main(int argc, char* argv[]) {
         writer->writeSourceMapUrl(sourcemap_file.c_str());
         sourcemap->close();
         delete sourcemap;
-        if (sourcemap_s != nullptr)
-          delete sourcemap_s;
+        delete sourcemap_s;
       }
 
       delete writer;

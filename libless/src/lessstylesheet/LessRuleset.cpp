@@ -22,8 +22,7 @@ LessRuleset::~LessRuleset() {
     nestedRules.pop_back();
   }
   unprocessedStatements.clear();
-  if (selector != nullptr)
-    delete selector;
+  delete selector;
 }
 
 void LessRuleset::setSelector(const Selector& selector) {

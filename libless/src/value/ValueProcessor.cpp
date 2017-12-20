@@ -90,7 +90,6 @@ void ValueProcessor::processValue(TokenList &value,
   LogStream().notice(2) << "Processed: " << newvalue.toString();
 
   value = newvalue;
-  return;
 }
 
 bool ValueProcessor::needsProcessing(const TokenList &value) const {
