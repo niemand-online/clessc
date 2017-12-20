@@ -102,13 +102,13 @@ bool parseInput(LessStylesheet& stylesheet,
 
   try {
     parser.parseStylesheet(stylesheet);
-  } catch (ParseException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Parse Error: " << e->what();
+  } catch (ParseException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Parse Error: " << e.what();
     return false;
-  } catch (exception* e) {
-    LogStream().error() << " Error: " << e->what();
+  } catch (exception& e) {
+    LogStream().error() << " Error: " << e.what();
     return false;
   }
   auto& verbose1Stream = LogStream().notice(1) << "Source files: ";
@@ -123,19 +123,19 @@ bool processStylesheet(LessStylesheet& stylesheet, Stylesheet& css) {
   try {
     stylesheet.process(css, context);
 
-  } catch (ParseException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Parse Error: " << e->what();
+  } catch (ParseException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Parse Error: " << e.what();
     return false;
 
-  } catch (ValueException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Error: " << e->what();
+  } catch (ValueException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Error: " << e.what();
     return false;
-  } catch (exception* e) {
-    LogStream().error() << "Error: " << e->what();
+  } catch (exception& e) {
+    LogStream().error() << "Error: " << e.what();
     return false;
   }
   return true;
@@ -304,8 +304,8 @@ int main(int argc, char* argv[]) {
       return 1;
     delete[] source;
 
-  } catch (IOException* e) {
-    LogStream().error() << " Error: " << e->what();
+  } catch (IOException& e) {
+    LogStream().error() << " Error: " << e.what();
     return 1;
   }
 
