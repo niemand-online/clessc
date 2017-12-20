@@ -9,7 +9,7 @@ Mixin::Mixin(const Selector &name) {
   this->name = name;
 }
 
-const TokenList *Mixin::getArgument(const size_t i) const {
+const TokenList *Mixin::getArgument(const size_t &i) const {
   if (i < arguments.size())
     return &arguments[i];
   else

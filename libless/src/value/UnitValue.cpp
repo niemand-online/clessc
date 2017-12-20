@@ -77,7 +77,7 @@ UnitValue::UnitGroup UnitValue::getUnitGroup(const string &unit) {
   return NO_GROUP;
 }
 
-double UnitValue::lengthToPx(const double length, const string &unit) {
+double UnitValue::lengthToPx(const double &length, const string &unit) {
   if (unit == "m")
     return length * (96 / .0254);
 

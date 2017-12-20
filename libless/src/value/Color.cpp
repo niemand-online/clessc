@@ -13,13 +13,13 @@ inline string to_string(const T& t) {
   return ss.str();
 }
 
-double Color::maxArray(double* array, const size_t len) const {
+double Color::maxArray(double* array, const size_t& len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
     ret = std::max(ret, array[i]);
   return ret;
 }
-double Color::minArray(double* array, const size_t len) const {
+double Color::minArray(double* array, const size_t& len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
     ret = std::min(ret, array[i]);

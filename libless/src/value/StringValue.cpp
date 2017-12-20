@@ -70,8 +70,7 @@ string StringValue::getString() const {
   return strvalue;
 }
 void StringValue::setString(const string& newValue) {
-  string s = newValue;
-  this->strvalue = s;
+  this->strvalue = newValue;
   updateTokens();
 }
 

@@ -26,7 +26,7 @@ public:
   BooleanValue *equals(const Value &v) const override;
 
   static UnitGroup getUnitGroup(const std::string &unit);
-  static double lengthToPx(const double length, const std::string &unit);
+  static double lengthToPx(const double &length, const std::string &unit);
   static double pxToLength(double px, const std::string &unit);
 
   static double timeToMs(double time, const std::string &unit);

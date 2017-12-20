@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "less/css/ParseException.h"
 
 using namespace std;
@@ -8,11 +10,11 @@ ParseException::ParseException(string found,
                                unsigned int column,
                                string source) {
   err.append("Found \"");
-  err.append(translate(found));
+  err.append(translate(std::move(found)));
   err.append("\" when expecting ");
   err.append(expected);
   setLocation(line, column);
-  this->source = source;
+  this->source = std::move(source);
 }
 
 ParseException::ParseException(string found,
@@ -21,11 +23,11 @@ ParseException::ParseException(string found,
                                unsigned int column,
                                string source) {
   err.append("Found \"");
-  err.append(translate(found));
+  err.append(translate(std::move(found)));
   err.append("\" when expecting ");
   err.append(expected);
   setLocation(line, column);
-  this->source = source;
+  this->source = std::move(source);
 }
 ParseException::ParseException(const char* found,
                                const char* expected,
@@ -40,7 +42,7 @@ ParseException::ParseException(const char* found,
   err.append("\" when expecting ");
   err.append(expected);
   setLocation(line, column);
-  this->source = source;
+  this->source = std::move(source);
 }
 ParseException::ParseException(Token& found, const char* expected) {
   err.append("Found \"");
@@ -74,7 +76,7 @@ unsigned int ParseException::getColumn() const {
  * URL or file name where the Less code is located.
  */
 void ParseException::setSource(string source) {
-  this->source = source;
+  this->source = std::move(source);
 }
 
 string ParseException::getSource() const {

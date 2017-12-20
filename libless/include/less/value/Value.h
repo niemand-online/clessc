@@ -57,7 +57,7 @@ public:
    * B - Boolean
    * R - URL
    */
-  static Type codeToType(const char code);
+  static Type codeToType(const char& code);
 };
 
 #endif  // __less_value_Value_h__

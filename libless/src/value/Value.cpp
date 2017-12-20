@@ -77,7 +77,7 @@ const char* Value::typeToString(const Type& t) {
   }
   return "Undefined";
 }
-Value::Type Value::codeToType(const char code) {
+Value::Type Value::codeToType(const char& code) {
   switch (code) {
     case 'N':
       return NUMBER;

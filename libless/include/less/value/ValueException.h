@@ -2,6 +2,7 @@
 #define __less_value_ValueException_h__
 
 #include <string>
+#include <utility>
 #include "less/TokenList.h"
 
 /**
@@ -14,7 +15,7 @@ public:
   unsigned int line, column;
 
   ValueException(std::string message, const TokenList& source) {
-    err = message;
+    err = std::move(message);
     this->_source = source.front().source;
     line = source.front().line;
     column = source.front().column;

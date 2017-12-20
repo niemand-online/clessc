@@ -18,8 +18,8 @@ private:
   unsigned int color[3];
   double alpha;
 
-  double maxArray(double* array, const size_t len) const;
-  double minArray(double* array, const size_t len) const;
+  double maxArray(double* array, const size_t& len) const;
+  double minArray(double* array, const size_t& len) const;
 
   void updateTokens();
 
