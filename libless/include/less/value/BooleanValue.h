@@ -13,7 +13,7 @@ private:
   bool value;
 
 public:
-  BooleanValue(bool value);
+  explicit BooleanValue(bool value);
   BooleanValue(const Token &t, bool value);
   ~BooleanValue() override = default;
 

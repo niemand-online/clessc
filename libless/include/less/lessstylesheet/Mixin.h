@@ -32,7 +32,7 @@ public:
   Selector name;
 
   Mixin() = default;
-  Mixin(const Selector &name);
+  explicit Mixin(const Selector &name);
   ~Mixin() override = default;
 
   const TokenList *getArgument(const std::size_t i) const;

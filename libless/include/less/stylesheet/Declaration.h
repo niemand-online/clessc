@@ -15,7 +15,7 @@ private:
 
 public:
   Declaration() = default;
-  Declaration(const Token &property);
+  explicit Declaration(const Token &property);
   ~Declaration() override = default;
   void setProperty(const Token &property);
   void setValue(const TokenList &value);

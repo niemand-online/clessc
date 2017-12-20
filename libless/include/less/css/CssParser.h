@@ -159,7 +159,7 @@ public:
   /**
    * Initializes the CssParser with the given CssTokenizer argument.
    */
-  CssParser(CssTokenizer &tokenizer);
+  explicit CssParser(CssTokenizer &tokenizer);
 
   virtual ~CssParser() = default;
 

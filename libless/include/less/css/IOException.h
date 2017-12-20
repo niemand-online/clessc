@@ -7,11 +7,11 @@ class IOException : public std::exception {
 public:
   const char* err;
 
-  IOException(std::string& err) {
+  explicit IOException(std::string& err) {
     this->err = err.c_str();
   }
 
-  IOException(const char* err) {
+  explicit IOException(const char* err) {
     this->err = err;
   }
 

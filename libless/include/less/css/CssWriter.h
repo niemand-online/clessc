@@ -22,7 +22,7 @@ protected:
 
 public:
   CssWriter();
-  CssWriter(std::ostream &out);
+  explicit CssWriter(std::ostream &out);
   CssWriter(std::ostream &out, SourceMapWriter &sourcemap);
 
   const char *rootpath = nullptr;

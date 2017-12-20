@@ -25,7 +25,7 @@ private:
 
 public:
   Color();
-  Color(Token& token);
+  explicit Color(Token& token);
   Color(unsigned int red, unsigned int green, unsigned int blue);
   Color(unsigned int red, unsigned int green, unsigned int blue, double alpha);
   Color(const Color& color);

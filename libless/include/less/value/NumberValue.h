@@ -16,8 +16,8 @@ class NumberValue : public Value {
   double convert(const std::string &unit) const;
 
 public:
-  NumberValue(const Token &token);
-  NumberValue(double value);
+  explicit NumberValue(const Token &token);
+  explicit NumberValue(double value);
   NumberValue(double value, Token::Type type, const std::string *unit);
   NumberValue(const NumberValue &n);
   ~NumberValue() override = default;

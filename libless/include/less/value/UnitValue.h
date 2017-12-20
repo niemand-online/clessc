@@ -12,7 +12,7 @@ class UnitValue : public Value {
 public:
   enum UnitGroup { NO_GROUP, LENGTH, TIME, ANGLE };
 
-  UnitValue(Token &token);
+  explicit UnitValue(Token &token);
   ~UnitValue() override = default;
 
   const char *getUnit() const;

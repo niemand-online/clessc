@@ -17,7 +17,7 @@ protected:
   void writeSelector(const TokenList &selector) override;
 
 public:
-  CssPrettyWriter(std::ostream &out) : CssWriter(out) {
+  explicit CssPrettyWriter(std::ostream &out) : CssWriter(out) {
     indent_size = 0;
   };
   CssPrettyWriter(std::ostream &out, SourceMapWriter &sourcemap)

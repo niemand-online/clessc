@@ -26,7 +26,7 @@ protected:
 
 public:
   Ruleset() = default;
-  Ruleset(const Selector &selector);
+  explicit Ruleset(const Selector &selector);
   ~Ruleset() override;
   virtual void setSelector(const Selector &selector);
 

@@ -14,7 +14,7 @@ private:
 
 public:
   Extension();
-  Extension(bool all);
+  explicit Extension(bool all);
   virtual ~Extension() = default;
 
   Selector& getTarget();

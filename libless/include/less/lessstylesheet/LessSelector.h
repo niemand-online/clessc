@@ -33,7 +33,7 @@ private:
   bool parseConditions(TokenList &selector);
 
 public:
-  LessSelector(const Selector &original);
+  explicit LessSelector(const Selector &original);
   ~LessSelector() override = default;
 
   std::list<Extension> &getExtensions();

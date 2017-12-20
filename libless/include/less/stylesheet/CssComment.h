@@ -13,7 +13,7 @@ protected:
 
 public:
   CssComment();
-  CssComment(const Token &comment);
+  explicit CssComment(const Token &comment);
 
   void setComment(const Token &comment);
   Token &getComment();

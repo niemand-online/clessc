@@ -49,7 +49,7 @@ protected:
 
 public:
   LessRuleset();
-  LessRuleset(const Selector &selector);
+  explicit LessRuleset(const Selector &selector);
   ~LessRuleset() override;
 
   void setSelector(const Selector &selector) override;

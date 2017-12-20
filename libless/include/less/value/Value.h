@@ -26,7 +26,7 @@ public:
     URL
   } type;
   Value() = default;
-  Value(const Token& token);
+  explicit Value(const Token& token);
   virtual ~Value() = default;
 
   void setLocation(const Token& ref);
