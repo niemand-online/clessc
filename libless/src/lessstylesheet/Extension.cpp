@@ -5,8 +5,7 @@ Extension::Extension() {
   all = false;
 }
 
-Extension::Extension(bool all) {
-  all = true;
+Extension::Extension(bool) : all(true) {
 }
 
 Selector &Extension::getTarget() {

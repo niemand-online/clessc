@@ -5,7 +5,7 @@
 using namespace std;
 
 Selector::~Selector() {
-  clear();
+  this->clear();
 }
 
 void Selector::addPrefix(const Selector &prefix) {
@@ -22,7 +22,7 @@ void Selector::addPrefix(const Selector &prefix) {
   split(sepParts);
   prefix.split(prefixParts);
 
-  clear();
+  this->clear();
 
   for (sepIt = sepParts.begin(); sepIt != sepParts.end(); sepIt++) {
     tmp = &(*sepIt);

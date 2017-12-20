@@ -8,8 +8,8 @@
 
 #ifdef WITH_LIBJPEG
 #include <jpeglib.h>
-#include <setjmp.h>
-#include <stdio.h>
+#include <csetjmp>
+#include <cstdio>
 
 using namespace std;
 

@@ -330,11 +330,13 @@ bool CssTokenizer::readString() {
     } else if (lastReadEq('\n') || lastReadEq('\r') || lastReadEq('\f')) {
       throw ParseException(
           "end of line", "end of string", line, column, source);
-    } else if (lastReadEq('\\'))
+    } else if (lastReadEq('\\')) {
       // note that even though readEscape() returns false it still
       // eats the '\'.
-      readEscape() || readNewline();
-    else {
+      if (!readEscape()) {
+        readNewline();
+      }
+    } else {
       currentToken.append(lastRead);
       readChar();
     }
