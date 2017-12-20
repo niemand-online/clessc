@@ -31,13 +31,13 @@ public:
     return err.c_str();
   }
 
-  unsigned int getLineNumber() {
+  unsigned int getLineNumber() const {
     return line;
   }
-  unsigned int getColumn() {
+  unsigned int getColumn() const {
     return column;
   }
-  const char* getSource() {
+  const char* getSource() const {
     return _source;
   }
 };

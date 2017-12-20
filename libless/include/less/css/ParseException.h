@@ -42,15 +42,15 @@ public:
   ~ParseException() throw() override = default;
 
   void setLocation(unsigned int line, unsigned int column);
-  unsigned int getLineNumber();
-  unsigned int getColumn();
+  unsigned int getLineNumber() const;
+  unsigned int getColumn() const;
 
   /**
    * URL or file name where the Less code is located.
    */
   void setSource(std::string source);
 
-  std::string getSource();
+  std::string getSource() const;
   const char* what() const throw() override;
 
 protected:

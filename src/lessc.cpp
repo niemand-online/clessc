@@ -102,12 +102,12 @@ bool parseInput(LessStylesheet& stylesheet,
 
   try {
     parser.parseStylesheet(stylesheet);
-  } catch (ParseException& e) {
+  } catch (const ParseException& e) {
     LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
                         << ", Column " << e.getColumn()
                         << " Parse Error: " << e.what();
     return false;
-  } catch (exception& e) {
+  } catch (const exception& e) {
     LogStream().error() << " Error: " << e.what();
     return false;
   }
@@ -123,18 +123,18 @@ bool processStylesheet(LessStylesheet& stylesheet, Stylesheet& css) {
   try {
     stylesheet.process(css, context);
 
-  } catch (ParseException& e) {
+  } catch (const ParseException& e) {
     LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
                         << ", Column " << e.getColumn()
                         << " Parse Error: " << e.what();
     return false;
 
-  } catch (ValueException& e) {
+  } catch (const ValueException& e) {
     LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
                         << ", Column " << e.getColumn()
                         << " Error: " << e.what();
     return false;
-  } catch (exception& e) {
+  } catch (const exception& e) {
     LogStream().error() << "Error: " << e.what();
     return false;
   }
@@ -304,7 +304,7 @@ int main(int argc, char* argv[]) {
       return 1;
     delete[] source;
 
-  } catch (IOException& e) {
+  } catch (const IOException& e) {
     LogStream().error() << " Error: " << e.what();
     return 1;
   }

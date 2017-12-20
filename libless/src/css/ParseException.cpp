@@ -63,10 +63,10 @@ void ParseException::setLocation(unsigned int line, unsigned int column) {
   this->column = column;
 }
 
-unsigned int ParseException::getLineNumber() {
+unsigned int ParseException::getLineNumber() const {
   return line;
 }
-unsigned int ParseException::getColumn() {
+unsigned int ParseException::getColumn() const {
   return column;
 }
 
@@ -77,7 +77,7 @@ void ParseException::setSource(string source) {
   this->source = source;
 }
 
-string ParseException::getSource() {
+string ParseException::getSource() const {
   return source;
 }
 
