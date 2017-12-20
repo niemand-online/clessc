@@ -15,16 +15,16 @@ private:
   TokenList rule;
 
 public:
-  AtRule(const Token &keyword);
-  virtual ~AtRule();
+  explicit AtRule(const Token &keyword);
+  ~AtRule() override = default;
   void setKeyword(const Token &keyword);
   void setRule(const TokenList &rule);
 
   Token &getKeyword();
   TokenList &getRule();
 
-  virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer);
+  void process(Stylesheet &s) override;
+  void write(CssWriter &writer) override;
 };
 
 #endif  // __less_stylesheet_AtRule_h__

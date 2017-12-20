@@ -1,4 +1,5 @@
 #include "less/stylesheet/CssComment.h"
+#include "less/stylesheet/Ruleset.h"
 
 CssComment::CssComment() {
   comment = "";

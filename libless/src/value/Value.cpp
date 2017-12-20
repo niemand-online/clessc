@@ -1,12 +1,6 @@
 #include "less/value/Value.h"
 #include "less/value/BooleanValue.h"
 
-Value::Value() {
-}
-
-Value::~Value() {
-}
-
 void Value::setLocation(const Token& ref) {
   tokens.front().setLocation(ref);
 }
@@ -83,7 +77,7 @@ const char* Value::typeToString(const Type& t) {
   }
   return "Undefined";
 }
-Value::Type Value::codeToType(const char code) {
+Value::Type Value::codeToType(const char& code) {
   switch (code) {
     case 'N':
       return NUMBER;

@@ -1,5 +1,11 @@
 #include "less/stylesheet/Stylesheet.h"
 #include "less/LogStream.h"
+#include "less/stylesheet/AtRule.h"
+#include "less/stylesheet/MediaQuery.h"
+#include "less/stylesheet/Ruleset.h"
+#include "less/stylesheet/StylesheetStatement.h"
+
+using namespace std;
 
 Stylesheet::~Stylesheet() {
   rulesets.clear();
@@ -26,7 +32,7 @@ void Stylesheet::addAtRule(AtRule& rule) {
 }
 
 Ruleset* Stylesheet::createRuleset() {
-  Ruleset* r = new Ruleset();
+  auto* r = new Ruleset();
 
   LogStream().notice(3) << "Creating ruleset";
 
@@ -36,7 +42,7 @@ Ruleset* Stylesheet::createRuleset() {
 }
 
 Ruleset* Stylesheet::createRuleset(const Selector& selector) {
-  Ruleset* r = new Ruleset(selector);
+  auto* r = new Ruleset(selector);
 
   LogStream().notice(3) << "Creating ruleset: " << selector.toString();
 
@@ -46,7 +52,7 @@ Ruleset* Stylesheet::createRuleset(const Selector& selector) {
 }
 
 AtRule* Stylesheet::createAtRule(const Token& keyword) {
-  AtRule* r = new AtRule(keyword);
+  auto* r = new AtRule(keyword);
 
   LogStream().notice(3) << "Creating @rule";
 
@@ -56,13 +62,13 @@ AtRule* Stylesheet::createAtRule(const Token& keyword) {
 }
 
 CssComment* Stylesheet::createComment() {
-  CssComment* c = new CssComment();
+  auto* c = new CssComment();
   addStatement(*c);
   return c;
 }
 
 MediaQuery* Stylesheet::createMediaQuery() {
-  MediaQuery* q = new MediaQuery();
+  auto* q = new MediaQuery();
 
   LogStream().notice(3) << "Creating media query";
 
@@ -87,34 +93,34 @@ void Stylesheet::deleteMediaQuery(MediaQuery& query) {
   deleteStatement(query);
 }
 
-std::list<AtRule*>& Stylesheet::getAtRules() {
+list<AtRule*>& Stylesheet::getAtRules() {
   return atrules;
 }
-std::list<Ruleset*>& Stylesheet::getRulesets() {
+list<Ruleset*>& Stylesheet::getRulesets() {
   return rulesets;
 }
-std::list<StylesheetStatement*>& Stylesheet::getStatements() {
+list<StylesheetStatement*>& Stylesheet::getStatements() {
   return statements;
 }
 
 Ruleset* Stylesheet::getRuleset(const Selector& selector) {
-  std::list<Ruleset*>::iterator it;
+  list<Ruleset*>::iterator it;
 
   for (it = rulesets.begin(); it != rulesets.end(); it++) {
     if ((*it)->getSelector().match(selector))
       return *it;
   }
-  return NULL;
+  return nullptr;
 }
 
 void Stylesheet::process(Stylesheet& s) {
-  std::list<StylesheetStatement*> statements = getStatements();
-  std::list<StylesheetStatement*>::iterator i;
+  list<StylesheetStatement*> statements = getStatements();
+  list<StylesheetStatement*>::iterator i;
 
   LogStream().notice(1) << "Processing stylesheet";
 
   for (i = statements.begin(); i != statements.end(); i++) {
-    if ((*i)->isReference() == false)
+    if (!(*i)->isReference())
       (*i)->process(s);
   }
 
@@ -122,8 +128,8 @@ void Stylesheet::process(Stylesheet& s) {
 }
 
 void Stylesheet::write(CssWriter& writer) {
-  std::list<StylesheetStatement*> statements = getStatements();
-  std::list<StylesheetStatement*>::iterator i;
+  list<StylesheetStatement*> statements = getStatements();
+  list<StylesheetStatement*>::iterator i;
 
   for (i = statements.begin(); i != statements.end(); i++) {
     (*i)->write(writer);

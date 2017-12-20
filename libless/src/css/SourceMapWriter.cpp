@@ -1,10 +1,12 @@
 #include "less/css/SourceMapWriter.h"
 
+using namespace std;
+
 const char* SourceMapWriter::base64 =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-SourceMapWriter::SourceMapWriter(std::ostream& sourcemap,
-                                 std::list<const char*>& sources,
+SourceMapWriter::SourceMapWriter(ostream& sourcemap,
+                                 list<const char*>& sources,
                                  const char* out_filename,
                                  const char* rootpath,
                                  const char* basepath)
@@ -16,30 +18,27 @@ SourceMapWriter::SourceMapWriter(std::ostream& sourcemap,
   writePreamble(out_filename, rootpath, basepath);
 }
 
-SourceMapWriter::~SourceMapWriter() {
-}
-
 void SourceMapWriter::writePreamble(const char* out_filename,
                                     const char* rootpath,
                                     const char* basepath) {
-  std::list<const char*>::iterator it;
+  list<const char*>::iterator it;
   const char* source;
   size_t bp_l = 0;
 
-  if (basepath != NULL)
+  if (basepath != nullptr)
     bp_l = strlen(basepath);
 
   sourcemap_h << "{";
 
   sourcemap_h << "\"version\" : 3,";
 
-  if (rootpath != NULL) {
+  if (rootpath != nullptr) {
     sourcemap_h << "\"sourceRoot\": \"" << rootpath << "\",";
   }
 
   sourcemap_h << "\"file\": ";
 
-  if (basepath != NULL && strncmp(out_filename, basepath, bp_l) == 0) {
+  if (basepath != nullptr && strncmp(out_filename, basepath, bp_l) == 0) {
     out_filename += bp_l;
   }
 
@@ -52,7 +51,7 @@ void SourceMapWriter::writePreamble(const char* out_filename,
       sourcemap_h << ",";
     source = *it;
 
-    if (basepath != NULL && strncmp(source, basepath, bp_l) == 0) {
+    if (basepath != nullptr && strncmp(source, basepath, bp_l) == 0) {
       source += bp_l;
     }
     sourcemap_h << "\"" << source << "\"";
@@ -65,7 +64,7 @@ void SourceMapWriter::writePreamble(const char* out_filename,
 }
 
 void SourceMapWriter::close() {
-  sourcemap_h << "\"}" << std::endl;
+  sourcemap_h << "\"}" << endl;
 }
 
 void SourceMapWriter::writeMapping(unsigned int column, const Token& source) {
@@ -82,7 +81,7 @@ void SourceMapWriter::writeNewline() {
 }
 
 size_t SourceMapWriter::sourceFileIndex(const char* file) {
-  std::list<const char*>::iterator i;
+  list<const char*>::iterator i;
   size_t pos = 0;
 
   for (i = sources.begin(); i != sources.end(); i++, pos++) {
@@ -95,13 +94,13 @@ size_t SourceMapWriter::sourceFileIndex(const char* file) {
 size_t SourceMapWriter::encodeMapping(unsigned int column,
                                       const Token& source,
                                       char* buffer) {
-  unsigned int srcFileIndex = sourceFileIndex(source.source);
+  size_t srcFileIndex = sourceFileIndex(source.source);
   char* start = buffer;
 
-  buffer += encodeField(column - lastDstColumn, buffer);
-  buffer += encodeField(srcFileIndex - lastSrcFile, buffer);
-  buffer += encodeField(source.line - lastSrcLine, buffer);
-  buffer += encodeField(source.column - lastSrcColumn, buffer);
+  buffer += encodeField(static_cast<int>(column - lastDstColumn), buffer);
+  buffer += encodeField(static_cast<int>(srcFileIndex - lastSrcFile), buffer);
+  buffer += encodeField(static_cast<int>(source.line - lastSrcLine), buffer);
+  buffer += encodeField(static_cast<int>(source.column - lastSrcColumn), buffer);
 
   lastDstColumn = column;
   lastSrcFile = srcFileIndex;
@@ -113,8 +112,8 @@ size_t SourceMapWriter::encodeMapping(unsigned int column,
 
 size_t SourceMapWriter::encodeField(int field, char* buffer) {
   // convert to unsigned to get the binary right
-  unsigned int value = abs(field);
-  unsigned int current = (value & 0xF) << 1;
+  int value = abs(field);
+  int current = (value & 0xF) << 1;
   size_t pos = 0;
 
   if (field < 0) {

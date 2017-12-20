@@ -3,6 +3,7 @@
 
 #include "less/stylesheet/Selector.h"
 #include "less/stylesheet/Stylesheet.h"
+#include "less/stylesheet/StylesheetStatement.h"
 
 class MediaQuery : public Stylesheet, public StylesheetStatement {
 private:
@@ -12,10 +13,10 @@ public:
   Selector& getSelector();
   void setSelector(const Selector& s);
 
-  virtual MediaQuery* createMediaQuery();
+  MediaQuery* createMediaQuery() override;
 
-  virtual void process(Stylesheet& s);
-  virtual void write(CssWriter& writer);
+  void process(Stylesheet& s) override;
+  void write(CssWriter& writer) override;
 };
 
 #endif  // __less_stylesheet_MediaQuery_h__

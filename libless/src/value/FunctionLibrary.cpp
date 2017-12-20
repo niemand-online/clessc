@@ -1,19 +1,21 @@
 #include "less/value/FunctionLibrary.h"
 
+using namespace std;
+
 const FuncInfo* FunctionLibrary::getFunction(const char* functionName) const {
-  std::map<std::string, FuncInfo*>::const_iterator i = map.find(functionName);
+  auto i = map.find(functionName);
 
   if (i != map.end())
     return i->second;
   else
-    return NULL;
+    return nullptr;
 }
 
 void FunctionLibrary::push(
     string name,
     const char* parameterTypes,
     Value* (*func)(const vector<const Value*>& arguments)) {
-  FuncInfo* fi = new FuncInfo();
+  auto* fi = new FuncInfo();
   fi->parameterTypes = parameterTypes;
   fi->func = func;
   map[name] = fi;
@@ -22,10 +24,10 @@ void FunctionLibrary::push(
 bool FunctionLibrary::checkArguments(
     const FuncInfo* fi, const vector<const Value*>& arguments) const {
   const char* types = fi->parameterTypes;
-  vector<const Value*>::const_iterator it = arguments.begin();
-  unsigned int i, len = strlen(types);
+  auto it = arguments.begin();
+  size_t len = strlen(types);
 
-  for (i = 0; i < len; i++) {
+  for (size_t i = 0; i < len; i++) {
     if (it == arguments.end()) {
       if (i + 1 < len && (types[i + 1] == '?' || types[i + 1] == '+')) {
         i++;
@@ -53,25 +55,23 @@ bool FunctionLibrary::checkArguments(
     }
   }
 
-  if (it != arguments.end())
-    return false;
-  return true;
+  return it == arguments.end();
 }
 
 const char* FunctionLibrary::functionDefToString(const char* functionName,
                                                  const FuncInfo* fi) {
-  if (fi == NULL)
+  if (fi == nullptr)
     fi = getFunction(functionName);
-  if (fi == NULL)
+  if (fi == nullptr)
     return "";
 
   string str(functionName);
   const char* types = fi->parameterTypes;
-  unsigned int i, len = strlen(types);
+  size_t len = strlen(types);
   char* retstr;
 
   str.append("(");
-  for (i = 0; i < len; i++) {
+  for (size_t i = 0; i < len; i++) {
     if (types[i] == '.')
       str.append("Any");
     else
@@ -93,7 +93,7 @@ const char* FunctionLibrary::functionDefToString(const char* functionName,
   str.append(")");
 
   retstr = new char[str.length() + 1];
-  std::strcpy(retstr, str.c_str());
+  strcpy(retstr, str.c_str());
 
   return retstr;
 }

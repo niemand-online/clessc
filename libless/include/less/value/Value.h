@@ -25,9 +25,9 @@ public:
     BOOLEAN,
     URL
   } type;
-  Value();
-  Value(const Token& token);
-  virtual ~Value();
+  Value() = default;
+  explicit Value(const Token& token);
+  virtual ~Value() = default;
 
   void setLocation(const Token& ref);
 
@@ -57,9 +57,7 @@ public:
    * B - Boolean
    * R - URL
    */
-  static Type codeToType(const char code);
+  static Type codeToType(const char& code);
 };
-
-#include "less/value/BooleanValue.h"
 
 #endif  // __less_value_Value_h__

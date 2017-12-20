@@ -3,8 +3,6 @@
 
 LessAtRule::LessAtRule(const Token &keyword) : AtRule(keyword) {
 }
-LessAtRule::~LessAtRule() {
-}
 
 void LessAtRule::setLessStylesheet(LessStylesheet &s) {
   lessStylesheet = &s;

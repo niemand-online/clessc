@@ -1,6 +1,8 @@
+#include <less/LogStream.h>
+#include "less/lessstylesheet/LessRuleset.h"
 #include "less/lessstylesheet/Closure.h"
-#include "less/LogStream.h"
-#include "less/lessstylesheet/ProcessingContext.h"
+
+using namespace std;
 
 Closure::Closure(const LessRuleset& ruleset, const MixinCall& stack) {
   this->ruleset = &ruleset;
@@ -58,21 +60,21 @@ LessSelector* Closure::getLessSelector() const {
   return ruleset->getLessSelector();
 }
 
-const TokenList* Closure::getVariable(const std::string& key) const {
+const TokenList* Closure::getVariable(const string& key) const {
   return ruleset->getVariable(key);
 }
 
-const TokenList* Closure::getInheritedVariable(const std::string& key,
+const TokenList* Closure::getInheritedVariable(const string& key,
                                                const MixinCall& stack) const {
   const TokenList* t;
 
   t = ruleset->getInheritedVariable(key, *this->stack);
-  if (t == NULL)
+  if (t == nullptr)
     t = this->stack->getVariable(key);
   return t;
 }
 
-void Closure::getLocalFunctions(std::list<const Function*>& functionList,
+void Closure::getLocalFunctions(list<const Function*>& functionList,
                                 const Mixin& mixin) const {
   ruleset->getFunctions(functionList, mixin, mixin.name.begin());
   if (functionList.empty())

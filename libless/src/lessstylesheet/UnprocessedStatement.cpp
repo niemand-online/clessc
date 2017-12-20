@@ -1,8 +1,8 @@
 #include "less/lessstylesheet/UnprocessedStatement.h"
 #include "less/LogStream.h"
-#include "less/lessstylesheet/LessRuleset.h"
 #include "less/lessstylesheet/LessStylesheet.h"
-#include "less/lessstylesheet/Mixin.h"
+
+using namespace std;
 
 UnprocessedStatement::UnprocessedStatement() {
   property_i = 0;
@@ -13,15 +13,15 @@ Selector *UnprocessedStatement::getTokens() {
 }
 
 void UnprocessedStatement::getProperty(TokenList &tokens) {
-  TokenList::iterator i = this->tokens.begin();
-  std::advance(i, property_i);
+  auto i = this->tokens.begin();
+  advance(i, property_i);
 
   tokens.insert(tokens.begin(), this->tokens.begin(), i);
 }
 
 void UnprocessedStatement::getValue(TokenList &tokens) {
-  TokenList::iterator i = this->tokens.begin();
-  std::advance(i, property_i);
+  auto i = this->tokens.begin();
+  advance(i, property_i);
 
   tokens.insert(tokens.begin(), i, this->tokens.end());
 }
@@ -47,7 +47,7 @@ void UnprocessedStatement::process(Stylesheet &s) {
 
     // process mixin
   } else if (mixin.parse(*getTokens()))
-    mixin.call(s, *getLessRuleset()->getContext(), NULL, getLessRuleset());
+    mixin.call(s, *getLessRuleset()->getContext(), nullptr, getLessRuleset());
 }
 
 void UnprocessedStatement::process(Ruleset &r) {
@@ -92,11 +92,11 @@ void UnprocessedStatement::process(Ruleset &r) {
                                                 &r,
                                                 getLessRuleset())) {
     } else {
-      throw new ParseException(getTokens()->toString(),
-                               "variable, mixin or declaration.",
-                               getTokens()->front().line,
-                               getTokens()->front().column,
-                               getTokens()->front().source);
+      throw ParseException(getTokens()->toString(),
+                           "variable, mixin or declaration.",
+                           getTokens()->front().line,
+                           getTokens()->front().column,
+                           getTokens()->front().source);
     }
   }
 
@@ -104,25 +104,23 @@ void UnprocessedStatement::process(Ruleset &r) {
 }
 
 bool UnprocessedStatement::isDeclaration() {
-  TokenList::iterator i = getTokens()->begin();
+  auto i = getTokens()->begin();
   if (property_i == 0)
     return false;
 
   if ((*i).type == Token::HASH || (*i) == ".")
     return false;
 
-  std::advance(i, property_i);
+  advance(i, property_i);
   while (i != getTokens()->end() && (*i).type == Token::WHITESPACE) {
     i++;
   }
-  if (i == getTokens()->end() || (*i).type != Token::COLON) {
-    return false;
-  }
-  return true;
+
+  return !(i == getTokens()->end() || (*i).type != Token::COLON);
 }
 
 bool UnprocessedStatement::isExtends() {
-  TokenList::iterator i = getTokens()->begin();
+  auto i = getTokens()->begin();
 
   return ((*i) == "&" && (*++i).type == Token::COLON &&
           (*++i).type == Token::IDENTIFIER && (*i) == "extend" &&
@@ -139,7 +137,7 @@ bool UnprocessedStatement::getExtension(TokenList &extension) {
   i = getTokens()->begin();
 
   // &:extends(
-  std::advance(i, 4);
+  advance(i, 4);
 
   for (; i != getTokens()->end() && parentheses > 0; i++) {
     switch ((*i).type) {
@@ -157,11 +155,11 @@ bool UnprocessedStatement::getExtension(TokenList &extension) {
   }
 
   if (parentheses > 0) {
-    throw new ParseException("end of statement",
-                             ")",
-                             getTokens()->front().line,
-                             getTokens()->front().column,
-                             getTokens()->front().source);
+    throw ParseException("end of statement",
+                         ")",
+                         getTokens()->front().line,
+                         getTokens()->front().column,
+                         getTokens()->front().source);
   }
   return true;
 }
@@ -175,7 +173,7 @@ bool UnprocessedStatement::processDeclaration(Declaration &declaration) {
   getValue(declaration.getValue());
 
   // fix: If there's a Token (not empty) and if this token is a space
-  if (declaration.getValue().empty() == false &&
+  if (!declaration.getValue().empty() &&
       declaration.getValue().front().type == Token::WHITESPACE) {
     // Then we dismiss it to process the next token which should be a colon
     declaration.getValue().pop_front();
@@ -183,7 +181,7 @@ bool UnprocessedStatement::processDeclaration(Declaration &declaration) {
 
   if (declaration.getValue().empty() ||
       declaration.getValue().front().type != Token::COLON) {
-    return NULL;
+    return nullptr;
   }
 
   declaration.getValue().pop_front();

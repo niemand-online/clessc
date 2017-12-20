@@ -1,19 +1,18 @@
 #include "less/css/CssWriter.h"
 
+using namespace std;
+
 CssWriter::CssWriter() {
-  out = NULL;
+  out = nullptr;
   column = 0;
-  sourcemap = NULL;
+  sourcemap = nullptr;
 }
 
-CssWriter::CssWriter(std::ostream &out) : out(&out), column(0) {
-  sourcemap = NULL;
+CssWriter::CssWriter(ostream &out) : out(&out), column(0) {
+  sourcemap = nullptr;
 }
-CssWriter::CssWriter(std::ostream &out, SourceMapWriter &sourcemap)
+CssWriter::CssWriter(ostream &out, SourceMapWriter &sourcemap)
     : out(&out), column(0), sourcemap(&sourcemap) {
-}
-
-CssWriter::~CssWriter() {
 }
 
 unsigned int CssWriter::getColumn() {
@@ -25,13 +24,13 @@ void CssWriter::writeStr(const char *str, size_t len) {
   column += len;
 }
 void CssWriter::writeToken(const Token &token) {
-  std::string url;
+  string url;
 
-  if (rootpath != NULL && token.type == Token::URL) {
+  if (rootpath != nullptr && token.type == Token::URL) {
     url = token.getUrlString();
-    if (url.find(':') == std::string::npos) {
+    if (url.find(':') == string::npos) {
       writeStr("url(\"", 5);
-      writeStr(rootpath, std::strlen(rootpath));
+      writeStr(rootpath, strlen(rootpath));
 
       writeStr(url.c_str(), url.size());
       writeStr("\")", 2);
@@ -43,7 +42,7 @@ void CssWriter::writeToken(const Token &token) {
   }
 }
 void CssWriter::writeTokenList(const TokenList &tokens) {
-  TokenList::const_iterator i = tokens.begin();
+  auto i = tokens.begin();
 
   for (; i != tokens.end(); i++) {
     writeToken(*i);
@@ -55,7 +54,7 @@ void CssWriter::writeSelector(const TokenList &selector) {
   bool newselector = true;
 
   for (it = selector.begin(); it != selector.end(); it++) {
-    if (newselector && sourcemap != NULL) {
+    if (newselector && sourcemap != nullptr) {
       sourcemap->writeMapping(column, *it);
       newselector = false;
     }
@@ -68,20 +67,20 @@ void CssWriter::writeSelector(const TokenList &selector) {
 }
 
 void CssWriter::writeValue(const TokenList &value) {
-  TokenList::const_iterator it = value.begin();
+  auto it = value.begin();
   const Token *t;
 
   while (it != value.end() && (*it).type == Token::WHITESPACE) {
     it++;
   }
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, *it);
   t = &(*it);
 
   for (; it != value.end(); it++) {
     if ((*it).source != t->source || (*it).line != t->line) {
-      if (sourcemap != NULL)
+      if (sourcemap != nullptr)
         sourcemap->writeMapping(column, (*it));
       t = &(*it);
     }
@@ -91,13 +90,13 @@ void CssWriter::writeValue(const TokenList &value) {
 }
 
 void CssWriter::writeAtRule(const Token &keyword, const TokenList &rule) {
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, keyword);
 
   writeToken(keyword);
   writeStr(" ", 1);
 
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, rule.front());
 
   writeTokenList(rule);
@@ -117,7 +116,7 @@ void CssWriter::writeRulesetEnd() {
 
 void CssWriter::writeDeclaration(const Token &property,
                                  const TokenList &value) {
-  if (sourcemap != NULL)
+  if (sourcemap != nullptr)
     sourcemap->writeMapping(column, property);
 
   writeToken(property);
@@ -144,6 +143,5 @@ void CssWriter::writeMediaQueryEnd() {
 }
 
 void CssWriter::writeSourceMapUrl(const char *sourcemap_url) {
-  *out << std::endl
-       << "/*# sourceMappingURL=" << sourcemap_url << " */" << std::endl;
+  *out << endl << "/*# sourceMappingURL=" << sourcemap_url << " */" << endl;
 }

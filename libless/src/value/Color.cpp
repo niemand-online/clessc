@@ -2,28 +2,27 @@
 #include <sstream>
 
 #include "less/LogStream.h"
-#include "less/value/Color.h"
+#include "less/value/BooleanValue.h"
 
-#define max(x, y) x > y ? x : y
-#define min(x, y) x < y ? x : y
+using namespace std;
 
 template <class T>
-inline std::string to_string(const T& t) {
-  std::stringstream ss;
+inline string to_string(const T& t) {
+  stringstream ss;
   ss << t;
   return ss.str();
 }
 
-double Color::maxArray(double* array, const size_t len) const {
+double Color::maxArray(double* array, const size_t& len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
-    ret = max(ret, array[i]);
+    ret = std::max(ret, array[i]);
   return ret;
 }
-double Color::minArray(double* array, const size_t len) const {
+double Color::minArray(double* array, const size_t& len) const {
   double ret = array[0];
   for (size_t i = 1; i < len; i++)
-    ret = min(ret, array[i]);
+    ret = std::min(ret, array[i]);
   return ret;
 }
 
@@ -94,7 +93,7 @@ Color::Color() : Value() {
 }
 
 Color::Color(Token& token) : Value() {
-  int len;
+  size_t len;
 
   this->tokens.push_back(token);
 
@@ -105,7 +104,7 @@ Color::Color(Token& token) : Value() {
   else if (token.size() == 7)
     len = 2;
   else {
-    throw new ValueException(
+    throw ValueException(
         "A color value requires either three "
         "or six hexadecimal characters.",
         *this->getTokens());
@@ -186,10 +185,9 @@ Color* Color::fromHSL(double hue, double saturation, double lightness) {
 
   // convert to 0-255 range.
   // add the .5 and truncate to round to int.
-
-  return new Color(rgb[RGB_RED] * 255 + 0.5,
-                   rgb[RGB_GREEN] * 255 + 0.5,
-                   rgb[RGB_BLUE] * 255 + 0.5);
+  return new Color(static_cast<unsigned int>(floor(rgb[RGB_RED] * 255 + 0.5)),
+                   static_cast<unsigned int>(floor(rgb[RGB_GREEN] * 255 + 0.5)),
+                   static_cast<unsigned int>(floor(rgb[RGB_BLUE] * 255 + 0.5)));
 }
 
 Color::Color(const Color& color) {
@@ -201,9 +199,6 @@ Color::Color(const Color& color) {
   updateTokens();
 }
 
-Color::~Color() {
-}
-
 Value* Color::add(const Value& v) const {
   const Color* c;
   const NumberValue* n;
@@ -212,26 +207,34 @@ Value* Color::add(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
-      return new Color(min(color[RGB_RED] + c->getRed(), 255),
-                       min(color[RGB_GREEN] + c->getGreen(), 255),
-                       min(color[RGB_BLUE] + c->getBlue(), 255));
+      c = dynamic_cast<const Color*>(&v);
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] + c->getRed()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] + c->getGreen()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] + c->getBlue()), 255));
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
-      return new Color(min(color[RGB_RED] + n->getValue(), 255),
-                       min(color[RGB_GREEN] + n->getValue(), 255),
-                       min(color[RGB_BLUE] + n->getValue(), 255));
+      n = dynamic_cast<const NumberValue*>(&v);
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] + n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] + n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] + n->getValue()), 255));
 
     case STRING:
-      s = static_cast<const StringValue*>(&v);
+      s = dynamic_cast<const StringValue*>(&v);
       ret = new StringValue(*this, s->getQuotes());
       ret->append(*s);
       return ret;
 
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only add colors with other \
 colors, numbers or strings.",
           *this->getTokens());
@@ -243,7 +246,7 @@ Value* Color::substract(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new Color(
           (color[RGB_RED] > c->getRed() ? color[RGB_RED] - c->getRed() : 0),
           (color[RGB_GREEN] > c->getGreen() ? color[RGB_GREEN] - c->getGreen()
@@ -254,13 +257,17 @@ Value* Color::substract(const Value& v) const {
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
+      n = dynamic_cast<const NumberValue*>(&v);
 
-      return new Color(max(color[RGB_RED] - n->getValue(), 0),
-                       max(color[RGB_GREEN] - n->getValue(), 0),
-                       max(color[RGB_BLUE] - n->getValue(), 0));
+      return new Color(
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] - n->getValue()), 0),
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] - n->getValue()), 0),
+          std::max<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] - n->getValue()), 0));
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only substract a color or \
 a number from a color.",
           *this->getTokens());
@@ -273,21 +280,29 @@ Value* Color::multiply(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
 
-      return new Color(min(color[RGB_RED] * c->getRed(), 255),
-                       min(color[RGB_GREEN] * c->getGreen(), 255),
-                       min(color[RGB_BLUE] * c->getBlue(), 255));
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] * c->getRed()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] * c->getGreen()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] * c->getBlue()), 255));
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
-      return new Color(min(color[RGB_RED] * n->getValue(), 255),
-                       min(color[RGB_GREEN] * n->getValue(), 255),
-                       min(color[RGB_BLUE] * n->getValue(), 255));
+      n = dynamic_cast<const NumberValue*>(&v);
+      return new Color(
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_RED] * n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_GREEN] * n->getValue()), 255),
+          std::min<uint32_t>(
+              static_cast<uint32_t>(color[RGB_BLUE] * n->getValue()), 255));
 
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only multiply a color by a \
 color or a number.",
           *this->getTokens());
@@ -299,19 +314,19 @@ Value* Color::divide(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new Color(color[RGB_RED] / c->getRed(),
                        color[RGB_GREEN] / c->getGreen(),
                        color[RGB_BLUE] / c->getBlue());
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
-      return new Color(color[RGB_RED] / n->getValue(),
-                       color[RGB_GREEN] / n->getValue(),
-                       color[RGB_BLUE] / n->getValue());
+      n = dynamic_cast<const NumberValue*>(&v);
+      return new Color(static_cast<unsigned int>(floor(color[RGB_RED] / n->getValue())),
+                       static_cast<unsigned int>(floor(color[RGB_GREEN] / n->getValue())),
+                       static_cast<unsigned int>(floor(color[RGB_BLUE] / n->getValue())));
     default:
-      throw new ValueException(
+      throw ValueException(
           "You can only divide a color by a \
 color or a number.",
           *this->getTokens());
@@ -323,13 +338,13 @@ BooleanValue* Color::equals(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new BooleanValue(color[RGB_RED] == c->getRed() &&
                               color[RGB_GREEN] == c->getGreen() &&
                               color[RGB_BLUE] == c->getBlue());
     default:
-      throw new ValueException("You can only compare a color with a *color*.",
-                               *this->getTokens());
+      throw ValueException("You can only compare a color with a *color*.",
+                           *this->getTokens());
   }
 }
 
@@ -338,13 +353,13 @@ BooleanValue* Color::lessThan(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new BooleanValue(color[RGB_RED] < c->getRed() ||
                               color[RGB_GREEN] < c->getGreen() ||
                               color[RGB_BLUE] < c->getBlue());
     default:
-      throw new ValueException("You can only compare a color with a *color*.",
-                               *this->getTokens());
+      throw ValueException("You can only compare a color with a *color*.",
+                           *this->getTokens());
   }
 }
 
@@ -355,7 +370,7 @@ void Color::setRGB(unsigned int red, unsigned int green, unsigned int blue) {
   updateTokens();
 }
 void Color::setAlpha(double alpha) {
-  this->alpha = min(max(alpha, 0.0), 1.0);
+  this->alpha = std::min(std::max(alpha, 0.0), 1.0);
   updateTokens();
 }
 double Color::getAlpha() const {
@@ -451,7 +466,7 @@ Value* Color::rgba(const vector<const Value*>& arguments) {
         (unsigned int)((const NumberValue*)arguments[2])->getValue(),
         ((const NumberValue*)arguments[3])->getValue() * .01);
   } else {
-    throw new ValueException(
+    throw ValueException(
         "Argument 3 needs to be a number "
         "or percentage.",
         *arguments[3]->getTokens());
@@ -462,42 +477,44 @@ Value* Color::lighten(const vector<const Value*>& arguments) {
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   return Color::fromHSL(
-      hsl[0], hsl[1] * 100, min(hsl[2] * 100 + value, 100.00));
+      hsl[0], hsl[1] * 100, std::min(hsl[2] * 100 + value, 100.00));
 }
 Value* Color::darken(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(hsl[0], hsl[1] * 100, max(hsl[2] * 100 - value, 0.00));
+  return Color::fromHSL(
+      hsl[0], hsl[1] * 100, std::max(hsl[2] * 100 - value, 0.00));
 }
 Value* Color::saturate(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   return Color::fromHSL(
-      hsl[0], min(hsl[1] * 100 + value, 100.00), hsl[2] * 100);
+      hsl[0], std::min(hsl[1] * 100 + value, 100.00), hsl[2] * 100);
 }
 Value* Color::desaturate(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(hsl[0], max(hsl[1] * 100 - value, 0.00), hsl[2] * 100);
+  return Color::fromHSL(
+      hsl[0], std::max(hsl[1] * 100 - value, 0.00), hsl[2] * 100);
 }
 
 Value* Color::fadein(const vector<const Value*>& arguments) {
-  const Color* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = dynamic_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  Color* ret = new Color(
+  auto* ret = new Color(
       c->getRed(), c->getGreen(), c->getBlue(), c->getAlpha() + value * .01);
   return ret;
 }
 
 Value* Color::fadeout(const vector<const Value*>& arguments) {
-  const Color* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = dynamic_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
-  Color* ret = new Color(
+  auto* ret = new Color(
       c->getRed(), c->getGreen(), c->getBlue(), c->getAlpha() - value * .01);
   return ret;
 }
@@ -506,8 +523,7 @@ Value* Color::spin(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
   double degrees = ((const NumberValue*)arguments[1])->getValue();
 
-  return Color::fromHSL(
-      std::floor(hsl[0] + degrees), hsl[1] * 100, hsl[2] * 100);
+  return Color::fromHSL(floor(hsl[0] + degrees), hsl[1] * 100, hsl[2] * 100);
 }
 
 Value* Color::hsl(const vector<const Value*>& arguments) {
@@ -525,17 +541,17 @@ Value* Color::hue(const vector<const Value*>& arguments) {
 Value* Color::saturation(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
 
-  return new NumberValue(hsl[1] * 100, Token::PERCENTAGE, NULL);
+  return new NumberValue(hsl[1] * 100, Token::PERCENTAGE, nullptr);
 }
 
 Value* Color::lightness(const vector<const Value*>& arguments) {
   double* hsl = ((const Color*)arguments[0])->getHSL();
 
-  return new NumberValue(hsl[2] * 100, Token::PERCENTAGE, NULL);
+  return new NumberValue(hsl[2] * 100, Token::PERCENTAGE, nullptr);
 }
 
 Value* Color::argb(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
   ostringstream stm;
   unsigned int color[4];
   string sColor[4];
@@ -543,7 +559,7 @@ Value* Color::argb(const vector<const Value*>& arguments) {
   int i;
   Token t;
 
-  color[0] = c->getAlpha() * 0xFF + 0.5;
+  color[0] = static_cast<unsigned int>(floor(c->getAlpha() * 0xFF + 0.5));
   color[1] = c->getRed();
   color[2] = c->getGreen();
   color[3] = c->getBlue();
@@ -569,22 +585,22 @@ Value* Color::argb(const vector<const Value*>& arguments) {
 }
 
 Value* Color::red(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getRed());
 }
 Value* Color::blue(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getBlue());
 }
 Value* Color::green(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getGreen());
 }
 Value* Color::_alpha(const vector<const Value*>& arguments) {
-  const Color* c = (const Color*)arguments[0];
+  const auto* c = (const Color*)arguments[0];
 
   return new NumberValue(c->getAlpha());
 }

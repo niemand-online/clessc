@@ -25,9 +25,9 @@ protected:
   virtual void deleteStatement(RulesetStatement &statement);
 
 public:
-  Ruleset();
-  Ruleset(const Selector &selector);
-  virtual ~Ruleset();
+  Ruleset() = default;
+  explicit Ruleset(const Selector &selector);
+  ~Ruleset() override;
   virtual void setSelector(const Selector &selector);
 
   Declaration *createDeclaration();
@@ -46,11 +46,8 @@ public:
   void clearStatements();
 
   virtual void processStatements(Ruleset &target) const;
-  virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer);
+  void process(Stylesheet &s) override;
+  void write(CssWriter &writer) override;
 };
-
-#include "less/stylesheet/Declaration.h"
-#include "less/stylesheet/RulesetStatement.h"
 
 #endif  // __less_stylesheet_Ruleset_h__

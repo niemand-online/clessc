@@ -2,37 +2,43 @@
 #define __less_value_ValueException_h__
 
 #include <string>
+#include <utility>
 #include "less/TokenList.h"
 
-using namespace std;
 /**
  *
  */
-class ValueException : public exception {
+class ValueException : public std::exception {
 public:
-  string err;
+  std::string err;
   const char* _source;
   unsigned int line, column;
 
-  ValueException(string message, const TokenList& source) {
-    err = message;
+  ValueException(std::string message, const TokenList& source) {
+    err = std::move(message);
     this->_source = source.front().source;
     line = source.front().line;
     column = source.front().column;
   }
-  virtual ~ValueException() throw(){};
+  ~ValueException() throw() override = default;
 
-  virtual const char* what() const throw() {
+  ValueException(const ValueException&) = default;
+  ValueException(ValueException&&) = default;
+
+  ValueException& operator=(const ValueException&) = default;
+  ValueException& operator=(ValueException&&) = default;
+
+  const char* what() const throw() override {
     return err.c_str();
   }
 
-  unsigned int getLineNumber() {
+  unsigned int getLineNumber() const {
     return line;
   }
-  unsigned int getColumn() {
+  unsigned int getColumn() const {
     return column;
   }
-  const char* getSource() {
+  const char* getSource() const {
     return _source;
   }
 };

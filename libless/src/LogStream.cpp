@@ -1,22 +1,24 @@
 #include "less/LogStream.h"
 
+using namespace std;
+
 #ifdef WITH_LIBGLOG
 
 #include <glog/logging.h>
 
-std::ostream& LogStream::notice() {
+ostream& LogStream::notice() {
   return LOG(INFO);
 }
 
-std::ostream& LogStream::notice(int verbosityLevel) {
+ostream& LogStream::notice(int verbosityLevel) {
   return VLOG(verbosityLevel);
 }
 
-std::ostream& LogStream::warning() {
+ostream& LogStream::warning() {
   return LOG(WARNING);
 }
 
-std::ostream& LogStream::error() {
+ostream& LogStream::error() {
   return LOG(ERROR);
 }
 
@@ -24,20 +26,20 @@ std::ostream& LogStream::error() {
 
 #include <iostream>
 
-std::ostream& LogStream::notice() {
-  return std::clog << '\n';
+ostream& LogStream::notice() {
+  return clog << '\n';
 }
 
-std::ostream& LogStream::notice(int verbosityLevel) {
+ostream& LogStream::notice(int verbosityLevel) {
   return notice() << "VERBOSE " << verbosityLevel << ": ";
 }
 
-std::ostream& LogStream::warning() {
-  return std::cerr << '\n';
+ostream& LogStream::warning() {
+  return cerr << '\n';
 }
 
-std::ostream& LogStream::error() {
-  return std::cerr << '\n';
+ostream& LogStream::error() {
+  return cerr << '\n';
 }
 
 #endif  // WITH_LIBGLOG

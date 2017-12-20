@@ -1,7 +1,7 @@
 #include "less/less/LessParser.h"
 #include "less/LogStream.h"
 
-#include <libgen.h>
+using namespace std;
 
 /**
  * Only allows LessStylesheets
@@ -26,7 +26,7 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
   Selector selector;
   Mixin *mixin;
   CssComment *comment;
-  LessStylesheet *ls = (LessStylesheet *)&stylesheet;
+  auto *ls = (LessStylesheet *)&stylesheet;
 
   if (tokenizer->getTokenType() == Token::COMMENT) {
     comment = ls->createComment();
@@ -54,9 +54,8 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
       return true;
     } else {
       ls->deleteMixin(*mixin);
-      throw new ParseException(
-          tokenizer->getToken(),
-          "a declaration block ('{...}') following selector");
+      throw ParseException(tokenizer->getToken(),
+                           "a declaration block ('{...}') following selector");
     }
 
   } else {
@@ -67,7 +66,7 @@ bool LessParser::parseStatement(Stylesheet &stylesheet) {
 bool LessParser::parseAtRuleOrVariable(LessStylesheet &stylesheet) {
   Token token;
   TokenList value, rule;
-  AtRule *atrule = NULL;
+  AtRule *atrule = nullptr;
 
   if (tokenizer->getTokenType() != Token::ATKEYWORD)
     return false;
@@ -91,7 +90,7 @@ bool LessParser::parseAtRuleOrVariable(LessStylesheet &stylesheet) {
     parseAtRuleValue(rule);
 
     // parse import
-    if (token == "@import" && rule.size() > 0) {
+    if (token == "@import" && !rule.empty()) {
       if (parseImportStatement(rule, stylesheet))
         return true;
     }
@@ -109,8 +108,8 @@ bool LessParser::parseAtRuleValue(TokenList &rule) {
 
   if (!parseBlock(rule)) {
     if (tokenizer->getTokenType() != Token::DELIMITER) {
-      throw new ParseException(tokenizer->getToken(),
-                               "delimiter (';') at end of @-rule");
+      throw ParseException(tokenizer->getToken(),
+                           "delimiter (';') at end of @-rule");
     }
     tokenizer->readNextToken();
     skipWhitespace();
@@ -125,12 +124,12 @@ bool LessParser::parseVariable(TokenList &value) {
   tokenizer->readNextToken();
   CssParser::skipWhitespace();
 
-  if (parseValue(value) == false || value.size() == 0) {
-    throw new ParseException(tokenizer->getToken(), "value for variable");
+  if (!parseValue(value) || value.empty()) {
+    throw ParseException(tokenizer->getToken(), "value for variable");
   }
   if (tokenizer->getTokenType() != Token::DELIMITER) {
-    throw new ParseException(tokenizer->getToken(),
-                             "delimiter (';') at end of @-rule");
+    throw ParseException(tokenizer->getToken(),
+                         "delimiter (';') at end of @-rule");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -160,14 +159,13 @@ bool LessParser::parseSelectorVariable(Selector &selector) {
       back->append(tokenizer->getToken());
 
       if (tokenizer->readNextToken() != Token::IDENTIFIER)
-        throw new ParseException(tokenizer->getToken(),
-                                 "Variable inside selector (e.g.: \
-@{identifier})");
+        throw ParseException(tokenizer->getToken(),
+                             "Variable inside selector (e.g.: @{identifier})");
       back->append(tokenizer->getToken());
 
       if (tokenizer->readNextToken() != Token::BRACKET_CLOSED)
-        throw new ParseException(tokenizer->getToken(),
-                                 "Closing bracket after variable.");
+        throw ParseException(tokenizer->getToken(),
+                             "Closing bracket after variable.");
 
       back->append(tokenizer->getToken());
       tokenizer->readNextToken();
@@ -194,7 +192,7 @@ bool LessParser::parseRuleset(LessStylesheet &stylesheet,
   LogStream().notice(2) << "Parse: Ruleset";
 
   // Create the ruleset and parse ruleset statements.
-  if (parent == NULL)
+  if (parent == nullptr)
     ruleset = stylesheet.createLessRuleset();
   else
     ruleset = parent->createNestedRule();
@@ -204,8 +202,8 @@ bool LessParser::parseRuleset(LessStylesheet &stylesheet,
   parseRulesetStatements(stylesheet, *ruleset);
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of declaration block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of declaration block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -246,7 +244,7 @@ void LessParser::parseRulesetStatements(LessStylesheet &stylesheet,
         statement->property_i = 1;
       }
 
-    } else if ((statement = parseRulesetStatement(ruleset)) != NULL) {
+    } else if ((statement = parseRulesetStatement(ruleset)) != nullptr) {
       // a selector followed by a ruleset is a nested rule
       if (tokenizer->getTokenType() == Token::BRACKET_OPEN) {
         parseRuleset(stylesheet, *statement->getTokens(), &ruleset);
@@ -282,7 +280,7 @@ void LessParser::parseMediaQueryRuleset(Token &mediatoken,
   query->setSelector(selector);
 
   if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
-    throw new ParseException(tokenizer->getToken(), "{");
+    throw ParseException(tokenizer->getToken(), "{");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -290,8 +288,8 @@ void LessParser::parseMediaQueryRuleset(Token &mediatoken,
   parseRulesetStatements(stylesheet, *query);
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of media query block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of media query block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();
@@ -304,20 +302,18 @@ bool LessParser::parsePropertyVariable(Selector &selector) {
     return false;
 
   if (tokenizer->readNextToken() != Token::BRACKET_OPEN)
-    throw new ParseException(tokenizer->getToken(),
-                             "Opening bracket following @");
+    throw ParseException(tokenizer->getToken(), "Opening bracket following @");
   variable.append(tokenizer->getToken());
 
   if (tokenizer->readNextToken() != Token::IDENTIFIER)
-    throw new ParseException(tokenizer->getToken(),
-                             "Variable inside selector (e.g.: \
-@{identifier})");
+    throw ParseException(tokenizer->getToken(),
+                         "Variable inside selector (e.g.: @{identifier})");
 
   variable.append(tokenizer->getToken());
 
   if (tokenizer->readNextToken() != Token::BRACKET_CLOSED)
-    throw new ParseException(tokenizer->getToken(),
-                             "Closing bracket after variable.");
+    throw ParseException(tokenizer->getToken(),
+                         "Closing bracket after variable.");
 
   variable.append(tokenizer->getToken());
   tokenizer->readNextToken();
@@ -343,7 +339,7 @@ UnprocessedStatement *LessParser::parseRulesetStatement(LessRuleset &ruleset) {
   tokens.trim();
 
   if (tokens.empty())
-    return NULL;
+    return nullptr;
 
   statement = ruleset.createUnprocessedStatement();
 
@@ -376,7 +372,7 @@ bool LessParser::parseImportStatement(TokenList &statement,
     statement.pop_front();
     statement.ltrim();
 
-    while (statement.size() > 0 && statement.front() == ",") {
+    while (!statement.empty() && statement.front() == ",") {
       statement.pop_front();
       statement.ltrim();
 
@@ -385,27 +381,28 @@ bool LessParser::parseImportStatement(TokenList &statement,
       statement.ltrim();
     }
 
-    if (statement.size() > 0 && statement.front().type != Token::PAREN_CLOSED) {
-      throw new ParseException(statement, ")");
+    if (!statement.empty() && statement.front().type != Token::PAREN_CLOSED) {
+      throw ParseException(statement, ")");
     } else {
       statement.pop_front();
       statement.ltrim();
     }
   }
 
-  if (statement.size() > 0 && (statement.front().type == Token::URL ||
-                               statement.front().type == Token::STRING)) {
+  if (!statement.empty() && (statement.front().type == Token::URL ||
+                             statement.front().type == Token::STRING)) {
     return importFile(statement.front(), stylesheet, directive);
 
   } else
-    throw new ParseException(statement,
-                             "A string with the file path, "
-                             "or an import directive.");
+    throw ParseException(statement,
+
+                         "A string with the file path, "
+                         "or an import directive.");
 }
 
 unsigned int LessParser::parseImportDirective(Token &t) {
   if (t.type != Token::IDENTIFIER)
-    throw new ParseException(t, "an import directive.");
+    throw ParseException(t, "an import directive.");
   if (t == "reference")
     return IMPORT_REFERENCE;
   else if (t == "inline")
@@ -421,9 +418,9 @@ unsigned int LessParser::parseImportDirective(Token &t) {
   else if (t == "optional")
     return IMPORT_OPTIONAL;
   else
-    throw new ParseException(t,
-                             "valid import directive: reference, "
-                             "inline, less, css, once, multiple or optional");
+    throw ParseException(t,
+                         "valid import directive: reference, inline, less, "
+                         "css, once, multiple or optional");
 }
 
 bool LessParser::importFile(Token uri,
@@ -431,10 +428,10 @@ bool LessParser::importFile(Token uri,
                             unsigned int directive) {
   size_t pathend;
   size_t extension_pos;
-  std::list<const char *>::iterator i;
-  std::string relative_filename;
+  list<const char *>::iterator i;
+  string relative_filename;
   char *relative_filename_cpy;
-  std::string extension;
+  string extension;
 
   if (uri.type == Token::URL) {
     uri = uri.getUrlString();
@@ -450,13 +447,12 @@ bool LessParser::importFile(Token uri,
     return false;
 
   pathend = uri.rfind('?');
-  if (pathend == std::string::npos)
+  if (pathend == string::npos)
     pathend = uri.size();
 
   extension_pos = uri.rfind('.', pathend);
-  if (extension_pos == std::string::npos) {
+  if (extension_pos == string::npos) {
     uri.insert(pathend, ".less");
-    pathend += 5;
     extension = "less";
   } else
     extension = uri.substr(extension_pos + 1, pathend);
@@ -472,7 +468,7 @@ bool LessParser::importFile(Token uri,
     if (directive & IMPORT_OPTIONAL)
       return true;
     else {
-      throw new ParseException(
+      throw ParseException(
           uri, "existing file", uri.line, uri.column, uri.source);
     }
   }
@@ -490,11 +486,11 @@ bool LessParser::importFile(Token uri,
   LogStream().notice(1) << "Opening: " << relative_filename;
 
   relative_filename_cpy = new char[relative_filename.length() + 1];
-  std::strcpy(relative_filename_cpy, relative_filename.c_str());
+  strcpy(relative_filename_cpy, relative_filename.c_str());
 
   sources.push_back(relative_filename_cpy);
   LessTokenizer tokenizer(in, relative_filename_cpy);
-  LessParser parser(tokenizer, sources, (directive & IMPORT_REFERENCE));
+  LessParser parser(tokenizer, sources, static_cast<bool>(directive & IMPORT_REFERENCE));
 
   parser.includePaths = includePaths;
 
@@ -505,18 +501,18 @@ bool LessParser::importFile(Token uri,
   return true;
 }
 
-bool LessParser::findFile(Token &uri, std::string &filename) {
+bool LessParser::findFile(Token &uri, string &filename) {
   ifstream *in;
   size_t pos;
-  std::string source;
-  std::list<const char *>::iterator i;
+  string source;
+  list<const char *>::iterator i;
 
   source = uri.source;
   pos = source.find_last_of("/\\");
 
   // if the current stylesheet is outside of the current working
   //  directory then add the directory to the filename.
-  if (pos != std::string::npos) {
+  if (pos != string::npos) {
     filename.append(source.substr(0, pos + 1));
   }
   filename.append(uri);
@@ -568,7 +564,7 @@ void LessParser::parseLessMediaQuery(Token &mediatoken,
   LogStream().notice(2) << "Media query: " << query->getSelector()->toString();
 
   if (tokenizer->getTokenType() != Token::BRACKET_OPEN) {
-    throw new ParseException(tokenizer->getToken(), "{");
+    throw ParseException(tokenizer->getToken(), "{");
   }
   tokenizer->readNextToken();
 
@@ -578,8 +574,8 @@ void LessParser::parseLessMediaQuery(Token &mediatoken,
   }
 
   if (tokenizer->getTokenType() != Token::BRACKET_CLOSED) {
-    throw new ParseException(tokenizer->getToken(),
-                             "end of media query block ('}')");
+    throw ParseException(tokenizer->getToken(),
+                         "end of media query block ('}')");
   }
   tokenizer->readNextToken();
   skipWhitespace();

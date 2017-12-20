@@ -9,7 +9,7 @@
  */
 class Selector : public TokenList {
 public:
-  virtual ~Selector();
+  ~Selector() override;
 
   void addPrefix(const Selector &prefix);
 

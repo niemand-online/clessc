@@ -2,8 +2,10 @@
 #include <iostream>
 #include "less/LogStream.h"
 
+using namespace std;
+
 Selector::~Selector() {
-  clear();
+  this->clear();
 }
 
 void Selector::addPrefix(const Selector &prefix) {
@@ -20,7 +22,7 @@ void Selector::addPrefix(const Selector &prefix) {
   split(sepParts);
   prefix.split(prefixParts);
 
-  clear();
+  this->clear();
 
   for (sepIt = sepParts.begin(); sepIt != sepParts.end(); sepIt++) {
     tmp = &(*sepIt);
@@ -56,7 +58,7 @@ void Selector::addPrefix(const Selector &prefix) {
   pop_back();
 }
 
-void Selector::split(std::list<Selector> &l) const {
+void Selector::split(list<Selector> &l) const {
   TokenList::const_iterator first, last;
   Selector current;
 

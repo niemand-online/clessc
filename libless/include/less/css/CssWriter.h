@@ -22,14 +22,14 @@ protected:
 
 public:
   CssWriter();
-  CssWriter(std::ostream &out);
+  explicit CssWriter(std::ostream &out);
   CssWriter(std::ostream &out, SourceMapWriter &sourcemap);
 
-  const char *rootpath = NULL;
+  const char *rootpath = nullptr;
 
   unsigned int getColumn();
 
-  virtual ~CssWriter();
+  virtual ~CssWriter() = default;
   virtual void writeAtRule(const Token &keyword, const TokenList &rule);
   virtual void writeRulesetStart(const TokenList &selector);
   virtual void writeRulesetEnd();

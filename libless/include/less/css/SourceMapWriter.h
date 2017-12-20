@@ -13,16 +13,15 @@ private:
   std::ostream& sourcemap_h;
   std::list<const char*>& sources;
 
-  unsigned int lastDstColumn;
-  unsigned int lastSrcFile, lastSrcLine, lastSrcColumn;
+  size_t lastSrcFile, lastSrcLine, lastSrcColumn, lastDstColumn;
 
   size_t sourceFileIndex(const char* file);
   size_t encodeMapping(unsigned int column, const Token& source, char* buffer);
   size_t encodeField(int field, char* buffer);
 
   void writePreamble(const char* out_filename,
-                     const char* rootpath = NULL,
-                     const char* basepath = NULL);
+                     const char* rootpath = nullptr,
+                     const char* basepath = nullptr);
 
 public:
   static const char* base64;
@@ -30,9 +29,9 @@ public:
   SourceMapWriter(std::ostream& sourcemap,
                   std::list<const char*>& sources,
                   const char* out_filename,
-                  const char* rootpath = NULL,
-                  const char* basepath = NULL);
-  virtual ~SourceMapWriter();
+                  const char* rootpath = nullptr,
+                  const char* basepath = nullptr);
+  virtual ~SourceMapWriter() = default;
 
   void writeMapping(unsigned int column, const Token& source);
   void writeNewline();

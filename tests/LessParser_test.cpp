@@ -1,6 +1,9 @@
+#include <iostream>
 #include <list>
 #include <gtest/gtest.h>
 #include <less/less/LessParser.h>
+
+using namespace std;
 
 class LessParserTest : public ::testing::Test {
 public:
@@ -15,8 +18,7 @@ public:
   ostringstream* out;
   CssWriter* writer;
 
-
-  virtual void SetUp() {
+  void SetUp() override {
     in = new istringstream(" ");
     t = new LessTokenizer(*in, "test");
     sources = new std::list<const char*>;
@@ -28,7 +30,7 @@ public:
     out = new ostringstream();
     writer = new CssWriter(*out);
   }
-  virtual void TearDown() {
+  void TearDown() override {
     delete p;
     delete sources;
     delete t;

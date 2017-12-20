@@ -39,7 +39,7 @@ public:
   void setLessStylesheet(LessStylesheet &stylesheet);
   LessStylesheet *getLessStylesheet();
 
-  virtual const TokenList *getVariable(const std::string &key) const;
+  const TokenList *getVariable(const std::string &key) const override;
 
   void pushMixinCall(const Function &function, bool savepoint = false);
   void popMixinCall();

@@ -14,10 +14,10 @@ protected:
   void indent();
   void newline();
 
-  virtual void writeSelector(const TokenList &selector);
+  void writeSelector(const TokenList &selector) override;
 
 public:
-  CssPrettyWriter(std::ostream &out) : CssWriter(out) {
+  explicit CssPrettyWriter(std::ostream &out) : CssWriter(out) {
     indent_size = 0;
   };
   CssPrettyWriter(std::ostream &out, SourceMapWriter &sourcemap)
@@ -25,14 +25,14 @@ public:
     indent_size = 0;
   }
 
-  virtual void writeAtRule(const Token &keyword, const TokenList &rule);
-  virtual void writeRulesetStart(const TokenList &selector);
-  virtual void writeRulesetEnd();
-  virtual void writeDeclaration(const Token &property, const TokenList &value);
-  virtual void writeDeclarationDeliminator();
-  virtual void writeComment(const Token &comment);
-  virtual void writeMediaQueryStart(const TokenList &selector);
-  virtual void writeMediaQueryEnd();
+  void writeAtRule(const Token &keyword, const TokenList &rule) override;
+  void writeRulesetStart(const TokenList &selector) override;
+  void writeRulesetEnd() override;
+  void writeDeclaration(const Token &property, const TokenList &value) override;
+  void writeDeclarationDeliminator() override;
+  void writeComment(const Token &comment) override;
+  void writeMediaQueryStart(const TokenList &selector) override;
+  void writeMediaQueryEnd() override;
 };
 
 #endif  // __less_css_CssPrettyWriter_h__

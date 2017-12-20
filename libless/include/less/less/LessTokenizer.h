@@ -11,11 +11,12 @@
  */
 class LessTokenizer : public CssTokenizer {
 public:
-  LessTokenizer(istream& in, const char* source) : CssTokenizer(in, source){};
-  virtual ~LessTokenizer();
+  LessTokenizer(std::istream& in, const char* source)
+      : CssTokenizer(in, source){};
+  virtual ~LessTokenizer() = default;
 
 protected:
-  bool readComment();
+  bool readComment() override;
 };
 
 #endif  // __less_less_LessTokenizer_h__

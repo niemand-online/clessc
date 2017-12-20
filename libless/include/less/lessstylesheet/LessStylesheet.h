@@ -27,8 +27,8 @@ private:
   ProcessingContext *context;
 
 public:
-  LessStylesheet();
-  virtual ~LessStylesheet();
+  LessStylesheet() = default;
+  ~LessStylesheet() override = default;
 
   LessRuleset *createLessRuleset();
   Mixin *createMixin();

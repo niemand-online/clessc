@@ -7,50 +7,54 @@
 #include "less/Token.h"
 #include "less/TokenList.h"
 
-using namespace std;
-
-class ParseException : public exception {
+class ParseException : public std::exception {
 public:
-  string err;
+  std::string err;
 
-  string source;
+  std::string source;
   unsigned int line, column;
 
-  ParseException(string found,
-                 string& expected,
+  ParseException(std::string found,
+                 std::string& expected,
                  unsigned int line,
                  unsigned int column,
-                 string source);
-  ParseException(string found,
+                 std::string source);
+  ParseException(std::string found,
                  const char* expected,
                  unsigned int line,
                  unsigned int column,
-                 string source);
+                 std::string source);
   ParseException(const char* found,
                  const char* expected,
                  unsigned int line,
                  unsigned int column,
-                 string source);
+                 std::string source);
 
   ParseException(Token& found, const char* expected);
   ParseException(TokenList& found, const char* expected);
 
-  ~ParseException() throw(){};
+  ParseException(const ParseException&) = default;
+  ParseException(ParseException&&) = default;
+
+  ParseException& operator=(const ParseException&) = default;
+  ParseException& operator=(ParseException&&) = default;
+
+  ~ParseException() throw() override = default;
 
   void setLocation(unsigned int line, unsigned int column);
-  unsigned int getLineNumber();
-  unsigned int getColumn();
+  unsigned int getLineNumber() const;
+  unsigned int getColumn() const;
 
   /**
    * URL or file name where the Less code is located.
    */
-  void setSource(string source);
+  void setSource(std::string source);
 
-  string getSource();
-  virtual const char* what() const throw();
+  std::string getSource() const;
+  const char* what() const throw() override;
 
 protected:
-  string translate(string found);
+  std::string translate(std::string found);
 };
 
 #endif  // __less_css_ParseException_h__

@@ -1,6 +1,8 @@
 #include "less/LogStream.h"
 #include "less/lessstylesheet/LessRuleset.h"
 
+using namespace std;
+
 LessSelector::LessSelector(const Selector &original) {
   list<Selector> parts;
   list<Selector>::iterator it;
@@ -44,9 +46,6 @@ LessSelector::LessSelector(const Selector &original) {
   }
 
   LogStream().notice(2) << "Parsed selector: " << toString();
-}
-
-LessSelector::~LessSelector() {
 }
 
 bool LessSelector::parseExtension(Selector &selector, Selector &extension) {
@@ -121,7 +120,7 @@ bool LessSelector::parseArguments(TokenList &selector) {
   selector.ltrim();
 
   if (selector.front().type != Token::PAREN_CLOSED) {
-    throw new ParseException(
+    throw ParseException(
         selector.toString(), "matching parentheses.", 0, 0, "");
   }
   selector.pop_front();
@@ -132,8 +131,8 @@ bool LessSelector::parseArguments(TokenList &selector) {
 }
 
 bool LessSelector::validateArguments(const TokenList &arguments,
-                                     const std::string &delimiter) {
-  TokenList::const_iterator i = arguments.begin();
+                                     const string &delimiter) {
+  auto i = arguments.begin();
 
   if ((*i).type != Token::PAREN_OPEN)
     return false;
@@ -205,7 +204,7 @@ bool LessSelector::validateArguments(const TokenList &arguments,
 }
 
 bool LessSelector::parseParameter(TokenList &selector,
-                                  const std::string &delimiter) {
+                                  const string &delimiter) {
   string keyword;
   TokenList value;
   TokenList::iterator i;
@@ -253,7 +252,7 @@ bool LessSelector::parseParameter(TokenList &selector,
 }
 
 bool LessSelector::parseDefaultValue(TokenList &arguments,
-                                     const std::string &delimiter,
+                                     const string &delimiter,
                                      TokenList &value) {
   unsigned int parentheses = 0;
 
@@ -277,7 +276,7 @@ bool LessSelector::parseDefaultValue(TokenList &arguments,
   value.trim();
 
   if (value.empty()) {
-    throw new ParseException("", "default value following ':'", 0, 0, "");
+    throw ParseException("", "default value following ':'", 0, 0, "");
   }
   return true;
 }
@@ -308,37 +307,37 @@ bool LessSelector::parseConditions(TokenList &selector) {
   return true;
 }
 
-TokenList *LessSelector::getDefault(const std::string &keyword) {
-  std::list<std::string>::iterator pit = parameters.begin();
-  std::list<TokenList>::iterator dit = defaults.begin();
+TokenList *LessSelector::getDefault(const string &keyword) {
+  auto pit = parameters.begin();
+  auto dit = defaults.begin();
 
   for (; pit != parameters.end(); pit++, dit++) {
     if ((*pit) == keyword)
       return &(*dit);
   }
-  return NULL;
+  return nullptr;
 }
 
-std::list<std::string> &LessSelector::getParameters() {
+list<string> &LessSelector::getParameters() {
   return parameters;
 }
 
-std::list<TokenList> &LessSelector::getConditions() {
+list<TokenList> &LessSelector::getConditions() {
   return conditions;
 }
 
-std::list<Extension> &LessSelector::getExtensions() {
+list<Extension> &LessSelector::getExtensions() {
   return extensions;
 }
 
 bool LessSelector::matchArguments(const Mixin &mixin) {
-  std::list<std::string>::iterator p_it = parameters.begin();
-  std::list<TokenList>::iterator d_it = defaults.begin();
+  auto p_it = parameters.begin();
+  auto d_it = defaults.begin();
   size_t pos = 0;
 
   for (; p_it != parameters.end(); p_it++, d_it++) {
-    if (mixin.getArgument(*p_it) == NULL && mixin.getArgument(pos++) == NULL &&
-        (*d_it).empty()) {
+    if (mixin.getArgument(*p_it) == nullptr &&
+        mixin.getArgument(pos++) == nullptr && (*d_it).empty()) {
       return false;
     }
   }

@@ -1,5 +1,8 @@
 #include "less/value/StringValue.h"
 #include <regex>
+#include "less/value/BooleanValue.h"
+
+using namespace std;
 
 StringValue::StringValue(const Token& token, bool quotes) {
   type = Value::STRING;
@@ -9,7 +12,7 @@ StringValue::StringValue(const Token& token, bool quotes) {
   setString(token);
 }
 
-StringValue::StringValue(const std::string& str, bool quotes) {
+StringValue::StringValue(const string& str, bool quotes) {
   Token token(str, Token::STRING, 0, 0, "generated");
 
   type = Value::STRING;
@@ -33,7 +36,7 @@ StringValue::StringValue(const Value& val, bool quotes) {
   token.type = Token::STRING;
 
   if (val.type == STRING) {
-    sval = static_cast<const StringValue*>(&val);
+    sval = dynamic_cast<const StringValue*>(&val);
     token = sval->getString();
   } else {
     token = val.getTokens()->toString();
@@ -45,12 +48,9 @@ StringValue::StringValue(const Value& val, bool quotes) {
   setString(token);
 }
 
-StringValue::~StringValue() {
-}
-
 void StringValue::updateTokens() {
-  std::string::iterator i;
-  std::string newstr;
+  string::iterator i;
+  string newstr;
 
   if (quotes) {
     // add quotes
@@ -66,12 +66,11 @@ void StringValue::updateTokens() {
     tokens.front() = strvalue;
 }
 
-std::string StringValue::getString() const {
+string StringValue::getString() const {
   return strvalue;
 }
-void StringValue::setString(const std::string& newValue) {
-  std::string s = newValue;
-  this->strvalue = s;
+void StringValue::setString(const string& newValue) {
+  this->strvalue = newValue;
   updateTokens();
 }
 
@@ -87,7 +86,7 @@ void StringValue::append(const Value& v) {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     strvalue.append(s->getString());
   } else {
     strvalue.append(v.getTokens()->toString());
@@ -97,26 +96,26 @@ void StringValue::append(const Value& v) {
 }
 
 Value* StringValue::add(const Value& v) const {
-  StringValue* sv = new StringValue(*this);
+  auto* sv = new StringValue(*this);
   sv->append(v);
   return sv;
 }
 
 Value* StringValue::substract(const Value& v) const {
   (void)v;
-  throw new ValueException("Can't substract from strings.", *this->getTokens());
+  throw ValueException("Can't substract from strings.", *this->getTokens());
 }
 Value* StringValue::multiply(const Value& v) const {
-  std::string newstr;
+  string newstr;
   double i;
   const NumberValue* n;
 
   if (v.type != Value::NUMBER) {
-    throw new ValueException("Strings can only be multiplied by a number.",
-                             *this->getTokens());
+    throw ValueException("Strings can only be multiplied by a number.",
+                         *this->getTokens());
   }
 
-  n = static_cast<const NumberValue*>(&v);
+  n = dynamic_cast<const NumberValue*>(&v);
 
   for (i = 0; i < n->getValue(); i++) {
     newstr.append(getString());
@@ -126,29 +125,29 @@ Value* StringValue::multiply(const Value& v) const {
 
 Value* StringValue::divide(const Value& v) const {
   (void)v;
-  throw new ValueException("Can't divide strings.", *this->getTokens());
+  throw ValueException("Can't divide strings.", *this->getTokens());
 }
 
 BooleanValue* StringValue::equals(const Value& v) const {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     return new BooleanValue(getString() == s->getString());
   } else {
-    throw new ValueException("You can only compare a string with a *string*.",
-                             *this->getTokens());
+    throw ValueException("You can only compare a string with a *string*.",
+                         *this->getTokens());
   }
 }
 BooleanValue* StringValue::lessThan(const Value& v) const {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     return new BooleanValue(getString() < s->getString());
   } else {
-    throw new ValueException("You can only compare a string with a *string*.",
-                             *this->getTokens());
+    throw ValueException("You can only compare a string with a *string*.",
+                         *this->getTokens());
   }
 }
 
@@ -156,14 +155,13 @@ string StringValue::escape(string rawstr, string extraUnreserved) {
   string unreservedChars(
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~");
 
-  std::ostringstream newstr;
+  ostringstream newstr;
   unsigned int i;
 
   for (i = 0; i < rawstr.size(); i++) {
     if (unreservedChars.find(rawstr[i]) == string::npos &&
         extraUnreserved.find(rawstr[i]) == string::npos) {
-      newstr << '%' << std::setfill('0') << std::setw(2) << std::hex
-             << (int)rawstr[i];
+      newstr << '%' << setfill('0') << setw(2) << hex << (int)rawstr[i];
     } else
       newstr << rawstr[i];
   }
@@ -184,26 +182,26 @@ Value* StringValue::escape(const vector<const Value*>& arguments) {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~,/"
       "?@&+'!$");
 
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
   s->setString(StringValue::escape(s->getString(), ",/?@&+'!$"));
   return s;
 }
 
 Value* StringValue::e(const vector<const Value*>& arguments) {
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
   s->setQuotes(false);
   return s;
 }
 
 Value* StringValue::format(const vector<const Value*>& arguments) {
-  std::string escapeChars("adsADS");
+  string escapeChars("adsADS");
 
-  StringValue* s = new StringValue(*(const StringValue*)arguments[0]);
+  auto* s = new StringValue(*(const StringValue*)arguments[0]);
 
-  std::string oldstr = s->getString();
-  std::ostringstream newstr;
+  string oldstr = s->getString();
+  ostringstream newstr;
   unsigned int i, argc = 1;
-  std::string argStr;
+  string argStr;
 
   for (i = 0; i < oldstr.size(); i++) {
     if (oldstr[i] == '%') {
@@ -211,9 +209,8 @@ Value* StringValue::format(const vector<const Value*>& arguments) {
 
       if (escapeChars.find(oldstr[i]) != string::npos) {
         if (argc == arguments.size())
-          throw new ValueException(
-              "Format template expects more \
-arguments than provided.",
+          throw ValueException(
+              "Format template expects more arguments than provided.",
               *arguments[0]->getTokens());
 
         if ((oldstr[i] == 's' || oldstr[i] == 'S') &&
@@ -234,9 +231,8 @@ arguments than provided.",
   }
 
   if (argc != arguments.size()) {
-    throw new ValueException(
-        "Format template does not supply \
-placeholders for all given arguments.",
+    throw ValueException(
+        "Format template does not supply placeholders for all given arguments.",
         *arguments[0]->getTokens());
   }
 
@@ -245,30 +241,28 @@ placeholders for all given arguments.",
 }
 
 Value* StringValue::replace(const vector<const Value*>& arguments) {
-  std::string out;
-  std::regex regex;
-  std::regex_constants::syntax_option_type regex_flags =
-      std::regex_constants::ECMAScript;
-  std::regex_constants::match_flag_type match_flags =
-      std::regex_constants::match_default |
-      std::regex_constants::format_first_only;
+  string out;
+  regex regex;
+  regex_constants::syntax_option_type regex_flags = regex_constants::ECMAScript;
+  regex_constants::match_flag_type match_flags =
+      regex_constants::match_default | regex_constants::format_first_only;
 
-  const StringValue* in = (const StringValue*)arguments[0];
-  const StringValue* pattern = (const StringValue*)arguments[1];
-  const StringValue* replacement = (const StringValue*)arguments[2];
-  std::string options;
+  const auto* in = (const StringValue*)arguments[0];
+  const auto* pattern = (const StringValue*)arguments[1];
+  const auto* replacement = (const StringValue*)arguments[2];
+  string options;
 
   if (arguments.size() > 3) {
     options = ((const StringValue*)arguments[3])->getString();
 
-    if (options.find('i') != std::string::npos)
-      regex_flags |= std::regex::icase;
-    if (options.find('g') != std::string::npos)
-      match_flags &= ~std::regex_constants::format_first_only;
+    if (options.find('i') != string::npos)
+      regex_flags |= regex::icase;
+    if (options.find('g') != string::npos)
+      match_flags &= ~regex_constants::format_first_only;
   }
 
   regex = std::regex(pattern->getString(), regex_flags);
-  out = std::regex_replace(
+  out = regex_replace(
       in->getString(), regex, replacement->getString(), match_flags);
   return new StringValue(out, in->getQuotes());
 }
@@ -277,7 +271,7 @@ Value* StringValue::color(const vector<const Value*>& arguments) {
   const StringValue* s;
   Token t;
 
-  s = static_cast<const StringValue*>(arguments[0]);
+  s = dynamic_cast<const StringValue*>(arguments[0]);
 
   t = Token(s->getString(), Token::HASH, 0, 0, "generated");
   return new Color(t);

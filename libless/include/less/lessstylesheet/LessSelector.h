@@ -14,7 +14,7 @@ class Mixin;
 class LessSelector : public Selector {
 private:
   std::list<Extension> extensions;
-  std::list<string> parameters;
+  std::list<std::string> parameters;
   std::list<TokenList> defaults;
   std::list<TokenList> conditions;
 
@@ -33,8 +33,8 @@ private:
   bool parseConditions(TokenList &selector);
 
 public:
-  LessSelector(const Selector &original);
-  virtual ~LessSelector();
+  explicit LessSelector(const Selector &original);
+  ~LessSelector() override = default;
 
   std::list<Extension> &getExtensions();
   std::list<std::string> &getParameters();

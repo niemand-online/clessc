@@ -3,21 +3,25 @@
 
 #include <exception>
 
-using namespace std;
-
-class IOException : public exception {
+class IOException : public std::exception {
 public:
   const char* err;
 
-  IOException(string& err) {
+  explicit IOException(std::string& err) {
     this->err = err.c_str();
   }
 
-  IOException(const char* err) {
+  explicit IOException(const char* err) {
     this->err = err;
   }
 
-  virtual const char* what() const throw() {
+  IOException(const IOException&) = default;
+  IOException(IOException&&) = default;
+
+  IOException& operator=(const IOException&) = default;
+  IOException& operator=(IOException&&) = default;
+
+  const char* what() const throw() override {
     return err;
   }
 };

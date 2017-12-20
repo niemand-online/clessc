@@ -10,8 +10,6 @@ public:
   unsigned int width;
   unsigned int height;
   Color background;
-
-  UrlValue_Img();
 };
 
 class UrlValue : public Value {
@@ -25,19 +23,19 @@ private:
 public:
   UrlValue(Token &token, std::string &path);
 
-  virtual ~UrlValue();
+  ~UrlValue() override = default;
 
   std::string getPath() const;
 
   std::string getRelativePath() const;
 
-  virtual Value *add(const Value &v) const;
-  virtual Value *substract(const Value &v) const;
-  virtual Value *multiply(const Value &v) const;
-  virtual Value *divide(const Value &v) const;
+  Value *add(const Value &v) const override;
+  Value *substract(const Value &v) const override;
+  Value *multiply(const Value &v) const override;
+  Value *divide(const Value &v) const override;
 
-  virtual BooleanValue *lessThan(const Value &v) const;
-  virtual BooleanValue *equals(const Value &v) const;
+  BooleanValue *lessThan(const Value &v) const override;
+  BooleanValue *equals(const Value &v) const override;
 
   unsigned int getImageWidth() const;
   unsigned int getImageHeight() const;
@@ -45,9 +43,9 @@ public:
 
   static void loadFunctions(FunctionLibrary &lib);
 
-  static Value *imgheight(const vector<const Value *> &arguments);
-  static Value *imgwidth(const vector<const Value *> &arguments);
-  static Value *imgbackground(const vector<const Value *> &arguments);
+  static Value *imgheight(const std::vector<const Value *> &arguments);
+  static Value *imgwidth(const std::vector<const Value *> &arguments);
+  static Value *imgbackground(const std::vector<const Value *> &arguments);
 };
 
 #endif  // __less_value_UrlValue_h__

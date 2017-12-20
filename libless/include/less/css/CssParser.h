@@ -5,9 +5,8 @@
 
 #include "less/TokenList.h"
 #include "less/css/CssTokenizer.h"
+#include "less/stylesheet/Declaration.h"
 #include "less/stylesheet/Stylesheet.h"
-
-using namespace std;
 
 /**
  * Parses CSS code according to the syntax spec at
@@ -63,14 +62,15 @@ protected:
   /**
    * Parse a media query, starting with the @media keyword.
    *
-   * @return a MediaQuery object or NULL if the current token is not '@media'.
+   * @return a MediaQuery object or nullptr if the current token is not
+   * '@media'.
    */
   MediaQuery *parseMediaQuery(Stylesheet &stylesheet);
 
   /**
    * Parses an keyword that begins with '@' and the rule following the keyword.
    *
-   * @return an AtRule object or NULL if none was found.
+   * @return an AtRule object or nullptr if none was found.
    */
   AtRule *parseAtRule(Stylesheet &stylesheet);
 
@@ -86,14 +86,14 @@ protected:
   /**
    * Parses an optional selector and a decleration block.
    *
-   * @return a Ruleset object or NULL if none was found.
+   * @return a Ruleset object or nullptr if none was found.
    */
   Ruleset *parseRuleset(Stylesheet &stylesheet);
 
   /**
    * Parses a selector into a list of tokens.
    *
-   * @return a list of tokens or NULL if no
+   * @return a list of tokens or nullptr if no
    *    selector was found.
    */
   virtual bool parseSelector(Selector &selector);
@@ -101,7 +101,7 @@ protected:
   /**
    * Parses a 'property: value' pair.
    *
-   * @return a Declaration* object or NULL if none was found.
+   * @return a Declaration* object or nullptr if none was found.
    */
   Declaration *parseDeclaration(Ruleset &ruleset);
 
@@ -118,7 +118,7 @@ protected:
   /**
    * Parses a list of tokens that represent a value.
    *
-   * @return true if tokens were parsed or NULL if no
+   * @return true if tokens were parsed or nullptr if no
    *         valid tokens could be found.
    */
   virtual bool parseValue(TokenList &value);
@@ -159,9 +159,10 @@ public:
   /**
    * Initializes the CssParser with the given CssTokenizer argument.
    */
-  CssParser(CssTokenizer &tokenizer);
+  explicit CssParser(CssTokenizer &tokenizer);
 
-  virtual ~CssParser(){};
+  virtual ~CssParser() = default;
+
   /**
    * Parses a stylesheet from the tokenizer. After parsing the
    * stylesheet all of the input should be parsed so this function

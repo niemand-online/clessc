@@ -1,5 +1,6 @@
 #include "less/value/UrlValue.h"
 #include "less/LogStream.h"
+#include "less/value/BooleanValue.h"
 
 #ifdef WITH_LIBPNG
 #include <png.h>
@@ -7,8 +8,10 @@
 
 #ifdef WITH_LIBJPEG
 #include <jpeglib.h>
-#include <setjmp.h>
-#include <stdio.h>
+#include <csetjmp>
+#include <cstdio>
+
+using namespace std;
 
 struct urlvalue_jpeg_error_mgr {
   struct jpeg_error_mgr pub; /* "public" fields */
@@ -21,7 +24,7 @@ typedef struct urlvalue_jpeg_error_mgr* urlvalue_jpeg_error_ptr;
 METHODDEF(void)
 urlvalue_jpeg_error_exit(j_common_ptr cinfo) {
   /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
-  urlvalue_jpeg_error_ptr myerr = (urlvalue_jpeg_error_ptr)cinfo->err;
+  auto myerr = (urlvalue_jpeg_error_ptr)cinfo->err;
 
   /* Always display the message. */
   /* We could postpone this until after returning, if we chose. */
@@ -33,30 +36,24 @@ urlvalue_jpeg_error_exit(j_common_ptr cinfo) {
 
 #endif
 
-UrlValue_Img::UrlValue_Img() {
-}
-
-UrlValue::UrlValue(Token& token, std::string& path) : Value() {
+UrlValue::UrlValue(Token& token, string& path) : Value() {
   tokens.push_back(token);
   this->path = path;
   type = Value::URL;
 }
 
-UrlValue::~UrlValue() {
-}
-
-std::string UrlValue::getPath() const {
+string UrlValue::getPath() const {
   return path;
 }
 
-std::string UrlValue::getRelativePath() const {
-  std::string source = tokens.front().source;
+string UrlValue::getRelativePath() const {
+  string source = tokens.front().source;
   size_t pos = source.find_last_of("/\\");
-  std::string relative_path;
+  string relative_path;
 
   // if the source stylesheet is not in the current working directory
   //  then add its directory to the path.
-  if (pos != std::string::npos) {
+  if (pos != string::npos) {
     relative_path.append(source.substr(0, pos + 1));
     relative_path.append(this->path);
   } else
@@ -66,40 +63,40 @@ std::string UrlValue::getRelativePath() const {
 
 Value* UrlValue::add(const Value& v) const {
   (void)v;
-  throw new ValueException("You can not add urls.", *this->getTokens());
+  throw ValueException("You can not add urls.", *this->getTokens());
 }
 Value* UrlValue::substract(const Value& v) const {
   (void)v;
-  throw new ValueException("You can not substract urls.", *this->getTokens());
+  throw ValueException("You can not substract urls.", *this->getTokens());
 }
 Value* UrlValue::multiply(const Value& v) const {
   (void)v;
-  throw new ValueException("You can not multiply urls.", *this->getTokens());
+  throw ValueException("You can not multiply urls.", *this->getTokens());
 }
 Value* UrlValue::divide(const Value& v) const {
   (void)v;
-  throw new ValueException("You can not divide urls.", *this->getTokens());
+  throw ValueException("You can not divide urls.", *this->getTokens());
 }
 
 BooleanValue* UrlValue::lessThan(const Value& v) const {
   const UrlValue* u;
   if (v.type == URL) {
-    u = static_cast<const UrlValue*>(&v);
+    u = dynamic_cast<const UrlValue*>(&v);
     return new BooleanValue(path < u->getPath());
   } else {
-    throw new ValueException("You can only compare urls with urls.",
-                             *this->getTokens());
+    throw ValueException("You can only compare urls with urls.",
+                         *this->getTokens());
   }
 }
 BooleanValue* UrlValue::equals(const Value& v) const {
   const UrlValue* u;
 
   if (v.type == URL) {
-    u = static_cast<const UrlValue*>(&v);
+    u = dynamic_cast<const UrlValue*>(&v);
     return new BooleanValue(path == u->getPath());
   } else {
-    throw new ValueException("You can only compare urls with urls.",
-                             *this->getTokens());
+    throw ValueException("You can only compare urls with urls.",
+                         *this->getTokens());
   }
 }
 
@@ -117,7 +114,7 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
   png_byte color_type;
   int channels;
 
-  std::string path = getRelativePath();
+  string path = getRelativePath();
 
   LogStream().notice(3) << "PNG path: " << path;
 
@@ -131,27 +128,26 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
     return false;  //"Image is not a PNG file"
 
   /* initialize stuff */
-  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+  png_ptr =
+      png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 
   if (!png_ptr)
-    throw new ValueException("png_create_read_struct failed",
-                             *this->getTokens());
+    throw ValueException("png_create_read_struct failed", *this->getTokens());
 
   info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr)
-    throw new ValueException("png_create_info_struct failed",
-                             *this->getTokens());
+    throw ValueException("png_create_info_struct failed", *this->getTokens());
 
   if (setjmp(png_jmpbuf(png_ptr)))
-    throw new ValueException("Error during init_io", *this->getTokens());
+    throw ValueException("Error during init_io", *this->getTokens());
 
   png_init_io(png_ptr, fp);
   png_set_sig_bytes(png_ptr, 8);
 
   png_read_info(png_ptr, info_ptr);
 
-  img.width = png_get_image_width(png_ptr, info_ptr);
-  img.height = png_get_image_height(png_ptr, info_ptr);
+  img.width = static_cast<unsigned int>(png_get_image_width(png_ptr, info_ptr));
+  img.height = static_cast<unsigned int>(png_get_image_height(png_ptr, info_ptr));
   channels = png_get_channels(png_ptr, info_ptr);
   color_type = png_get_color_type(png_ptr, info_ptr);
 
@@ -176,9 +172,9 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
     img.background.setRGB(255, 255, 255);
   }
 
-  png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-  png_ptr = NULL;
-  info_ptr = NULL;
+  png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+  png_ptr = nullptr;
+  info_ptr = nullptr;
   fclose(fp);
 
   LogStream().notice(3) << "Read successful";
@@ -199,9 +195,9 @@ bool UrlValue::loadJpeg(UrlValue_Img& img) const {
   FILE* infile;
   JSAMPARRAY buffer; /* Output row buffer */
   int row_stride;    /* physical row width in output buffer */
-  std::string path = getRelativePath();
+  string path = getRelativePath();
 
-  if ((infile = fopen(path.c_str(), "rb")) == NULL) {
+  if ((infile = fopen(path.c_str(), "rb")) == nullptr) {
     return false;
   }
 
@@ -346,9 +342,9 @@ void UrlValue::loadFunctions(FunctionLibrary& lib) {
 Value* UrlValue::imgheight(const vector<const Value*>& arguments) {
   const UrlValue* u;
   NumberValue* val;
-  std::string px = "px";
+  string px = "px";
 
-  u = static_cast<const UrlValue*>(arguments[0]);
+  u = dynamic_cast<const UrlValue*>(arguments[0]);
 
   LogStream().notice(3) << "Height: " << u->getImageHeight();
 
@@ -358,14 +354,14 @@ Value* UrlValue::imgheight(const vector<const Value*>& arguments) {
 Value* UrlValue::imgwidth(const vector<const Value*>& arguments) {
   const UrlValue* u;
   NumberValue* val;
-  std::string px = "px";
+  string px = "px";
 
-  u = static_cast<const UrlValue*>(arguments[0]);
+  u = dynamic_cast<const UrlValue*>(arguments[0]);
   val = new NumberValue(u->getImageWidth(), Token::DIMENSION, &px);
   return val;
 }
 
 Value* UrlValue::imgbackground(const vector<const Value*>& arguments) {
-  const UrlValue* u = static_cast<const UrlValue*>(arguments[0]);
+  const auto* u = dynamic_cast<const UrlValue*>(arguments[0]);
   return new Color(u->getImageBackground());
 }

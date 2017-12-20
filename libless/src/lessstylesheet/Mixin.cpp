@@ -3,21 +3,17 @@
 #include "less/lessstylesheet/LessRuleset.h"
 #include "less/lessstylesheet/LessStylesheet.h"
 
-Mixin::Mixin() {
-}
+using namespace std;
 
 Mixin::Mixin(const Selector &name) {
   this->name = name;
 }
 
-Mixin::~Mixin() {
-}
-
-const TokenList *Mixin::getArgument(const size_t i) const {
+const TokenList *Mixin::getArgument(const size_t &i) const {
   if (i < arguments.size())
     return &arguments[i];
   else
-    return NULL;
+    return nullptr;
 }
 size_t Mixin::getArgumentCount() const {
   return arguments.size();
@@ -30,11 +26,11 @@ const TokenList *Mixin::getArgument(const string &name) const {
   if (i != namedArguments.end())
     return &i->second;
   else
-    return NULL;
+    return nullptr;
 }
 
 bool Mixin::parse(const Selector &selector) {
-  TokenList::const_iterator i = selector.begin();
+  auto i = selector.begin();
 
   for (; i != selector.end() && (*i).type != Token::PAREN_OPEN; i++) {
     this->name.push_back(*i);
@@ -59,7 +55,7 @@ bool Mixin::call(Stylesheet &s,
 
   LogStream().notice(2) << "Mixin: \"" << name.toString() << "\"";
 
-  if (parent != NULL)
+  if (parent != nullptr)
     context.getFunctions(functionList, *this);
   else
     getLessStylesheet()->getFunctions(functionList, *this);
@@ -89,13 +85,13 @@ bool Mixin::call(Stylesheet &s,
         !context.isInStack(*function)) {
       context.pushMixinCall(*function);
 
-      if (target != NULL)
+      if (target != nullptr)
         function->call(*this, *target, context);
       else
         function->call(*this, s, context);
 
       context.popMixinCall();
-      if (parent != NULL) {
+      if (parent != nullptr) {
         if (context.isSavePoint())
           parent->saveReturnValues(context);
 
@@ -118,7 +114,7 @@ LessStylesheet *Mixin::getLessStylesheet() {
 }
 
 void Mixin::process(Stylesheet &s) {
-  call(s, *getLessStylesheet()->getContext(), NULL, NULL);
+  call(s, *getLessStylesheet()->getContext(), nullptr, nullptr);
 }
 
 void Mixin::parseArguments(TokenList::const_iterator i,
@@ -175,7 +171,7 @@ void Mixin::parseArguments(TokenList::const_iterator i,
     if (*i == delimiter)
       i++;
 
-    if (argName == "")
+    if (argName.empty())
       this->arguments.push_back(argument);
     else {
       this->namedArguments.insert(pair<string, TokenList>(argName, argument));

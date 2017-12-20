@@ -21,7 +21,7 @@ public:
   StringValue(const StringValue &s);
   StringValue(const Value &val, bool quotes);
 
-  virtual ~StringValue();
+  ~StringValue() override = default;
 
   std::string getString() const;
   void setString(const std::string &stringValue);
@@ -31,23 +31,24 @@ public:
 
   void append(const Value &v);
 
-  virtual Value *add(const Value &v) const;
-  virtual Value *substract(const Value &v) const;
-  virtual Value *multiply(const Value &v) const;
-  virtual Value *divide(const Value &v) const;
+  Value *add(const Value &v) const override;
+  Value *substract(const Value &v) const override;
+  Value *multiply(const Value &v) const override;
+  Value *divide(const Value &v) const override;
 
-  virtual BooleanValue *equals(const Value &v) const;
-  virtual BooleanValue *lessThan(const Value &v) const;
+  BooleanValue *equals(const Value &v) const override;
+  BooleanValue *lessThan(const Value &v) const override;
 
-  static string escape(string rawstr, string extraUnreserved = "");
+  static std::string escape(std::string rawstr,
+                            std::string extraUnreserved = "");
 
   static void loadFunctions(FunctionLibrary &lib);
-  static Value *escape(const vector<const Value *> &arguments);
-  static Value *e(const vector<const Value *> &arguments);
-  static Value *format(const vector<const Value *> &arguments);
-  static Value *replace(const vector<const Value *> &arguments);
-  static Value *color(const vector<const Value *> &arguments);
-  static Value *data_uri(const vector<const Value *> &arguments);
+  static Value *escape(const std::vector<const Value *> &arguments);
+  static Value *e(const std::vector<const Value *> &arguments);
+  static Value *format(const std::vector<const Value *> &arguments);
+  static Value *replace(const std::vector<const Value *> &arguments);
+  static Value *color(const std::vector<const Value *> &arguments);
+  static Value *data_uri(const std::vector<const Value *> &arguments);
 };
 
 #endif  // __less_value_StringValue_h__

@@ -1,8 +1,9 @@
 #include "less/stylesheet/Ruleset.h"
 #include "less/LogStream.h"
+#include "less/stylesheet/Declaration.h"
 
-Ruleset::Ruleset() {
-}
+using namespace std;
+
 Ruleset::Ruleset(const Selector& selector) {
   this->selector = selector;
 }
@@ -19,20 +20,20 @@ void Ruleset::addStatement(RulesetStatement& statement) {
   statement.setRuleset(this);
 }
 Declaration* Ruleset::createDeclaration() {
-  Declaration* d = new Declaration();
+  auto* d = new Declaration();
   declarations.push_back(d);
   addStatement(*d);
   return d;
 }
 Declaration* Ruleset::createDeclaration(const Token& property) {
-  Declaration* d = new Declaration(property);
+  auto* d = new Declaration(property);
   declarations.push_back(d);
   addStatement(*d);
   return d;
 }
 
 CssComment* Ruleset::createComment() {
-  CssComment* c = new CssComment();
+  auto* c = new CssComment();
   addStatement(*c);
   return c;
 }
@@ -47,8 +48,8 @@ void Ruleset::deleteDeclaration(Declaration& declaration) {
   deleteStatement(declaration);
 }
 
-void Ruleset::addDeclarations(std::list<Declaration>& declarations) {
-  std::list<Declaration>::iterator i = declarations.begin();
+void Ruleset::addDeclarations(list<Declaration>& declarations) {
+  auto i = declarations.begin();
   for (; i != declarations.end(); i++) {
     this->declarations.push_back(&(*i));
     addStatement(*i);
@@ -61,11 +62,11 @@ Selector& Ruleset::getSelector() {
 const Selector& Ruleset::getSelector() const {
   return selector;
 }
-const std::list<RulesetStatement*>& Ruleset::getStatements() const {
+const list<RulesetStatement*>& Ruleset::getStatements() const {
   return statements;
 }
 
-std::list<Declaration*>& Ruleset::getDeclarations() {
+list<Declaration*>& Ruleset::getDeclarations() {
   return declarations;
 }
 
@@ -78,8 +79,8 @@ void Ruleset::clearStatements() {
 }
 
 void Ruleset::processStatements(Ruleset& target) const {
-  std::list<RulesetStatement*> statements = getStatements();
-  std::list<RulesetStatement*>::iterator i;
+  list<RulesetStatement*> statements = getStatements();
+  list<RulesetStatement*>::iterator i;
   for (i = statements.begin(); i != statements.end(); i++) {
     (*i)->process(target);
   }
@@ -95,8 +96,8 @@ void Ruleset::process(Stylesheet& s) {
 }
 
 void Ruleset::write(CssWriter& writer) {
-  std::list<RulesetStatement*> statements = getStatements();
-  std::list<RulesetStatement*>::iterator i;
+  list<RulesetStatement*> statements = getStatements();
+  list<RulesetStatement*>::iterator i;
 
   if (getStatements().empty())
     return;

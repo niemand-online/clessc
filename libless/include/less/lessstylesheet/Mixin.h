@@ -22,8 +22,8 @@ class ProcessingContext;
 
 class Mixin : public StylesheetStatement {
 private:
-  vector<TokenList> arguments;
-  map<std::string, TokenList> namedArguments;
+  std::vector<TokenList> arguments;
+  std::map<std::string, TokenList> namedArguments;
 
   LessStylesheet *lessStylesheet;
   void parseArguments(TokenList::const_iterator i, const Selector &s);
@@ -31,14 +31,14 @@ private:
 public:
   Selector name;
 
-  Mixin();
-  Mixin(const Selector &name);
-  virtual ~Mixin();
+  Mixin() = default;
+  explicit Mixin(const Selector &name);
+  ~Mixin() override = default;
 
-  const TokenList *getArgument(const size_t i) const;
-  size_t getArgumentCount() const;
+  const TokenList *getArgument(const std::size_t &i) const;
+  std::size_t getArgumentCount() const;
 
-  const TokenList *getArgument(const string &name) const;
+  const TokenList *getArgument(const std::string &name) const;
 
   bool call(Stylesheet &s,
             ProcessingContext &context,
@@ -49,8 +49,8 @@ public:
   virtual void setLessStylesheet(LessStylesheet &stylesheet);
   LessStylesheet *getLessStylesheet();
 
-  virtual void process(Stylesheet &s);
-  virtual void write(CssWriter &writer){};
+  void process(Stylesheet &s) override;
+  void write(CssWriter &writer) override{};
 };
 
 #endif  // __less_lessstylesheet_Mixin_h__

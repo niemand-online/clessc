@@ -1,5 +1,9 @@
+#include <iostream>
 #include <gtest/gtest.h>
 #include <less/css/CssParser.h>
+#include <less/stylesheet/AtRule.h>
+
+using namespace std;
 
 class CssParserTest : public ::testing::Test {
 public:
@@ -8,12 +12,12 @@ public:
   CssTokenizer* t;
   CssParser* p;
 
-  virtual void SetUp() {
+  void SetUp() override {
     in = new istringstream(" ");
     t = new CssTokenizer(*in, "test");
     p = new CssParser(*t);
   }
-  virtual void TearDown() {
+  void TearDown() override {
     delete p;
     delete t;
     delete in;

@@ -1,12 +1,15 @@
 #include "less/VariableMap.h"
 
-const TokenList *VariableMap::getVariable(const std::string &key) const {
+using namespace std;
+
+const TokenList *VariableMap::getVariable(const string &key) const {
   VariableMap::const_iterator mit;
 
   if ((mit = this->find(key)) != this->end()) {
     return &mit->second;
-  } else
-    return NULL;
+  }
+
+  return nullptr;
 }
 
 void VariableMap::merge(const VariableMap &map) {
@@ -21,8 +24,8 @@ void VariableMap::overwrite(const VariableMap &map) {
   }
 }
 
-std::string VariableMap::toString() const {
-  std::string str;
+string VariableMap::toString() const {
+  string str;
   VariableMap::const_iterator it;
 
   for (it = this->begin(); it != this->end(); ++it) {

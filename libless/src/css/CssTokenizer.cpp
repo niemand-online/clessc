@@ -1,6 +1,8 @@
 #include "less/css/CssTokenizer.h"
 #include "less/LogStream.h"
 
+using namespace std;
+
 CssTokenizer::CssTokenizer(istream& in, const char* source)
     : in(&in), line(0), source(source) {
   currentToken.source = source;
@@ -9,15 +11,12 @@ CssTokenizer::CssTokenizer(istream& in, const char* source)
   column = 0;
 }
 
-CssTokenizer::~CssTokenizer() {
-}
-
 const char* CssTokenizer::getSource() {
   return source;
 }
 
 void CssTokenizer::readChar() {
-  if (in == NULL)
+  if (in == nullptr)
     return;
 
   // Last char was a newline. Increment the line counter.
@@ -31,16 +30,16 @@ void CssTokenizer::readChar() {
 
   // check for end of file or escape key
   if (in->eof() || lastRead == 27)
-    in = NULL;
+    in = nullptr;
   else if (in->fail() || in->bad())
-    throw new IOException("Error reading input");
+    throw IOException("Error reading input");
 
   if (lastReadEq('\n') && column > 0)  // don't count newlines as chars
     column--;
 }
 
 Token::Type CssTokenizer::readNextToken() {
-  if (in == NULL) {
+  if (in == nullptr) {
     currentToken.type = Token::EOS;
     return Token::EOS;
   }
@@ -64,7 +63,7 @@ Token::Type CssTokenizer::readNextToken() {
       currentToken.append(lastRead);
       readChar();
       if (!readName()) {
-        throw new ParseException(
+        throw ParseException(
             &lastRead, "name following '#'", line, column, source);
       }
       break;
@@ -219,7 +218,7 @@ bool CssTokenizer::readName() {
 }
 
 bool CssTokenizer::readNMStart() {
-  if (in == NULL)
+  if (in == nullptr)
     return false;
 
   if (lastReadEq('_') || lastReadInRange('a', 'z') ||
@@ -231,7 +230,7 @@ bool CssTokenizer::readNMStart() {
     return (readNonAscii() || readEscape());
 }
 bool CssTokenizer::readNonAscii() {
-  if (in == NULL || lastRead >= 0)
+  if (in == nullptr || lastRead >= 0)
     return false;
 
   currentToken.append(lastRead);
@@ -270,7 +269,7 @@ bool CssTokenizer::readUnicode() {
 }
 
 bool CssTokenizer::readNMChar() {
-  if (in == NULL)
+  if (in == nullptr)
     return false;
 
   if (lastReadEq('_') || lastReadInRange('a', 'z') ||
@@ -323,26 +322,26 @@ bool CssTokenizer::readString() {
 
   currentToken.append(lastRead);
   readChar();
-  while (in != NULL) {
+  while (in != nullptr) {
     if (lastReadEq(delim)) {
       currentToken.append(lastRead);
       readChar();
       return true;
     } else if (lastReadEq('\n') || lastReadEq('\r') || lastReadEq('\f')) {
-      throw new ParseException(
+      throw ParseException(
           "end of line", "end of string", line, column, source);
-    } else if (lastReadEq('\\'))
+    } else if (lastReadEq('\\')) {
       // note that even though readEscape() returns false it still
       // eats the '\'.
-      readEscape() || readNewline();
-    else {
+      if (!readEscape()) {
+        readNewline();
+      }
+    } else {
       currentToken.append(lastRead);
       readChar();
     }
   }
-  throw new ParseException(
-      "end of input", "end of string", line, column, source);
-  return false;
+  throw ParseException("end of input", "end of string", line, column, source);
 }
 
 bool CssTokenizer::readNewline() {
@@ -388,12 +387,11 @@ bool CssTokenizer::readUrl() {
       readChar();
       return true;
     } else {
-      throw new ParseException(
-          &lastRead, "end of url (')')", line, column, source);
+      throw ParseException(&lastRead, "end of url (')')", line, column, source);
     }
   }
 
-  while (in != NULL) {
+  while (in != nullptr) {
     if (readWhitespace() || lastReadEq(')')) {
       while (readWhitespace()) {
       };
@@ -402,19 +400,17 @@ bool CssTokenizer::readUrl() {
         readChar();
         return true;
       } else {
-        throw new ParseException(
+        throw ParseException(
             &lastRead, "end of url (')')", line, column, source);
       }
-    } else if (in != NULL && urlchars.find(lastRead)) {
+    } else if (in != nullptr && urlchars.find(lastRead)) {
       currentToken.append(lastRead);
       readChar();
     } else if (!readNonAscii() && !readEscape()) {
-      throw new ParseException(
-          &lastRead, "end of url (')')", line, column, source);
+      throw ParseException(&lastRead, "end of url (')')", line, column, source);
     }
   }
-  throw new ParseException(&lastRead, "end of url (')')", line, column, source);
-  return false;
+  throw ParseException(&lastRead, "end of url (')')", line, column, source);
 }
 
 bool CssTokenizer::readComment() {
@@ -422,7 +418,7 @@ bool CssTokenizer::readComment() {
     return false;
   currentToken.append(lastRead);
   readChar();
-  while (in != NULL) {
+  while (in != nullptr) {
     if (lastReadEq('*')) {
       currentToken.append(lastRead);
       readChar();
@@ -437,13 +433,11 @@ bool CssTokenizer::readComment() {
     currentToken.append(lastRead);
     readChar();
   }
-  throw new ParseException(
-      &lastRead, "end of comment (*/)", line, column, source);
-  return false;
+  throw ParseException(&lastRead, "end of comment (*/)", line, column, source);
 }
 
 bool CssTokenizer::readUnicodeRange() {
-  if (in == NULL)
+  if (in == nullptr)
     return false;
   for (int i = 0; i < 6; i++) {
     if (!lastReadIsHex())
@@ -471,16 +465,16 @@ Token::Type CssTokenizer::getTokenType() {
 }
 
 bool CssTokenizer::lastReadEq(char c) {
-  return (in != NULL && lastRead == c);
+  return (in != nullptr && lastRead == c);
 }
 
 bool CssTokenizer::lastReadInRange(char c1, char c2) {
-  return (in != NULL && lastRead >= c1 && lastRead <= c2);
+  return (in != nullptr && lastRead >= c1 && lastRead <= c2);
 }
 bool CssTokenizer::lastReadIsDigit() {
-  return (in != NULL && lastReadInRange('0', '9'));
+  return (in != nullptr && lastReadInRange('0', '9'));
 }
 bool CssTokenizer::lastReadIsHex() {
-  return (in != NULL && (lastReadIsDigit() || lastReadInRange('a', 'f') ||
-                         lastReadInRange('A', 'F')));
+  return (in != nullptr && (lastReadIsDigit() || lastReadInRange('a', 'f') ||
+                            lastReadInRange('A', 'F')));
 }

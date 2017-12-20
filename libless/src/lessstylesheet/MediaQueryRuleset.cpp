@@ -1,14 +1,9 @@
 #include "less/lessstylesheet/MediaQueryRuleset.h"
 #include "less/LogStream.h"
-#include "less/lessstylesheet/LessStylesheet.h"
+#include "less/stylesheet/MediaQuery.h"
 
 const Token MediaQueryRuleset::BUILTIN_AND(
     "and", Token::IDENTIFIER, 0, 0, Token::BUILTIN_SOURCE);
-
-MediaQueryRuleset::MediaQueryRuleset() : LessRuleset() {
-}
-MediaQueryRuleset::~MediaQueryRuleset() {
-}
 
 void MediaQueryRuleset::process(Stylesheet& s,
                                 Selector* prefix,
@@ -24,7 +19,7 @@ void MediaQueryRuleset::process(Stylesheet& s,
   selector = getSelector();
   context.processValue(selector);
 
-  if (query->getSelector().size() > 0) {
+  if (!query->getSelector().empty()) {
     selector.pop_front();
 
     query->getSelector().push_back(Token::BUILTIN_SPACE);
@@ -34,7 +29,7 @@ void MediaQueryRuleset::process(Stylesheet& s,
   } else
     query->setSelector(selector);
 
-  if (prefix != NULL) {
+  if (prefix != nullptr) {
     target = query->createRuleset();
     target->setSelector(*prefix);
 

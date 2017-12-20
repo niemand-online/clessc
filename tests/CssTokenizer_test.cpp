@@ -1,5 +1,8 @@
+#include <iostream>
 #include <gtest/gtest.h>
 #include <less/css/CssTokenizer.h>
+
+using namespace std;
 
 /**
  * Test if the tokenizer reckognizes the tokens in the input string.

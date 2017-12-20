@@ -1,7 +1,6 @@
 #include "less/TokenList.h"
 
-TokenList::~TokenList() {
-}
+using namespace std;
 
 void TokenList::ltrim() {
   while (!empty() && front().type == Token::WHITESPACE) {
@@ -18,9 +17,9 @@ void TokenList::trim() {
   rtrim();
 }
 
-std::string TokenList::toString() const {
-  std::string str;
-  std::list<Token>::const_iterator it;
+string TokenList::toString() const {
+  string str;
+  list<Token>::const_iterator it;
 
   for (it = begin(); it != end(); it++) {
     str.append(*it);
@@ -29,7 +28,7 @@ std::string TokenList::toString() const {
 }
 
 bool TokenList::contains(const Token &t) const {
-  std::list<Token>::const_iterator it;
+  list<Token>::const_iterator it;
 
   for (it = begin(); it != end(); it++) {
     if (*it == t)
@@ -38,8 +37,8 @@ bool TokenList::contains(const Token &t) const {
   return false;
 }
 
-bool TokenList::contains(Token::Type type, const std::string &str) const {
-  std::list<Token>::const_iterator it;
+bool TokenList::contains(Token::Type type, const string &str) const {
+  list<Token>::const_iterator it;
 
   for (it = begin(); it != end(); it++) {
     if ((*it).type == type && *it == str)
@@ -49,7 +48,7 @@ bool TokenList::contains(Token::Type type, const std::string &str) const {
 }
 
 bool TokenList::containsType(Token::Type type) const {
-  std::list<Token>::const_iterator it;
+  list<Token>::const_iterator it;
 
   for (it = begin(); it != end(); it++) {
     if ((*it).type == type)

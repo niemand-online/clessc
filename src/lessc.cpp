@@ -3,16 +3,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
 
 #include <less/LogStream.h>
 #include <less/css/CssPrettyWriter.h>
-#include <less/css/CssWriter.h>
 #include <less/css/IOException.h>
 #include <less/less/LessParser.h>
-#include <less/less/LessTokenizer.h>
-#include <less/lessstylesheet/LessStylesheet.h>
-#include <less/stylesheet/Stylesheet.h>
 
 using namespace std;
 
@@ -64,7 +59,7 @@ void version() {
  */
 char* createPath(const char* path, size_t len) {
   size_t newlen = len + (path[len - 1] != '/' ? 1 : 0);
-  char* p = new char[newlen + 1];
+  auto* p = new char[newlen + 1];
   std::strncpy(p, path, len);
   p[newlen - 1] = '/';
   p[newlen] = '\0';
@@ -73,10 +68,10 @@ char* createPath(const char* path, size_t len) {
 
 void parsePathList(const char* path, std::list<const char*>& paths) {
   const char* start = path;
-  const char* end = path;
+  const char* end;
   size_t len;
 
-  while ((end = std::strchr(start, ':')) != NULL) {
+  while ((end = std::strchr(start, ':')) != nullptr) {
     len = (end - start);
     // skip empty paths
     if (len > 0)
@@ -102,16 +97,16 @@ bool parseInput(LessStylesheet& stylesheet,
 
   try {
     parser.parseStylesheet(stylesheet);
-  } catch (ParseException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Parse Error: " << e->what();
+  } catch (const ParseException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Parse Error: " << e.what();
     return false;
-  } catch (exception* e) {
-    LogStream().error() << " Error: " << e->what();
+  } catch (const exception& e) {
+    LogStream().error() << " Error: " << e.what();
     return false;
   }
-  auto verbose1Stream = LogStream().notice(1) << "Source files: ";
+  auto& verbose1Stream = LogStream().notice(1) << "Source files: ";
   for (i = sources.begin(); i != sources.end(); i++) {
     verbose1Stream << (*i);
   }
@@ -123,19 +118,19 @@ bool processStylesheet(LessStylesheet& stylesheet, Stylesheet& css) {
   try {
     stylesheet.process(css, context);
 
-  } catch (ParseException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Parse Error: " << e->what();
+  } catch (const ParseException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Parse Error: " << e.what();
     return false;
 
-  } catch (ValueException* e) {
-    LogStream().error() << e->getSource() << ": Line " << e->getLineNumber()
-                        << ", Column " << e->getColumn()
-                        << " Error: " << e->what();
+  } catch (const ValueException& e) {
+    LogStream().error() << e.getSource() << ": Line " << e.getLineNumber()
+                        << ", Column " << e.getColumn()
+                        << " Error: " << e.what();
     return false;
-  } catch (exception* e) {
-    LogStream().error() << "Error: " << e->what();
+  } catch (const exception& e) {
+    LogStream().error() << "Error: " << e.what();
     return false;
   }
   return true;
@@ -145,34 +140,34 @@ int main(int argc, char* argv[]) {
   istream* in = &cin;
   ostream* out = &cout;
   bool formatoutput = false;
-  char* source = NULL;
+  char* source = nullptr;
   string output = "-";
   LessStylesheet stylesheet;
   std::list<const char*> sources;
   Stylesheet css;
   CssWriter* writer;
 
-  std::string sourcemap_file = "";
-  ostream* sourcemap_s = NULL;
-  SourceMapWriter* sourcemap = NULL;
-  const char* sourcemap_rootpath = NULL;
-  const char* sourcemap_basepath = NULL;
-  const char* rootpath = NULL;
+  std::string sourcemap_file;
+  ostream* sourcemap_s = nullptr;
+  SourceMapWriter* sourcemap = nullptr;
+  const char* sourcemap_rootpath = nullptr;
+  const char* sourcemap_basepath = nullptr;
+  const char* rootpath = nullptr;
 
   std::list<const char*> includePaths;
 
   static struct option long_options[] = {
-      {"version", no_argument, 0, 1},
-      {"help", no_argument, 0, 'h'},
-      {"output", required_argument, 0, 'o'},
-      {"format", no_argument, 0, 'f'},
-      {"verbose", required_argument, 0, 'v'},
-      {"source-map", optional_argument, 0, 'm'},
-      {"source-map-rootpath", required_argument, 0, 2},
-      {"source-map-basepath", required_argument, 0, 3},
-      {"include-path", required_argument, 0, 'I'},
-      {"rootpath", required_argument, 0, 4},
-      {0, 0, 0, 0}};
+      {"version", no_argument, nullptr, 1},
+      {"help", no_argument, nullptr, 'h'},
+      {"output", required_argument, nullptr, 'o'},
+      {"format", no_argument, nullptr, 'f'},
+      {"verbose", required_argument, nullptr, 'v'},
+      {"source-map", optional_argument, nullptr, 'm'},
+      {"source-map-rootpath", required_argument, nullptr, 2},
+      {"source-map-basepath", required_argument, nullptr, 3},
+      {"include-path", required_argument, nullptr, 'I'},
+      {"rootpath", required_argument, nullptr, 4},
+      {nullptr, 0, nullptr, 0}};
 
 #ifdef WITH_LIBGLOG
   FLAGS_logtostderr = 1;
@@ -241,10 +236,10 @@ int main(int argc, char* argv[]) {
 
       in = new ifstream(source);
       if (in->fail() || in->bad())
-        throw new IOException("Error opening file");
+        throw IOException("Error opening file");
 
     } else if (sourcemap_file == "-") {
-      throw new IOException(
+      throw IOException(
           "source-map option requires that "
           "a file name is specified for either the source map or the less "
           "source.");
@@ -261,7 +256,7 @@ int main(int argc, char* argv[]) {
     sources.push_back(source);
 
     if (parseInput(stylesheet, *in, source, sources, includePaths)) {
-      if (sourcemap_file != "") {
+      if (!sourcemap_file.empty()) {
         LogStream().notice(1) << "sourcemap: " << sourcemap_file;
         sourcemap_s = new ofstream(sourcemap_file.c_str());
         sourcemap = new SourceMapWriter(*sourcemap_s,
@@ -270,10 +265,10 @@ int main(int argc, char* argv[]) {
                                         sourcemap_rootpath,
                                         sourcemap_basepath);
 
-        writer = formatoutput ? new CssPrettyWriter(*out, *sourcemap)
-                              : new CssWriter(*out, *sourcemap);
+        writer = static_cast<CssWriter *>(formatoutput ? new CssPrettyWriter(*out, *sourcemap)
+                                                       : new CssWriter(*out, *sourcemap));
       } else {
-        writer = formatoutput ? new CssPrettyWriter(*out) : new CssWriter(*out);
+        writer = static_cast<CssWriter*>(formatoutput ? new CssPrettyWriter(*out) : new CssWriter(*out));
       }
       writer->rootpath = rootpath;
 
@@ -282,20 +277,19 @@ int main(int argc, char* argv[]) {
       }
       css.write(*writer);
 
-      if (sourcemap != NULL) {
-        if (sourcemap_basepath != NULL &&
+      if (sourcemap != nullptr) {
+        if (sourcemap_basepath != nullptr &&
             sourcemap_file.compare(
                 0, std::strlen(sourcemap_basepath), sourcemap_basepath) == 0) {
           sourcemap_file.erase(0, std::strlen(sourcemap_basepath));
         }
-        if (sourcemap_rootpath != NULL)
+        if (sourcemap_rootpath != nullptr)
           sourcemap_file.insert(0, sourcemap_rootpath);
 
         writer->writeSourceMapUrl(sourcemap_file.c_str());
         sourcemap->close();
         delete sourcemap;
-        if (sourcemap_s != NULL)
-          delete sourcemap_s;
+        delete sourcemap_s;
       }
 
       delete writer;
@@ -304,8 +298,8 @@ int main(int argc, char* argv[]) {
       return 1;
     delete[] source;
 
-  } catch (IOException* e) {
-    LogStream().error() << " Error: " << e->what();
+  } catch (const IOException& e) {
+    LogStream().error() << " Error: " << e.what();
     return 1;
   }
 
