@@ -26,7 +26,7 @@ Value *BooleanValue::add(const Value &v) const {
   StringValue *ret;
 
   if (v.type == STRING) {
-    str = static_cast<const StringValue *>(&v);
+    str = dynamic_cast<const StringValue *>(&v);
     ret = new StringValue(*this, str->getQuotes());
     ret->append(v);
     return ret;
@@ -50,7 +50,7 @@ BooleanValue *BooleanValue::equals(const Value &v) const {
   const BooleanValue *b;
 
   if (v.type == BOOLEAN) {
-    b = static_cast<const BooleanValue *>(&v);
+    b = dynamic_cast<const BooleanValue *>(&v);
     return new BooleanValue(getValue() == b->getValue());
   } else {
     return new BooleanValue(false);
@@ -61,7 +61,7 @@ BooleanValue *BooleanValue::lessThan(const Value &v) const {
   const BooleanValue *b;
 
   if (v.type == BOOLEAN) {
-    b = static_cast<const BooleanValue *>(&v);
+    b = dynamic_cast<const BooleanValue *>(&v);
     return new BooleanValue(!getValue() && b->getValue());
   } else {
     return new BooleanValue(!getValue());

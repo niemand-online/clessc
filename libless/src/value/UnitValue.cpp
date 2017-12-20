@@ -18,7 +18,7 @@ Value *UnitValue::add(const Value &v) const {
   StringValue *ret;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue *>(&v);
+    s = dynamic_cast<const StringValue *>(&v);
     t = this->tokens.front();
     t.type = Token::STRING;
     ret = new StringValue(t, s->getQuotes());
@@ -44,7 +44,7 @@ BooleanValue *UnitValue::lessThan(const Value &v) const {
   const UnitValue *u;
 
   if (v.type == UNIT) {
-    u = static_cast<const UnitValue *>(&v);
+    u = dynamic_cast<const UnitValue *>(&v);
     return new BooleanValue(getUnit() < u->getUnit());
   } else {
     throw ValueException("You can only compare a unit with a *unit*.",
@@ -55,7 +55,7 @@ BooleanValue *UnitValue::equals(const Value &v) const {
   const UnitValue *u;
 
   if (v.type == UNIT) {
-    u = static_cast<const UnitValue *>(&v);
+    u = dynamic_cast<const UnitValue *>(&v);
     return new BooleanValue(getUnit() == u->getUnit());
   } else {
     throw ValueException("You can only compare a unit with a *unit*.",

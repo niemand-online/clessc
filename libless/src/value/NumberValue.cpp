@@ -112,7 +112,7 @@ Value* NumberValue::add(const Value& v) const {
   StringValue* sret;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     nret = new NumberValue(getValue());
     if (type == NUMBER)
       nret->setType(*n);
@@ -125,10 +125,10 @@ Value* NumberValue::add(const Value& v) const {
     return nret;
 
   } else if (v.type == COLOR) {
-    return static_cast<const Color*>(&v)->add(*this);
+    return dynamic_cast<const Color*>(&v)->add(*this);
 
   } else if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     sret = new StringValue(*this, s->getQuotes());
     sret->append(v);
     return sret;
@@ -142,7 +142,7 @@ Value* NumberValue::substract(const Value& v) const {
   NumberValue* ret;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     ret = new NumberValue(getValue());
 
     if (type == NUMBER)
@@ -166,7 +166,7 @@ Value* NumberValue::multiply(const Value& v) const {
   NumberValue* ret;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     ret = new NumberValue(getValue());
 
     if (type == NUMBER)
@@ -179,10 +179,10 @@ Value* NumberValue::multiply(const Value& v) const {
     return ret;
 
   } else if (v.type == COLOR) {
-    return static_cast<const Color*>(&v)->multiply(*this);
+    return dynamic_cast<const Color*>(&v)->multiply(*this);
 
   } else if (v.type == STRING) {
-    return static_cast<const StringValue*>(&v)->multiply(*this);
+    return dynamic_cast<const StringValue*>(&v)->multiply(*this);
 
   } else {
     throw ValueException("Unsupported type.", *this->getTokens());
@@ -194,7 +194,7 @@ Value* NumberValue::divide(const Value& v) const {
   NumberValue* ret;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     ret = new NumberValue(getValue());
 
     if (type == NUMBER)
@@ -217,7 +217,7 @@ BooleanValue* NumberValue::equals(const Value& v) const {
   const NumberValue* n;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     return new BooleanValue(convert(n->getUnit()) == n->getValue());
   } else {
     throw ValueException(
@@ -231,7 +231,7 @@ BooleanValue* NumberValue::lessThan(const Value& v) const {
   const NumberValue* n;
 
   if (isNumber(v)) {
-    n = static_cast<const NumberValue*>(&v);
+    n = dynamic_cast<const NumberValue*>(&v);
     return new BooleanValue(convert(n->getUnit()) < n->getValue());
   } else {
     throw ValueException(
@@ -369,7 +369,7 @@ Value* NumberValue::ceil(const vector<const Value*>& args) {
         "values",
         *args[0]->getTokens());
 
-  n = new NumberValue(*static_cast<const NumberValue*>(args[0]));
+  n = new NumberValue(*dynamic_cast<const NumberValue*>(args[0]));
 
   double val = n->getValue();
   n->setValue(std::ceil(val));
@@ -385,7 +385,7 @@ Value* NumberValue::floor(const vector<const Value*>& args) {
         "values",
         *args[0]->getTokens());
 
-  n = new NumberValue(*static_cast<const NumberValue*>(args[0]));
+  n = new NumberValue(*dynamic_cast<const NumberValue*>(args[0]));
 
   double val = n->getValue();
   n->setValue(std::floor(val));

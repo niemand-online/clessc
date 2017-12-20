@@ -212,20 +212,20 @@ Value* Color::add(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new Color(min(color[RGB_RED] + c->getRed(), 255),
                        min(color[RGB_GREEN] + c->getGreen(), 255),
                        min(color[RGB_BLUE] + c->getBlue(), 255));
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
+      n = dynamic_cast<const NumberValue*>(&v);
       return new Color(min(color[RGB_RED] + n->getValue(), 255),
                        min(color[RGB_GREEN] + n->getValue(), 255),
                        min(color[RGB_BLUE] + n->getValue(), 255));
 
     case STRING:
-      s = static_cast<const StringValue*>(&v);
+      s = dynamic_cast<const StringValue*>(&v);
       ret = new StringValue(*this, s->getQuotes());
       ret->append(*s);
       return ret;
@@ -243,7 +243,7 @@ Value* Color::substract(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new Color(
           (color[RGB_RED] > c->getRed() ? color[RGB_RED] - c->getRed() : 0),
           (color[RGB_GREEN] > c->getGreen() ? color[RGB_GREEN] - c->getGreen()
@@ -254,7 +254,7 @@ Value* Color::substract(const Value& v) const {
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
+      n = dynamic_cast<const NumberValue*>(&v);
 
       return new Color(max(color[RGB_RED] - n->getValue(), 0),
                        max(color[RGB_GREEN] - n->getValue(), 0),
@@ -273,7 +273,7 @@ Value* Color::multiply(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
 
       return new Color(min(color[RGB_RED] * c->getRed(), 255),
                        min(color[RGB_GREEN] * c->getGreen(), 255),
@@ -281,7 +281,7 @@ Value* Color::multiply(const Value& v) const {
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
+      n = dynamic_cast<const NumberValue*>(&v);
       return new Color(min(color[RGB_RED] * n->getValue(), 255),
                        min(color[RGB_GREEN] * n->getValue(), 255),
                        min(color[RGB_BLUE] * n->getValue(), 255));
@@ -299,14 +299,14 @@ Value* Color::divide(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new Color(color[RGB_RED] / c->getRed(),
                        color[RGB_GREEN] / c->getGreen(),
                        color[RGB_BLUE] / c->getBlue());
     case NUMBER:
     case PERCENTAGE:
     case DIMENSION:
-      n = static_cast<const NumberValue*>(&v);
+      n = dynamic_cast<const NumberValue*>(&v);
       return new Color(color[RGB_RED] / n->getValue(),
                        color[RGB_GREEN] / n->getValue(),
                        color[RGB_BLUE] / n->getValue());
@@ -323,7 +323,7 @@ BooleanValue* Color::equals(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new BooleanValue(color[RGB_RED] == c->getRed() &&
                               color[RGB_GREEN] == c->getGreen() &&
                               color[RGB_BLUE] == c->getBlue());
@@ -338,7 +338,7 @@ BooleanValue* Color::lessThan(const Value& v) const {
 
   switch (v.type) {
     case COLOR:
-      c = static_cast<const Color*>(&v);
+      c = dynamic_cast<const Color*>(&v);
       return new BooleanValue(color[RGB_RED] < c->getRed() ||
                               color[RGB_GREEN] < c->getGreen() ||
                               color[RGB_BLUE] < c->getBlue());
@@ -485,7 +485,7 @@ Value* Color::desaturate(const vector<const Value*>& arguments) {
 }
 
 Value* Color::fadein(const vector<const Value*>& arguments) {
-  const auto* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = dynamic_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   auto* ret = new Color(
@@ -494,7 +494,7 @@ Value* Color::fadein(const vector<const Value*>& arguments) {
 }
 
 Value* Color::fadeout(const vector<const Value*>& arguments) {
-  const auto* c = static_cast<const Color*>(arguments[0]);
+  const auto* c = dynamic_cast<const Color*>(arguments[0]);
   double value = ((const NumberValue*)arguments[1])->getValue();
 
   auto* ret = new Color(

@@ -36,7 +36,7 @@ StringValue::StringValue(const Value& val, bool quotes) {
   token.type = Token::STRING;
 
   if (val.type == STRING) {
-    sval = static_cast<const StringValue*>(&val);
+    sval = dynamic_cast<const StringValue*>(&val);
     token = sval->getString();
   } else {
     token = val.getTokens()->toString();
@@ -87,7 +87,7 @@ void StringValue::append(const Value& v) {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     strvalue.append(s->getString());
   } else {
     strvalue.append(v.getTokens()->toString());
@@ -116,7 +116,7 @@ Value* StringValue::multiply(const Value& v) const {
                          *this->getTokens());
   }
 
-  n = static_cast<const NumberValue*>(&v);
+  n = dynamic_cast<const NumberValue*>(&v);
 
   for (i = 0; i < n->getValue(); i++) {
     newstr.append(getString());
@@ -133,7 +133,7 @@ BooleanValue* StringValue::equals(const Value& v) const {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     return new BooleanValue(getString() == s->getString());
   } else {
     throw ValueException("You can only compare a string with a *string*.",
@@ -144,7 +144,7 @@ BooleanValue* StringValue::lessThan(const Value& v) const {
   const StringValue* s;
 
   if (v.type == STRING) {
-    s = static_cast<const StringValue*>(&v);
+    s = dynamic_cast<const StringValue*>(&v);
     return new BooleanValue(getString() < s->getString());
   } else {
     throw ValueException("You can only compare a string with a *string*.",
@@ -272,7 +272,7 @@ Value* StringValue::color(const vector<const Value*>& arguments) {
   const StringValue* s;
   Token t;
 
-  s = static_cast<const StringValue*>(arguments[0]);
+  s = dynamic_cast<const StringValue*>(arguments[0]);
 
   t = Token(s->getString(), Token::HASH, 0, 0, "generated");
   return new Color(t);

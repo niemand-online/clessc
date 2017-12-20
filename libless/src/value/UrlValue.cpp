@@ -81,7 +81,7 @@ Value* UrlValue::divide(const Value& v) const {
 BooleanValue* UrlValue::lessThan(const Value& v) const {
   const UrlValue* u;
   if (v.type == URL) {
-    u = static_cast<const UrlValue*>(&v);
+    u = dynamic_cast<const UrlValue*>(&v);
     return new BooleanValue(path < u->getPath());
   } else {
     throw ValueException("You can only compare urls with urls.",
@@ -92,7 +92,7 @@ BooleanValue* UrlValue::equals(const Value& v) const {
   const UrlValue* u;
 
   if (v.type == URL) {
-    u = static_cast<const UrlValue*>(&v);
+    u = dynamic_cast<const UrlValue*>(&v);
     return new BooleanValue(path == u->getPath());
   } else {
     throw ValueException("You can only compare urls with urls.",
@@ -344,7 +344,7 @@ Value* UrlValue::imgheight(const vector<const Value*>& arguments) {
   NumberValue* val;
   string px = "px";
 
-  u = static_cast<const UrlValue*>(arguments[0]);
+  u = dynamic_cast<const UrlValue*>(arguments[0]);
 
   LogStream().notice(3) << "Height: " << u->getImageHeight();
 
@@ -356,12 +356,12 @@ Value* UrlValue::imgwidth(const vector<const Value*>& arguments) {
   NumberValue* val;
   string px = "px";
 
-  u = static_cast<const UrlValue*>(arguments[0]);
+  u = dynamic_cast<const UrlValue*>(arguments[0]);
   val = new NumberValue(u->getImageWidth(), Token::DIMENSION, &px);
   return val;
 }
 
 Value* UrlValue::imgbackground(const vector<const Value*>& arguments) {
-  const auto* u = static_cast<const UrlValue*>(arguments[0]);
+  const auto* u = dynamic_cast<const UrlValue*>(arguments[0]);
   return new Color(u->getImageBackground());
 }
