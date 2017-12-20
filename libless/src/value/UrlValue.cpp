@@ -146,8 +146,8 @@ bool UrlValue::loadPng(UrlValue_Img& img) const {
 
   png_read_info(png_ptr, info_ptr);
 
-  img.width = png_get_image_width(png_ptr, info_ptr);
-  img.height = png_get_image_height(png_ptr, info_ptr);
+  img.width = static_cast<unsigned int>(png_get_image_width(png_ptr, info_ptr));
+  img.height = static_cast<unsigned int>(png_get_image_height(png_ptr, info_ptr));
   channels = png_get_channels(png_ptr, info_ptr);
   color_type = png_get_color_type(png_ptr, info_ptr);
 

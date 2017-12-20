@@ -13,8 +13,7 @@ private:
   std::ostream& sourcemap_h;
   std::list<const char*>& sources;
 
-  unsigned int lastDstColumn;
-  unsigned int lastSrcFile, lastSrcLine, lastSrcColumn;
+  size_t lastSrcFile, lastSrcLine, lastSrcColumn, lastDstColumn;
 
   size_t sourceFileIndex(const char* file);
   size_t encodeMapping(unsigned int column, const Token& source, char* buffer);

@@ -265,10 +265,10 @@ int main(int argc, char* argv[]) {
                                         sourcemap_rootpath,
                                         sourcemap_basepath);
 
-        writer = formatoutput ? new CssPrettyWriter(*out, *sourcemap)
-                              : new CssWriter(*out, *sourcemap);
+        writer = static_cast<CssWriter *>(formatoutput ? new CssPrettyWriter(*out, *sourcemap)
+                                                       : new CssWriter(*out, *sourcemap));
       } else {
-        writer = formatoutput ? new CssPrettyWriter(*out) : new CssWriter(*out);
+        writer = static_cast<CssWriter*>(formatoutput ? new CssPrettyWriter(*out) : new CssWriter(*out));
       }
       writer->rootpath = rootpath;
 

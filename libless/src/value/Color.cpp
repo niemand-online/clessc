@@ -93,7 +93,7 @@ Color::Color() : Value() {
 }
 
 Color::Color(Token& token) : Value() {
-  int len;
+  size_t len;
 
   this->tokens.push_back(token);
 
@@ -185,10 +185,9 @@ Color* Color::fromHSL(double hue, double saturation, double lightness) {
 
   // convert to 0-255 range.
   // add the .5 and truncate to round to int.
-
-  return new Color(rgb[RGB_RED] * 255 + 0.5,
-                   rgb[RGB_GREEN] * 255 + 0.5,
-                   rgb[RGB_BLUE] * 255 + 0.5);
+  return new Color(static_cast<unsigned int>(floor(rgb[RGB_RED] * 255 + 0.5)),
+                   static_cast<unsigned int>(floor(rgb[RGB_GREEN] * 255 + 0.5)),
+                   static_cast<unsigned int>(floor(rgb[RGB_BLUE] * 255 + 0.5)));
 }
 
 Color::Color(const Color& color) {
@@ -323,9 +322,9 @@ Value* Color::divide(const Value& v) const {
     case PERCENTAGE:
     case DIMENSION:
       n = dynamic_cast<const NumberValue*>(&v);
-      return new Color(color[RGB_RED] / n->getValue(),
-                       color[RGB_GREEN] / n->getValue(),
-                       color[RGB_BLUE] / n->getValue());
+      return new Color(static_cast<unsigned int>(floor(color[RGB_RED] / n->getValue())),
+                       static_cast<unsigned int>(floor(color[RGB_GREEN] / n->getValue())),
+                       static_cast<unsigned int>(floor(color[RGB_BLUE] / n->getValue())));
     default:
       throw ValueException(
           "You can only divide a color by a \
@@ -560,7 +559,7 @@ Value* Color::argb(const vector<const Value*>& arguments) {
   int i;
   Token t;
 
-  color[0] = c->getAlpha() * 0xFF + 0.5;
+  color[0] = static_cast<unsigned int>(floor(c->getAlpha() * 0xFF + 0.5));
   color[1] = c->getRed();
   color[2] = c->getGreen();
   color[3] = c->getBlue();

@@ -490,7 +490,7 @@ bool LessParser::importFile(Token uri,
 
   sources.push_back(relative_filename_cpy);
   LessTokenizer tokenizer(in, relative_filename_cpy);
-  LessParser parser(tokenizer, sources, (directive & IMPORT_REFERENCE));
+  LessParser parser(tokenizer, sources, static_cast<bool>(directive & IMPORT_REFERENCE));
 
   parser.includePaths = includePaths;
 

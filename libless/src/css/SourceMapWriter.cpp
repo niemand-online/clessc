@@ -94,13 +94,13 @@ size_t SourceMapWriter::sourceFileIndex(const char* file) {
 size_t SourceMapWriter::encodeMapping(unsigned int column,
                                       const Token& source,
                                       char* buffer) {
-  unsigned int srcFileIndex = sourceFileIndex(source.source);
+  size_t srcFileIndex = sourceFileIndex(source.source);
   char* start = buffer;
 
-  buffer += encodeField(column - lastDstColumn, buffer);
-  buffer += encodeField(srcFileIndex - lastSrcFile, buffer);
-  buffer += encodeField(source.line - lastSrcLine, buffer);
-  buffer += encodeField(source.column - lastSrcColumn, buffer);
+  buffer += encodeField(static_cast<int>(column - lastDstColumn), buffer);
+  buffer += encodeField(static_cast<int>(srcFileIndex - lastSrcFile), buffer);
+  buffer += encodeField(static_cast<int>(source.line - lastSrcLine), buffer);
+  buffer += encodeField(static_cast<int>(source.column - lastSrcColumn), buffer);
 
   lastDstColumn = column;
   lastSrcFile = srcFileIndex;
@@ -112,8 +112,8 @@ size_t SourceMapWriter::encodeMapping(unsigned int column,
 
 size_t SourceMapWriter::encodeField(int field, char* buffer) {
   // convert to unsigned to get the binary right
-  unsigned int value = abs(field);
-  unsigned int current = (value & 0xF) << 1;
+  int value = abs(field);
+  int current = (value & 0xF) << 1;
   size_t pos = 0;
 
   if (field < 0) {

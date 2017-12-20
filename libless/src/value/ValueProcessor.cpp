@@ -746,7 +746,7 @@ void ValueProcessor::interpolate(string &str, const ValueScope &scope) const {
   LogStream().notice(3) << "Interpolate: " << str;
 
   while ((start = str.find("@{", end)) != string::npos &&
-         (end = str.find("}", start)) != string::npos) {
+         (end = str.find('}', start)) != string::npos) {
     key = "@";
     key.append(str.substr(start + 2, end - (start + 2)));
 

@@ -25,9 +25,9 @@ bool FunctionLibrary::checkArguments(
     const FuncInfo* fi, const vector<const Value*>& arguments) const {
   const char* types = fi->parameterTypes;
   auto it = arguments.begin();
-  unsigned int i, len = strlen(types);
+  size_t len = strlen(types);
 
-  for (i = 0; i < len; i++) {
+  for (size_t i = 0; i < len; i++) {
     if (it == arguments.end()) {
       if (i + 1 < len && (types[i + 1] == '?' || types[i + 1] == '+')) {
         i++;
@@ -67,11 +67,11 @@ const char* FunctionLibrary::functionDefToString(const char* functionName,
 
   string str(functionName);
   const char* types = fi->parameterTypes;
-  unsigned int i, len = strlen(types);
+  size_t len = strlen(types);
   char* retstr;
 
   str.append("(");
-  for (i = 0; i < len; i++) {
+  for (size_t i = 0; i < len; i++) {
     if (types[i] == '.')
       str.append("Any");
     else
