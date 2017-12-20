@@ -10,6 +10,7 @@ LessRuleset::LessRuleset() : Ruleset() {
   lessStylesheet = nullptr;
   selector = nullptr;
 }
+
 LessRuleset::LessRuleset(const Selector& selector) : Ruleset() {
   parent = nullptr;
   lessStylesheet = nullptr;
