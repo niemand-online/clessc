@@ -3,7 +3,6 @@
 
 #include "less/LogStream.h"
 #include "less/value/BooleanValue.h"
-#include "less/value/Color.h"
 
 using namespace std;
 

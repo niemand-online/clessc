@@ -3,16 +3,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
 
 #include <less/LogStream.h>
 #include <less/css/CssPrettyWriter.h>
-#include <less/css/CssWriter.h>
 #include <less/css/IOException.h>
 #include <less/less/LessParser.h>
-#include <less/less/LessTokenizer.h>
-#include <less/lessstylesheet/LessStylesheet.h>
-#include <less/stylesheet/Stylesheet.h>
 
 using namespace std;
 

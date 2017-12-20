@@ -1,8 +1,6 @@
 #include "less/less/LessParser.h"
 #include "less/LogStream.h"
 
-#include <libgen.h>
-
 using namespace std;
 
 /**

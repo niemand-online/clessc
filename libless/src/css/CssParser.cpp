@@ -1,5 +1,4 @@
 #include "less/css/CssParser.h"
-#include <iostream>
 #include "less/LogStream.h"
 #include "less/stylesheet/AtRule.h"
 #include "less/stylesheet/MediaQuery.h"
